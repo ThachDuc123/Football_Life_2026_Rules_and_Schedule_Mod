@@ -1,0 +1,88 @@
+{
+    "iniInstalledHash":  "C7D142B9D71F8765B60E8FCA7B9A744104805232C5142C9C2FA71BD2C64CA1A4",
+    "modVersion":  "1.2.0",
+    "gameVersion":  "2.2.0",
+    "backupRelative":  "backups\\20260927-221037-e96a8e4df52c412389db521b0fc42676",
+    "installed":  "2026-09-27T22:10:37.5265178+07:00",
+    "validatedBuild":  true,
+    "iniBackupHash":  "70F10B821413683A7E03FAB9B9F26C3837C05EA435D173B2C176BB5CEC5885DD",
+    "installerRevision":  2,
+    "status":  "installed",
+    "files":  [
+                  {
+                      "existed":  true,
+                      "backupHash":  "A9628E394CD74219F5ABAB731F953C7979D71BC6BB1F3E8A9E371B4B144AC40A",
+                      "relative":  "modules\\ucl32_c41.dll"
+                  },
+                  {
+                      "existed":  true,
+                      "backupHash":  "1BF6B9B56DAF54C4A3682E4DFA4B43ED5707299A078A4CB345B74719227AED0E",
+                      "relative":  "modules\\ucl32_format_v111.dll"
+                  },
+                  {
+                      "existed":  true,
+                      "backupHash":  "540413F7747440D9A289A3E9ADB5229079BA66D6FEDA4A01748ADCE3FCE27EB7",
+                      "relative":  "modules\\ucl_schedule_probe.lua"
+                  },
+                  {
+                      "existed":  true,
+                      "backupHash":  "5C9313F552E629C92561CECA3E6943A7BDCB4064715E8CD477E78AF561B2DFC6",
+                      "relative":  "modules\\ucl32_loader.lua"
+                  },
+                  {
+                      "existed":  true,
+                      "backupHash":  "019CB5A7D0573F37C508796CB5AA6CE962A9D8D239626316C7ECA53BF14D964A",
+                      "relative":  "modules\\ucl_round_pages.lua"
+                  },
+                  {
+                      "existed":  true,
+                      "backupHash":  "D3FD65BFC8EA6733E21C76E3F9C6BE19F68D1EA1E5ECA629EFB643A28BED0E0D",
+                      "relative":  "modules\\ucl_calendar_guard.lua"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\audit_native_knockout.py"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\repair_ucl_calendar.py"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\repair_ucl_group_menu.py"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\repair_ucl_fixture.py"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\countries.json"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "livecpk\\UCL32\\common\\menu\\general\\rankingGroupLeaguePes.bin"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "content\\ucl_calendar_guard\\python.txt"
+                  }
+              ],
+    "flags":  [
+                  {
+                      "existed":  false,
+                      "relative":  "ucl32_probe.enable"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "ucl32_write.enable"
+                  },
+                  {
+                      "existed":  false,
+                      "relative":  "ucl32_c3.enable"
+                  }
+              ],
+    "gameSha256":  "9EE0C30651E5E3C37E3D308FB8224F5FEA135CD8E929DEE2CDDCA6E041836281",
+    "siderVersion":  "7.3.3.0",
+    "gameExe":  "FL_2026.exe"
+}
