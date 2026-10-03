@@ -1,0 +1,2384 @@
+--[[
+UCL Master League schedule probe
+Status: experimental / read-only
+
+Purpose:
+- observe which teams/tournament IDs PES 2021/Football Life exposes
+- observe Master League schedule-bar entries
+- produce a CSV log before any fixture modification is attempted
+
+This module does NOT attempt to change teams, fixtures, standings, dates,
+or match settings.
+
+Enable in sider.ini:
+    lua.module = "ucl_schedule_probe.lua"
+
+Output:
+    ucl_ml_probe.csv
+
+Reference:
+https://github.com/pes-modding/sider7/blob/master/doc/scripting.html
+--]]
+
+-- Sider's sandbox exposes these LuaJIT extensions directly when
+-- luajit.ext.enabled=1; it intentionally does not expose require().
+local ffi = ffi
+local bit = bit
+
+local m = { version = "0.22.4" }
+local merge_enabled = true
+local native_controller_route_enabled = false
+local output_path = ".\\ucl_ml_probe.csv"
+local menu_output_path = ".\\ucl_menu_files.log"
+local ranking_output_path = ".\\ucl_ranking_probe.log"
+local match_block_cache_path = ".\\ucl_match_block.cache"
+local ranking_team_capture_path = ".\\ucl_capture_rankingTeam.bin"
+local ranking_group_stock_size = 12729
+-- The resource is identified by what it is, not by how many bytes it packs
+-- into. 12729 is Konami's stock rankingGroupLeaguePes, the only build that
+-- stops at choice_9; asking it for choice_10 crashes the renderer, so that one
+-- size is the whole guard. Anything else reaching this callback came from our
+-- livecpk root and therefore exposes choice_0..choice_15.
+--
+-- Keying on an exact patched size was a mistake that cost two sessions: WESYS
+-- deflates the resource, so every rebuild lands on a different byte count, and
+-- a module still in memory from before the rebuild would reject the new file
+-- and silently fall back to the eight native groups.
+local ranking_group_resource_safe = false
+local ranking_group_layout_rows = 0
+local seen_schedule = {}
+local seen_menu_files = {}
+local seen_input_objects = {}
+local snapshot_hook_addr
+local snapshot_hook_armed = false
+local merge_hook_addr
+local destructor_hook_addr
+local captured_object
+local active_object
+local saved_object_state
+local merged_records_addr
+local merged_outer_addr
+local scroll_handled_addr
+local ranking_refresh_addr
+local window_ledger_addr
+local title_call_addr
+local title_stub_addr
+local title_buffer_addr
+local global_input_hook_addr = 0x140e411e0
+local ranking_team_render_addr = 0x140aedf80
+local seen_ranking_team_rows = {}
+local ranking_controller_factory_call_addr = 0x140af95a7
+local ranking_controller_factory_call_pes_addr = 0x140af95c7
+local ranking_team_factory_addr = 0x140aed610
+local ranking_group_factory_call_original = "\xe8\x74\xb8\xff\xff"
+local ranking_team_factory_call_patch = "\xe8\x64\x40\xff\xff"
+local ranking_group_factory_pes_call_original = "\xe8\xe4\xb7\xff\xff"
+local ranking_team_factory_pes_call_patch = "\xe8\x44\x40\xff\xff"
+local ranking_group_wrapper_tail_addr = 0x140af4ed0
+local ranking_group_wrapper_pes_tail_addr = 0x140af4ef2
+local ranking_group_wrapper_tail_original = "\xe9\x4b\xff\xff\xff"
+local ranking_group_wrapper_pes_tail_original = "\xe9\xb9\xfe\xff\xff"
+local ranking_team_wrapper_tail_patch = "\xe9\x3b\x87\xff\xff"
+local ranking_team_wrapper_pes_tail_patch = "\xe9\x19\x87\xff\xff"
+local league_records = {}
+-- Clubs in the merged table: 32 (8 groups of 4) or 36 (UEFA 2024+ league
+-- phase: the regulation in livecpk/UEFA36 makes 4 groups of 9). league_comp is
+-- the competition whose results fill it: 3 = Champions League, 5 = Europa League.
+local league_total = 32
+local league_comp = 3
+local max_league_pages = 36
+local window_start = 0
+local visible_rows = 16
+local max_visible_rows = 16
+-- One outer-vector entry per window position: 32 teams shown 16 at a time
+-- gives 17 stops (1-16, 2-17, ... 17-32). Declaring that many pages hands the
+-- scrolling to the game's own pager, which already knows how to repopulate the
+-- list on its own thread. Every entry points at the same inner buffer; the
+-- repopulate hook fills it for whichever page the game just moved to.
+local league_page_count = 32 - max_visible_rows + 1
+local refresh_hook_addr
+local group_previous_hook_addr
+-- prev_group's first 15 bytes, read out of the running process by v0.16.0:
+-- push rbx / sub rsp,20 / mov eax,[rcx+90] / mov rbx,rcx. Fifteen bytes is
+-- both an instruction boundary and enough room for the 14-byte detour.
+local group_previous_original = string.char(
+    0x40, 0x53, 0x48, 0x83, 0xec, 0x20, 0x8b, 0x81,
+    0x90, 0x00, 0x00, 0x00, 0x48, 0x8b, 0xd9
+)
+local scroll_league_window
+local set_league_page
+-- Bounded diagnostics. The repopulate hook fires for every standings screen in
+-- the game, so it may only ever log a fixed number of first sightings; an
+-- unbounded probe here writes megabytes and buries the events that matter.
+local seen_refresh_objects = {}
+local refresh_probe_budget = 12
+local render_probe_budget = 12
+local overlay_dpad_state = 0
+local overlay_lb_state = 0
+local overlay_rb_state = 0
+local native_refresh_fn
+local refresh_pending = false
+local refresh_due_clock = 0
+local refresh_debounce_seconds = 0.20
+
+local function schedule_refresh()
+    refresh_pending = true
+    refresh_due_clock = os.clock() + refresh_debounce_seconds
+end
+
+local merge_original =
+    "\x49\x8b\x85\xa8\x00\x00\x00" ..
+    "\x49\x39\x85\xa0\x00\x00\x00"
+
+local merge_prefix =
+    "\x48\x83\xcb\xff" ..
+    "\x48\xbe\x67\x66\x66\x66\x66\x66\x66\x66"
+
+-- rankingGroupLeaguePes::next_group. R1 calls this with the live controller
+-- object in RCX, even when the post-match screen cannot be closed with B.
+local snapshot_original =
+    "\x53" ..
+    "\x48\x83\xec\x20" ..
+    "\x8b\x81\x90\x00\x00\x00" ..
+    "\x48\x8b\xd9"
+
+local snapshot_anchor =
+    snapshot_original ..
+    "\x33\xc9\xff\xc0\x3b\x83\x94\x00\x00\x00"
+
+local snapshot_stale_prefix =
+    "\x5b\xe9\xa9\x01\x00\x00" ..
+    "\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc\x40"
+
+local destructor_original =
+    "\x48\x89\x5c\x24\x08" ..
+    "\x57" ..
+    "\x48\x83\xec\x20" ..
+    "\x48\x8d\x05\xd7\x13\xb9\x01"
+
+local destructor_anchor =
+    destructor_original ..
+    "\x48\x8b\xf9\x48\x89\x01\x8b\xda"
+
+local destructor_stale_prefix =
+    "\x48\x8b\xcf\xe8\x88\xbb\x1a\x00" ..
+    "\xf6\xc3\x01\x74\x0d\xba\xd0\x00\x00\x00" ..
+    "\x48\x8b\xcf\xe8\xf6\x2b\x73\xff" ..
+    "\x48\x8b\xc7\x48\x8b\x5c\x24\x30" ..
+    "\x48\x83\xc4\x20\x5f\xc3" ..
+    "\xcc\xcc\xcc\xcc\xcc\xcc\xcc\xcc"
+
+-- Callback table used by rankingGroupLeaguePes. The final two entries are the
+-- native previous/next-group handlers and remain stable while the directional
+-- entries are redirected.
+local input_vtable_tail =
+    "\xc0\x6a\xaf\x40\x01\x00\x00\x00" ..
+    "\x40\x6b\xaf\x40\x01\x00\x00\x00"
+
+-- FL_2026 action callbacks: 1=confirm, 2=cancel, 4=up, 5=down.
+-- v0.9.0 incorrectly hooked actions 1/2, which made Circle/Back scroll and
+-- trapped the user in the ranking screen. Keep those legacy values solely so
+-- a hot reload can repair the currently running experiment.
+local input_confirm_original = 0x140bb2be0
+local input_cancel_original = 0x140ca7010
+local legacy_input_up_marker = "\xeb\x08UCLUP001"
+local legacy_input_down_marker = "\xeb\x08UCLDN001"
+local input_up_original = 0x1404c95a0
+local input_down_original = 0x1404c95b0
+local input_group_previous_original = 0x140af6ac0
+local input_group_next_original = 0x140af6b40
+local input_up_marker = "\xeb\x08UCLUP092"
+local input_down_marker = "\xeb\x08UCLDN092"
+local input_group_previous_marker = "\xeb\x08UCLPG170"
+local input_group_next_marker = "\xeb\x08UCLNG170"
+
+local global_input_original =
+    "\x48\x8b\x81\x88\x00\x00\x00" ..
+    "\x89\x90\x10\x01\x00\x00" ..
+    "\xc3"
+local global_input_marker = "\xeb\x08UCLGI099"
+
+-- rankingTeam::render_row for this exact FL_2026 executable build.  This is
+-- the controller used by domestic league tables (16 visible native choices).
+local ranking_team_render_original =
+    "\x48\x89\x5c\x24\x08" ..
+    "\x48\x89\x6c\x24\x10" ..
+    "\x48\x89\x74\x24\x18"
+local ranking_team_render_marker = "\xeb\x08UCLRT101"
+
+local ranking_refresh_original =
+    "\x48\x8b\xc4\x55\x41\x54\x41\x55" ..
+    "\x41\x56\x41\x57\x48\x8b\xec\x48"
+
+local title_call_original = "\xe8\xa7\xd5\x35\x00"
+local title_stub_anchor =
+    "\x48\x83\xc4\x60\x5f\xc3" .. string.rep("\xcc", 16) ..
+    "\x40\x53\x48\x83\xec\x60"
+local title_stub_original = string.rep("\xcc", 16)
+local legacy_title_marker_092 = "\xeb\x08UCLHD092"
+local legacy_title_marker_093 = "\xeb\x08UCLHD093"
+local legacy_title_marker_094 = "\xeb\x08UCLHD094"
+local title_marker = "\xeb\x08UCLHD095"
+local league_title = "UEFA Champions League \xe2\x80\x94 Fase Liga"
+local league_titles = {
+    [3] = league_title,
+    [5] = "UEFA Europa League \xe2\x80\x94 Fase Liga",
+}
+
+local window_ledger_magic = "UCLW09A3"
+local window_ledger_size = 56
+
+local function value(v)
+    if v == nil then return "" end
+    return tostring(v)
+end
+
+local function ensure_header()
+    local f = io.open(output_path, "r")
+    if f then
+        f:close()
+        return
+    end
+
+    f = io.open(output_path, "w")
+    if not f then
+        log("[ucl_probe] ERROR: cannot create " .. output_path)
+        return
+    end
+
+    f:write("source,os_time,tournament_id,match_id,match_info,match_leg,home_team,away_team,stadium_id\n")
+    f:close()
+end
+
+local function append_row(source, tournament_id, match_id, match_info, match_leg, home_team, away_team, stadium_id)
+    local f = io.open(output_path, "a")
+    if not f then
+        log("[ucl_probe] ERROR: cannot append to " .. output_path)
+        return
+    end
+
+    local row = table.concat({
+        value(source),
+        value(os.time()),
+        value(tournament_id),
+        value(match_id),
+        value(match_info),
+        value(match_leg),
+        value(home_team),
+        value(away_team),
+        value(stadium_id),
+    }, ",")
+
+    f:write(row .. "\n")
+    f:close()
+end
+
+-- Fires after PES has already determined both teams.
+-- Sider documentation expects nil as return value, therefore this probe
+-- intentionally treats the event as observation-only.
+function m.set_teams(ctx, home_team, away_team)
+    append_row(
+        "set_teams",
+        ctx.tournament_id,
+        ctx.match_id,
+        ctx.match_info,
+        ctx.match_leg,
+        home_team,
+        away_team,
+        ctx.stadium
+    )
+end
+
+-- In Master League, get_stadium_name may include schedule_entry for the
+-- schedule bar (previous match + three upcoming matches).
+function m.get_stadium_name(ctx, stadium_name, stadium_id, schedule_entry)
+    if schedule_entry then
+        local key = table.concat({
+            value(schedule_entry.tournament_id),
+            value(schedule_entry.match_info),
+            value(schedule_entry.home_team),
+            value(schedule_entry.away_team),
+        }, ":")
+
+        -- The UI may ask for the same stadium name repeatedly while rendering.
+        -- Deduplicate identical schedule entries for a cleaner log.
+        if not seen_schedule[key] then
+            seen_schedule[key] = true
+            append_row(
+                "schedule_bar",
+                schedule_entry.tournament_id,
+                "",
+                schedule_entry.match_info,
+                "",
+                schedule_entry.home_team,
+                schedule_entry.away_team,
+                stadium_id
+            )
+        end
+    end
+
+    return nil
+end
+
+function m.context_reset(ctx)
+    -- Allow the same schedule entries to be logged again after returning to
+    -- the main menu / changing context.
+    seen_schedule = {}
+end
+
+local function bytes_hex(bytes)
+    return (bytes:gsub(".", function(byte)
+        return string.format("%02x", string.byte(byte))
+    end))
+end
+
+-- Read-only UI resource tracer. It records each menu file once and never
+-- changes the buffer returned to the game. This lets us identify the native
+-- AFP component used by the Master League Champions standings screen.
+function m.data_ready(ctx, filename, addr, len, total_size, offset, cpk_filename)
+    local normalized = string.lower(string.gsub(filename or "", "/", "\\"))
+    if not string.find(normalized, "common\\menu\\", 1, true) then
+        return
+    end
+
+    if normalized == "common\\menu\\general\\rankingteam.bin" then
+        local mode = offset == 0 and "wb" or "r+b"
+        local capture = io.open(ranking_team_capture_path, mode)
+        if capture then
+            capture:seek("set", offset)
+            capture:write(memory.read(addr, len))
+            capture:close()
+            if offset + len >= total_size then
+                log(string.format(
+                    "[ucl_probe] captured rankingTeam.bin: %d bytes -> %s",
+                    total_size, ranking_team_capture_path
+                ))
+            end
+        else
+            log("[ucl_probe] ERROR: cannot capture " .. ranking_team_capture_path)
+        end
+    end
+
+    if normalized == "common\\menu\\general\\rankinggroupleaguepes.bin"
+        and offset + len >= total_size then
+        if total_size == ranking_group_stock_size then
+            ranking_group_layout_rows = 10
+        else
+            ranking_group_layout_rows = 16
+        end
+        ranking_group_resource_safe = true
+        log(string.format(
+            "[ucl_probe] rankingGroupLeaguePes resource: %d bytes -> %s",
+            total_size,
+            string.format(
+                "%d-choice layout (%s)",
+                ranking_group_layout_rows,
+                total_size == ranking_group_stock_size
+                    and "Konami stock" or "livecpk override"
+            )
+        ))
+    end
+
+    if seen_menu_files[normalized] then
+        return
+    end
+    seen_menu_files[normalized] = true
+
+    local f = io.open(menu_output_path, "a")
+    if not f then
+        log("[ucl_probe] ERROR: cannot append to " .. menu_output_path)
+        return
+    end
+    f:write(table.concat({
+        value(os.time()),
+        value(filename),
+        value(cpk_filename),
+        value(total_size),
+    }, "|") .. "\n")
+    f:close()
+    log("[ucl_probe] menu resource: " .. value(filename))
+end
+
+local function ranking_log(line)
+    local f = io.open(ranking_output_path, "a")
+    if not f then
+        log("[ucl_probe] ERROR: cannot append to " .. ranking_output_path)
+        return
+    end
+    f:write(line .. "\n")
+    f:close()
+end
+
+local function read_u32(addr)
+    return tonumber(memory.unpack("u32", memory.read(addr, 4)))
+end
+
+local function read_u64(addr)
+    return tonumber(memory.unpack("u64", memory.read(addr, 8)))
+end
+
+-- Master League match records, as they sit in the save image the game keeps
+-- in memory. Verified byte-for-byte identical across three different saves and
+-- two seasons: the 96 Champions group matches are contiguous, 0x254 apart,
+-- and the first one always carries match id 3440 in tournament 0x0403.
+--
+--   +0x04 u16 tournament   +0x07 u8 state (0x20 pending / 0x60 played)
+--   +0x14 u32 home team    +0x18 u32 away team   (team id = value >> 14)
+--   +0x1C u8  home goals   +0x1F u8 away goals
+--
+-- 96 records is exactly 32 teams x 6 rounds / 2, which is why the hybrid
+-- fixture fits in them and why reading them yields the whole league phase.
+local match_record_stride = 0x254
+local match_record_count = 96
+local match_records_per_tournament = 12
+local match_state_played = 0x60
+local match_first_id = 3440
+local match_first_tournament = 0x0403
+local ucl_group_tournaments = {}
+for index = 0, 7 do
+    ucl_group_tournaments[0x0403 + 0x0400 * index] = true
+end
+local match_block_addr
+
+-- memory.search_process deliberately searches only PE sections of FL_2026.exe.
+-- The decrypted Master League image is a writable MEM_PRIVATE allocation, so
+-- it can never be found by that helper. Sider runs on LuaJIT and its memory
+-- module already declares VirtualQuery through FFI; use that same in-process
+-- API to inspect only committed, readable, writable private regions. This does
+-- not require OpenProcess/elevation and never writes to the save image.
+local MEM_COMMIT = 0x1000
+local MEM_PRIVATE = 0x20000
+local PAGE_GUARD = 0x100
+local PAGE_READWRITE = 0x04
+local PAGE_WRITECOPY = 0x08
+local PAGE_EXECUTE_READWRITE = 0x40
+local PAGE_EXECUTE_WRITECOPY = 0x80
+local writable_page_protections = {
+    [PAGE_READWRITE] = true,
+    [PAGE_WRITECOPY] = true,
+    [PAGE_EXECUTE_READWRITE] = true,
+    [PAGE_EXECUTE_WRITECOPY] = true,
+}
+local match_block_span = (match_record_count - 1) * match_record_stride + 0x20
+
+local function read_u8(addr)
+    return string.byte(memory.read(addr, 1))
+end
+
+local function read_u16(addr)
+    return tonumber(memory.unpack("u16", memory.read(addr, 2)))
+end
+
+-- Both the match records and the ranking rows store a team as id << 14 with a
+-- per-team low field the game keeps for its own use.
+local function decode_team(encoded)
+    return math.floor(encoded / 0x4000) % 0x20000
+end
+
+local function parse_hex(value)
+    if not value then return nil end
+    return tonumber(string.gsub(value, "^0[xX]", ""), 16)
+end
+
+-- v0.9.0 did not persist a reload ledger and accidentally intercepted the
+-- cancel callback. Recover its still-live controller from the last verified
+-- merge_source record before replacing any hooks. The original std::vector
+-- triple survives in the previous Lua state's saved byte string, so resolve
+-- its exact capacity instead of guessing it.
+local function restore_legacy_window_from_log()
+    local f = io.open(ranking_output_path, "r")
+    if not f then return end
+
+    local source
+    for line in f:lines() do
+        local object_hex, begin_hex, end_hex = string.match(
+            line,
+            "^merge_source|.-|object=(0x%x+)|declared=8|outer_begin=(0x%x+)|outer_end=(0x%x+)"
+        )
+        if object_hex then
+            source = {
+                object = parse_hex(object_hex),
+                outer_begin = parse_hex(begin_hex),
+                outer_end = parse_hex(end_hex),
+                applied = false,
+            }
+        end
+
+        local applied_hex = string.match(line, "^merge_applied|object=(0x%x+)")
+        if source and applied_hex and parse_hex(applied_hex) == source.object then
+            source.applied = true
+        end
+
+        local released_hex = string.match(line, "^merge_restored|object=(0x%x+)")
+            or string.match(line, "^capture_released|object=(0x%x+)")
+        if source and released_hex and parse_hex(released_hex) == source.object then
+            source.applied = false
+        end
+    end
+    f:close()
+
+    if not source or not source.applied then return end
+
+    local recovered = (function()
+        local declared = read_u32(source.object + 0x94)
+        if declared ~= 1 and declared ~= league_page_count then return false end
+
+        local synthetic_outer = read_u64(source.object + 0xa0)
+        local synthetic_outer_end = read_u64(source.object + 0xa8)
+        local outer_span = synthetic_outer_end - synthetic_outer
+        if synthetic_outer == 0
+            or (outer_span ~= 24 and outer_span ~= league_page_count * 24) then
+            return false
+        end
+
+        local records_begin = read_u64(synthetic_outer)
+        local records_end = read_u64(synthetic_outer + 8)
+        local records_bytes = records_end - records_begin
+        if records_begin == 0
+            or (records_bytes ~= 10 * 40 and records_bytes ~= 16 * 40) then
+            return false
+        end
+
+        local original_vector
+        for capacity_count = 8, 32 do
+            local capacity = source.outer_begin + capacity_count * 24
+            local bytes = memory.pack("u64", source.outer_begin)
+                .. memory.pack("u64", source.outer_end)
+                .. memory.pack("u64", capacity)
+            if memory.search_process(bytes) then
+                original_vector = bytes
+                break
+            end
+        end
+        if not original_vector then return false end
+
+        memory.write(
+            source.object + 0x90,
+            memory.pack("u32", 0) .. memory.pack("u32", 8)
+        )
+        memory.write(source.object + 0xa0, original_vector)
+        ranking_log(string.format(
+            "legacy_merge_restored|object=%s|source=v0.9.0",
+            memory.hex(source.object)
+        ))
+        log(string.format(
+            "[ucl_probe] recovered trapped v0.9.0 ranking controller at %s",
+            memory.hex(source.object)
+        ))
+        return true
+    end)
+
+    if source.applied and not recovered then
+        log("[ucl_probe] legacy window recovery skipped: live shape did not validate")
+    end
+end
+
+local function clear_window_ledger()
+    if window_ledger_addr then
+        memory.write(window_ledger_addr, string.rep("\x00", window_ledger_size))
+    end
+end
+
+local function persist_window_ledger(object)
+    if not window_ledger_addr or not saved_object_state or not merged_outer_addr then
+        return
+    end
+    memory.write(
+        window_ledger_addr,
+        window_ledger_magic
+            .. memory.pack("u64", object)
+            .. saved_object_state.page_and_declared
+            .. saved_object_state.outer_vector
+            .. memory.pack("u64", merged_outer_addr)
+    )
+end
+
+local function restore_stale_window()
+    local ledger = memory.search_process(window_ledger_magic)
+    if not ledger then
+        return
+    end
+
+    local object = read_u64(ledger + 8)
+    local synthetic_outer = read_u64(ledger + 48)
+    if object ~= 0 and synthetic_outer ~= 0
+        and read_u64(object + 0xa0) == synthetic_outer then
+        memory.write(object + 0x90, memory.read(ledger + 16, 8))
+        memory.write(object + 0xa0, memory.read(ledger + 24, 24))
+        log(string.format(
+            "[ucl_probe] recovered stale league window at %s before reload",
+            memory.hex(object)
+        ))
+    end
+    memory.write(ledger, string.rep("\x00", window_ledger_size))
+end
+
+local function inspect_ranking(object, tag)
+    local declared = read_u32(object + 0x94)
+    local outer_begin = read_u64(object + 0xa0)
+    local outer_end = read_u64(object + 0xa8)
+    local outer_bytes = outer_end - outer_begin
+
+    ranking_log(string.format(
+        "%s|time=%d|object=%s|declared=%d|outer_begin=%s|outer_end=%s|outer_bytes=%d",
+        tag, os.time(), memory.hex(object), declared, memory.hex(outer_begin),
+        memory.hex(outer_end), outer_bytes
+    ))
+
+    if outer_begin == 0 or outer_end < outer_begin or outer_bytes % 24 ~= 0 or outer_bytes > (32 * 24) then
+        ranking_log("ERROR|invalid outer vector")
+        return nil, "invalid outer vector"
+    end
+
+    local outer_count = outer_bytes / 24
+    ranking_log(string.format("outer_count|%d", outer_count))
+    local groups = {}
+    for group_index = 0, outer_count - 1 do
+        local slot = outer_begin + group_index * 24
+        local records_begin = read_u64(slot)
+        local records_end = read_u64(slot + 8)
+        local records_bytes = records_end - records_begin
+        if records_begin == 0 or records_end < records_begin or records_bytes % 40 ~= 0 or records_bytes > (128 * 40) then
+            ranking_log(string.format("group|%d|ERROR|invalid records vector", group_index))
+            return nil, "invalid records vector"
+        else
+            local record_count = records_bytes / 40
+            ranking_log(string.format("group|%d|records=%d", group_index, record_count))
+            local group = {}
+            for record_index = 0, record_count - 1 do
+                local record = records_begin + record_index * 40
+                local fields = {}
+                for field_index = 0, 9 do
+                    fields[#fields + 1] = read_u32(record + field_index * 4)
+                end
+                group[#group + 1] = {
+                    raw = memory.read(record, 40),
+                    fields = fields,
+                }
+                local printable = {}
+                for field_index = 1, #fields do
+                    printable[field_index] = tostring(fields[field_index])
+                end
+                ranking_log(string.format(
+                    "record|group_index=%d|record_index=%d|u32=%s",
+                    group_index, record_index, table.concat(printable, ",")
+                ))
+            end
+            groups[#groups + 1] = group
+        end
+    end
+    return {
+        declared = declared,
+        outer_begin = outer_begin,
+        outer_end = outer_end,
+        outer_count = outer_count,
+        groups = groups,
+    }
+end
+
+local function signed_u32(number)
+    if number >= 0x80000000 then
+        return number - 0x100000000
+    end
+    return number
+end
+
+local function standings_equal(left, right)
+    return left.fields[4] == right.fields[4]
+        and signed_u32(left.fields[10]) == signed_u32(right.fields[10])
+        and left.fields[8] == right.fields[8]
+        and left.fields[5] == right.fields[5]
+end
+
+-- Article 18.01 criteria the native record has no field for, filled by
+-- league_phase_standings and keyed by team id (same order as euro_rules.dll).
+local league_extra = {}
+local no_extra = { away_gf = 0, away_w = 0, opp_pts = 0, opp_gd = 0, opp_gf = 0, disc = 0 }
+
+local function standings_before(left, right)
+    if left.fields[4] ~= right.fields[4] then
+        return left.fields[4] > right.fields[4]
+    end
+    local left_goal_difference = signed_u32(left.fields[10])
+    local right_goal_difference = signed_u32(right.fields[10])
+    if left_goal_difference ~= right_goal_difference then
+        return left_goal_difference > right_goal_difference
+    end
+    if left.fields[8] ~= right.fields[8] then
+        return left.fields[8] > right.fields[8]
+    end
+    local left_team = decode_team(left.fields[1])
+    local right_team = decode_team(right.fields[1])
+    local a = league_extra[left_team] or no_extra
+    local b = league_extra[right_team] or no_extra
+    if a.away_gf ~= b.away_gf then return a.away_gf > b.away_gf end
+    if left.fields[5] ~= right.fields[5] then
+        return left.fields[5] > right.fields[5]
+    end
+    if a.away_w ~= b.away_w then return a.away_w > b.away_w end
+    if a.opp_pts ~= b.opp_pts then return a.opp_pts > b.opp_pts end
+    if a.opp_gd ~= b.opp_gd then return a.opp_gd > b.opp_gd end
+    if a.opp_gf ~= b.opp_gf then return a.opp_gf > b.opp_gf end
+    if a.disc ~= b.disc then return a.disc < b.disc end
+    return left_team < right_team
+end
+
+-- Find the 96-record block and prove it is the right one before trusting it:
+-- every record must belong to a Champions group tournament, and each of the
+-- eight must own exactly twelve. A false positive cannot survive 96 checks.
+local function validate_match_block(found, region_end)
+    if not found or found == 0 then
+        return false, "null candidate"
+    end
+    if region_end and found + match_block_span > region_end then
+        return false, "candidate crosses readable region"
+    end
+
+    local counts = {}
+    for index = 0, match_record_count - 1 do
+        local record = found + index * match_record_stride
+        local tournament = read_u16(record + 0x04)
+        if not ucl_group_tournaments[tournament] then
+            return false, string.format(
+                "record %d has tournament 0x%x", index, tournament
+            )
+        end
+        counts[tournament] = (counts[tournament] or 0) + 1
+    end
+    for tournament in pairs(ucl_group_tournaments) do
+        if counts[tournament] ~= match_records_per_tournament then
+            return false, string.format(
+                "tournament 0x%x has %d records",
+                tournament, counts[tournament] or 0
+            )
+        end
+    end
+    return true
+end
+
+local function pointer_number(pointer)
+    return tonumber(ffi.cast("uint64_t", pointer))
+end
+
+local function reusable_match_block_from_cache()
+    local file = io.open(match_block_cache_path, "r")
+    if not file then
+        return nil
+    end
+    local cached = parse_hex(file:read("*l"))
+    file:close()
+    if not cached then
+        return nil
+    end
+
+    local mbi = ffi.new("MEMORY_BASIC_INFORMATION[1]")
+    local queried = tonumber(ffi.C.VirtualQuery(
+        ffi.cast("void*", cached), mbi, ffi.sizeof(mbi[0])
+    ))
+    if queried == 0 then
+        return nil
+    end
+    local base = pointer_number(mbi[0].BaseAddress)
+    local region_end = base + tonumber(mbi[0].RegionSize)
+    local protection = tonumber(mbi[0].Protect)
+    local base_protection = bit.band(protection, 0xff)
+    local eligible = tonumber(mbi[0].State) == MEM_COMMIT
+        and tonumber(mbi[0].Type) == MEM_PRIVATE
+        and bit.band(protection, PAGE_GUARD) == 0
+        and writable_page_protections[base_protection]
+        and cached >= base
+        and cached + match_block_span <= region_end
+    if not eligible then
+        ranking_log("match_block|cache_rejected=region")
+        return nil
+    end
+
+    local valid, reason = validate_match_block(cached, region_end)
+    if valid then
+        ranking_log("match_block|cache_reused=" .. memory.hex(cached))
+        return cached
+    end
+    ranking_log("match_block|cache_rejected=" .. value(reason))
+    return nil
+end
+
+local function persist_match_block_cache(address)
+    local file = io.open(match_block_cache_path, "w")
+    if not file then
+        ranking_log("match_block|cache_write_failed")
+        return
+    end
+    file:write(memory.hex(address) .. "\n")
+    file:close()
+end
+
+local function search_private_writable_memory(signature)
+    local system_info = memory.get_system_info()
+    local address = pointer_number(system_info.lpMinimumApplicationAddress)
+    local maximum = pointer_number(system_info.lpMaximumApplicationAddress)
+    local mbi = ffi.new("MEMORY_BASIC_INFORMATION[1]")
+    local mbi_size = ffi.sizeof(mbi[0])
+    local eligible_regions = {}
+    local scanned_regions = 0
+    local bytes_scanned = 0
+    local candidates = 0
+
+    -- VirtualQuery is cheap. Collect first, then inspect high addresses first:
+    -- FL26 keeps the decrypted ML image near its other live context buffers.
+    -- The old ascending scan reached it only after reading more than 2.2 GB.
+    while address < maximum do
+        local queried = tonumber(ffi.C.VirtualQuery(
+            ffi.cast("void*", address), mbi, mbi_size
+        ))
+        if queried == 0 then
+            break
+        end
+
+        local base = pointer_number(mbi[0].BaseAddress)
+        local region_size = tonumber(mbi[0].RegionSize)
+        local region_end = base + region_size
+        local protection = tonumber(mbi[0].Protect)
+        local base_protection = bit.band(protection, 0xff)
+        local eligible = tonumber(mbi[0].State) == MEM_COMMIT
+            and tonumber(mbi[0].Type) == MEM_PRIVATE
+            and bit.band(protection, PAGE_GUARD) == 0
+            and writable_page_protections[base_protection]
+            and region_size >= match_block_span
+
+        if eligible then
+            eligible_regions[#eligible_regions + 1] = {
+                base = base,
+                finish = region_end,
+                size = region_size,
+            }
+        end
+
+        if region_end <= address then
+            break
+        end
+        address = region_end
+    end
+
+    table.sort(eligible_regions, function(left, right)
+        return left.base > right.base
+    end)
+
+    for _, region in ipairs(eligible_regions) do
+        scanned_regions = scanned_regions + 1
+        bytes_scanned = bytes_scanned + region.size
+        local cursor = region.base
+        while cursor + #signature <= region.finish do
+            local hit = memory.search(signature, cursor, region.finish)
+            if not hit then
+                break
+            end
+            local candidate = pointer_number(hit)
+            candidates = candidates + 1
+            local valid, reason = validate_match_block(candidate, region.finish)
+            ranking_log(string.format(
+                "match_heap_candidate|address=%s|valid=%s|reason=%s",
+                memory.hex(candidate), tostring(valid), value(reason)
+            ))
+            if valid then
+                ranking_log(string.format(
+                    "match_heap_scan|regions=%d/%d|bytes=%d|candidates=%d|found=%s",
+                    scanned_regions, #eligible_regions, bytes_scanned,
+                    candidates, memory.hex(candidate)
+                ))
+                return candidate
+            end
+            cursor = candidate + 1
+        end
+    end
+
+    ranking_log(string.format(
+        "match_heap_scan|regions=%d/%d|bytes=%d|candidates=%d|found=no",
+        scanned_regions, #eligible_regions, bytes_scanned, candidates
+    ))
+    return nil
+end
+
+-- Resolve current native Events directly: bounded work, no heap scan or cache.
+local function readable_span(address, size)
+    if not address or address < 0x10000 or size <= 0 then return false end
+    local finish = address + size
+    while address < finish do
+        local mbi = ffi.new("MEMORY_BASIC_INFORMATION[1]")
+        if tonumber(ffi.C.VirtualQuery(ffi.cast("void*", address), mbi,
+                ffi.sizeof(mbi[0]))) == 0 then return false end
+        local protection = tonumber(mbi[0].Protect)
+        local next_address = pointer_number(mbi[0].BaseAddress)
+            + tonumber(mbi[0].RegionSize)
+        if tonumber(mbi[0].State) ~= MEM_COMMIT
+                or bit.band(protection, PAGE_GUARD) ~= 0
+                or not writable_page_protections[bit.band(protection, 0xff)]
+                or next_address <= address then return false end
+        address = next_address
+    end
+    return true
+end
+
+local function locate_match_block(allow_heap_scan)
+    -- Re-resolve even within one session: loading another save changes model.
+    local root_slot = 0x143705E10
+    if not readable_span(root_slot, 8) then return nil end
+    local root = read_u64(root_slot)
+    if not root or root < 0x10000 or not readable_span(root + 0x48, 8) then return nil end
+    local model = read_u64(root + 0x48)
+    if not model or model < 0x10000 then return nil end
+    local events = model + 0xE9FF08
+    local size = 13000 * match_record_stride
+    if not readable_span(events, size) then return nil end
+    local data = memory.read(events, size)
+    if not data or #data ~= size then return nil end
+    local first, count
+    count = 0
+    for index = 0, 12999 do
+        local offset = index * match_record_stride
+        local lo, hi = string.byte(data, offset + 5, offset + 6)
+        local tournament = lo + hi * 256
+        local flags = string.byte(data, offset + 8)
+        if ucl_group_tournaments[tournament] and bit.band(flags, 0x80) == 0 then
+            local idlo, idhi = string.byte(data, offset + 1, offset + 2)
+            if idlo + idhi * 256 ~= index then return nil end
+            if first and index ~= first + count then return nil end
+            first = first or index
+            count = count + 1
+        end
+    end
+    if count ~= match_record_count then
+        ranking_log("match_block|native_events_rejected|count=" .. count)
+        return nil
+    end
+    local found = events + first * match_record_stride
+    local valid, reason = validate_match_block(found, events + size)
+    -- Never use a previous model's cache if this model is not valid.
+    if not valid or read_u64(root_slot) ~= root or read_u64(root + 0x48) ~= model then
+        return nil
+    end
+    if match_block_addr ~= found then
+        ranking_log("match_block|native_events=" .. memory.hex(found) .. "|records=96|heap_scan=false")
+    end
+    match_block_addr = found
+    return found
+end
+
+-- The real league-phase table, built from the goals the game actually stored.
+-- This is the whole point: the native group tables cannot hold it, because each
+-- of the eight is a separate tournament with four fixed slots, so a result
+-- against a club from another group has nowhere to land.
+-- Decides between the two explanations above. The ranking controller's record
+-- vectors live on the heap, so if search_process cannot find bytes copied
+-- straight out of one of them, it does not scan the heap and no anchor will
+-- ever work; the match records would then have to be reached another way.
+local search_reach_probed = false
+local function probe_search_reach(heap_addr)
+    if search_reach_probed then
+        return
+    end
+    search_reach_probed = true
+    local sample = memory.read(heap_addr, 24)
+    local hit = memory.search_process(sample)
+    ranking_log(string.format(
+        "search_reach|origen=%s|encontrado=%s|coincide=%s",
+        memory.hex(heap_addr), hit and memory.hex(hit) or "no",
+        tostring(hit == heap_addr)
+    ))
+    log(string.format(
+        "[ucl_probe] search_process alcanza el monton: %s",
+        hit and "SI" or "NO"
+    ))
+end
+
+-- Every played league-phase match of the Champions League (comp 3) and the
+-- Europa League (comp 5), straight from the native Event table: 96 matches in
+-- the 32-club format, 144 in the 36-club one, in whatever order they sit.
+-- Returns standings[comp][team] and extras[comp][team] (the Article 18.01
+-- criteria the native record has no field for), plus played[comp].
+local function league_phase_standings()
+    local root_slot = 0x143705E10
+    if not readable_span(root_slot, 8) then return nil end
+    local root = read_u64(root_slot)
+    if not root or root < 0x10000 or not readable_span(root + 0x48, 8) then return nil end
+    local model = read_u64(root + 0x48)
+    if not model or model < 0x10000 then return nil end
+    local events = model + 0xE9FF08
+    local size = 13000 * match_record_stride
+    if not readable_span(events, size) then return nil end
+    local data = memory.read(events, size)
+    if not data or #data ~= size then return nil end
+
+    local function u32_at(offset)
+        local a, b, c, d = string.byte(data, offset + 1, offset + 4)
+        return a + b * 0x100 + c * 0x10000 + d * 0x1000000
+    end
+    -- UEFA disciplinary points of one side: yellow 1, direct red 3, two
+    -- yellows 3. Appearances are 16 bytes, home from +0x24 (17), away from
+    -- +0x134 (18); the packed word at +12 holds the card bits.
+    local function side_cards(base, first, slots)
+        local total = 0
+        for slot = 0, slots - 1 do
+            local at = base + first + slot * 16
+            if u32_at(at + 4) ~= 0 then
+                local packed = u32_at(at + 12)
+                if bit.band(packed, 0x40000) ~= 0 then
+                    total = total + 3
+                else
+                    if bit.band(packed, 0x80000) ~= 0 then total = total + 1 end
+                    if bit.band(packed, 0x100000) ~= 0 then total = total + 3 end
+                end
+            end
+        end
+        return total
+    end
+
+    local standings, played = { [3] = {}, [5] = {} }, { [3] = 0, [5] = 0 }
+    local function entry(comp, team)
+        local row = standings[comp][team]
+        if not row then
+            row = { pj = 0, pts = 0, g = 0, e = 0, p = 0, gf = 0, gc = 0,
+                    away_gf = 0, away_w = 0, disc = 0, opponents = {} }
+            standings[comp][team] = row
+        end
+        return row
+    end
+    for index = 0, 12999 do
+        local base = index * match_record_stride
+        local lo, hi = string.byte(data, base + 1, base + 2)
+        if lo + hi * 256 == index then
+            local tlo, thi = string.byte(data, base + 5, base + 6)
+            local comp = (tlo + thi * 256) % 0x400
+            if comp == 3 or comp == 5 then
+                local home_team = decode_team(u32_at(base + 0x14))
+                local away_team = decode_team(u32_at(base + 0x18))
+                local home = entry(comp, home_team)
+                local away = entry(comp, away_team)
+                if bit.band(string.byte(data, base + 8), 0x40) ~= 0 then
+                    played[comp] = played[comp] + 1
+                    local home_goals = string.byte(data, base + 0x1C + 1)
+                    local away_goals = string.byte(data, base + 0x1F + 1)
+                    home.pj = home.pj + 1
+                    away.pj = away.pj + 1
+                    home.gf = home.gf + home_goals
+                    home.gc = home.gc + away_goals
+                    away.gf = away.gf + away_goals
+                    away.gc = away.gc + home_goals
+                    away.away_gf = away.away_gf + away_goals
+                    home.disc = home.disc + side_cards(base, 0x24, 17)
+                    away.disc = away.disc + side_cards(base, 0x134, 18)
+                    home.opponents[#home.opponents + 1] = away_team
+                    away.opponents[#away.opponents + 1] = home_team
+                    if home_goals > away_goals then
+                        home.g = home.g + 1
+                        home.pts = home.pts + 3
+                        away.p = away.p + 1
+                    elseif away_goals > home_goals then
+                        away.g = away.g + 1
+                        away.away_w = away.away_w + 1
+                        away.pts = away.pts + 3
+                        home.p = home.p + 1
+                    else
+                        home.e = home.e + 1
+                        away.e = away.e + 1
+                        home.pts = home.pts + 1
+                        away.pts = away.pts + 1
+                    end
+                end
+            end
+        end
+    end
+    local extras = { [3] = {}, [5] = {} }
+    for comp, rows in pairs(standings) do
+        for team, row in pairs(rows) do
+            local extra = { away_gf = row.away_gf, away_w = row.away_w, disc = row.disc,
+                            opp_pts = 0, opp_gd = 0, opp_gf = 0 }
+            for _, opponent in ipairs(row.opponents) do
+                local o = rows[opponent]
+                extra.opp_pts = extra.opp_pts + o.pts
+                extra.opp_gd = extra.opp_gd + o.gf - o.gc
+                extra.opp_gf = extra.opp_gf + o.gf
+            end
+            extras[comp][team] = extra
+        end
+    end
+    return standings, extras, played
+end
+
+local function pack_record_fields(fields, position)
+    local parts = {}
+    for index = 1, 10 do
+        parts[index] = memory.pack(
+            "u32", index == 2 and position or fields[index]
+        )
+    end
+    return table.concat(parts)
+end
+
+local function write_visible_window()
+    if #league_records ~= league_total or not merged_records_addr then
+        return false
+    end
+    local visible = {}
+    for index = window_start + 1, window_start + visible_rows do
+        visible[#visible + 1] = league_records[index]
+    end
+    if #visible ~= visible_rows then
+        return false
+    end
+    memory.write(merged_records_addr, table.concat(visible))
+    return true
+end
+
+local function apply_league_table(object)
+    if not ranking_group_resource_safe then
+        ranking_log("merge_skip|rankingGroupLeaguePes layout is not the verified stock resource")
+        log("[ucl_probe] single-table merge skipped: unsupported rankingGroupLeaguePes resource")
+        return false
+    end
+    if active_object then
+        ranking_log("merge_skip|another ranking object is already active")
+        return false
+    end
+
+    local ranking, reason = inspect_ranking(object, "merge_source")
+    if not ranking then
+        ranking_log("merge_skip|" .. value(reason))
+        return false
+    end
+    -- 8 groups of 4 (32-club format) or 4 groups of 9 (36-club format).
+    local per_group = ranking.groups[1] and #ranking.groups[1] or 0
+    if ranking.declared ~= ranking.outer_count
+        or not ((ranking.outer_count == 8 and per_group == 4)
+            or (ranking.outer_count == 4 and per_group == 9)) then
+        ranking_log(string.format(
+            "merge_skip|expected 8x4 or 4x9 groups, found declared=%d outer=%d first=%d",
+            ranking.declared, ranking.outer_count, per_group
+        ))
+        return false
+    end
+
+    local records = {}
+    for _, group in ipairs(ranking.groups) do
+        if #group ~= per_group then
+            ranking_log("merge_skip|groups of different sizes")
+            return false
+        end
+        for _, record in ipairs(group) do
+            records[#records + 1] = record
+        end
+    end
+    local total = #records
+    if total - ranking_group_layout_rows + 1 > max_league_pages then
+        ranking_log("merge_skip|too many pages for the window buffer")
+        return false
+    end
+
+    -- Whose league phase is this? Only a table whose clubs all play the UCL
+    -- or the UEL league phase is merged (the Conference League, World Cup
+    -- and other group stages keep their native tables).
+    local standings, extras, matches_played = league_phase_standings()
+    if not standings then
+        ranking_log("merge_skip|Event table not readable")
+        log("[ucl_probe] WARNING: match records not found; native group tables kept")
+        return false
+    end
+    local comp
+    for _, candidate in ipairs({ 3, 5 }) do
+        local found = 0
+        for _, record in ipairs(records) do
+            if standings[candidate][decode_team(record.fields[1])] then found = found + 1 end
+        end
+        if found == total then comp = candidate end
+    end
+    if not comp then
+        ranking_log("merge_skip|clubs are not a UCL/UEL league phase")
+        return false
+    end
+    league_extra = extras[comp]
+
+    -- Replace the per-group stats with the ones the results actually produce.
+    -- The team field is kept untouched; only played/points/W/D/L/GF/GA/GD are
+    -- rewritten.
+    do
+        local covered = 0
+        for _, record in ipairs(records) do
+            local row = standings[comp][decode_team(record.fields[1])]
+            if row then
+                covered = covered + 1
+            else
+                row = { pj = 0, pts = 0, g = 0, e = 0, p = 0, gf = 0, gc = 0 }
+            end
+            local goal_difference = row.gf - row.gc
+            if goal_difference < 0 then
+                goal_difference = goal_difference + 0x100000000
+            end
+            record.fields[3] = row.pj
+            record.fields[4] = row.pts
+            record.fields[5] = row.g
+            record.fields[6] = row.e
+            record.fields[7] = row.p
+            record.fields[8] = row.gf
+            record.fields[9] = row.gc
+            record.fields[10] = goal_difference
+        end
+        ranking_log(string.format(
+            "global_standings|comp=%d|matches_played=%d|teams_with_results=%d/%d",
+            comp, matches_played[comp], covered, total
+        ))
+        log(string.format(
+            "[ucl_probe] comp %d league-phase standings rebuilt from %d played matches",
+            comp, matches_played[comp]
+        ))
+    end
+
+    table.sort(records, standings_before)
+    -- Positions run 1..32. Sharing a position across a dozen clubs that have
+    -- simply not played yet reads as a bug, which is what the old tie-aware
+    -- ranking produced while every record was still zero.
+    local merged = {}
+    for index, record in ipairs(records) do
+        merged[#merged + 1] = pack_record_fields(record.fields, index)
+    end
+
+    league_records = merged
+    league_total = total
+    league_comp = comp
+    window_start = 0
+    visible_rows = ranking_group_layout_rows
+    league_page_count = league_total - visible_rows + 1
+    if title_buffer_addr then
+        memory.write(title_buffer_addr, (league_titles[comp] or league_title) .. "\x00")
+    end
+    if not write_visible_window() then
+        league_records = {}
+        ranking_log("merge_skip|cannot build ten-row visible window")
+        return false
+    end
+
+    saved_object_state = {
+        page_and_declared = memory.read(object + 0x90, 8),
+        outer_vector = memory.read(object + 0xa0, 24),
+    }
+    local window_end = merged_records_addr + visible_rows * 40
+    local outer_entry = memory.pack("u64", merged_records_addr)
+        .. memory.pack("u64", window_end)
+        .. memory.pack("u64", window_end)
+    memory.write(merged_outer_addr, string.rep(outer_entry, league_page_count))
+    -- Persist the original vectors before exposing the synthetic one. A future
+    -- Sider reload can then repair the live controller before replacing hooks.
+    persist_window_ledger(object)
+    memory.write(
+        object + 0x90,
+        memory.pack("u32", 0) .. memory.pack("u32", league_page_count)
+    )
+    local outer_bytes = league_page_count * 24
+    memory.write(
+        object + 0xa0,
+        memory.pack("u64", merged_outer_addr)
+            .. memory.pack("u64", merged_outer_addr + outer_bytes)
+            .. memory.pack("u64", merged_outer_addr + outer_bytes)
+    )
+    active_object = object
+    ranking_log(string.format(
+        "merge_applied|object=%s|comp=%d|records=%d|visible_rows=%d|window=1-%d|pages=%d",
+        memory.hex(object), league_comp, league_total, visible_rows, visible_rows, league_page_count
+    ))
+    log(string.format(
+        "[ucl_probe] native league window applied: comp %d, %d teams, rows 1-%d",
+        league_comp, league_total, visible_rows
+    ))
+    return true
+end
+
+local function restore_league_table(object)
+    if not active_object or object ~= active_object or not saved_object_state then
+        return
+    end
+    memory.write(object + 0x90, saved_object_state.page_and_declared)
+    memory.write(object + 0xa0, saved_object_state.outer_vector)
+    clear_window_ledger()
+    ranking_log(string.format("merge_restored|object=%s", memory.hex(object)))
+    active_object = nil
+    saved_object_state = nil
+    league_records = {}
+    window_start = 0
+    if title_buffer_addr then
+        memory.write(title_buffer_addr, league_title .. "\x00")
+    end
+    refresh_pending = false
+    refresh_due_clock = 0
+    if scroll_handled_addr then
+        memory.write(scroll_handled_addr, "\x00")
+    end
+    overlay_dpad_state = 0
+    overlay_lb_state = 0
+    overlay_rb_state = 0
+    log("[ucl_probe] restored native ranking vectors before destructor")
+end
+
+function m.ranking_snapshot(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    -- This hook sits on next_group's entry and is proven to fire on R1. The
+    -- native body then advances the page and repopulates on its own thread;
+    -- all we owe it is the right sixteen records for the page it is moving to.
+    if active_object and object == active_object then
+        local page = read_u32(object + 0x90)
+        local target = (page + 1) % league_page_count
+        if set_league_page(object, target) then
+            ranking_log(string.format(
+                "page_sync|via=R1|window=%d-%d",
+                window_start + 1, window_start + visible_rows
+            ))
+        end
+        return
+    end
+    local result = inspect_ranking(object, "snapshot")
+    if result then
+        log(string.format(
+            "[ucl_probe] ranking snapshot captured: declared=%d outer=%d",
+            result.declared, result.outer_count
+        ))
+    end
+end
+
+-- Entry hook on the native repopulate. The game calls it after L1/R1 change
+-- the page, on its own thread. Reading the page here and filling the shared
+-- window buffer before the body runs is what turns native paging into
+-- scrolling. Lua never calls the repopulate itself; see refresh_active_ranking.
+function m.ranking_refresh_enter(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    -- Record which controllers repopulate, without ever dereferencing them.
+    -- This is how we find out whether the post-match standings even reach us.
+    if refresh_probe_budget > 0 and not seen_refresh_objects[object] then
+        seen_refresh_objects[object] = true
+        refresh_probe_budget = refresh_probe_budget - 1
+        ranking_log(string.format(
+            "repopulate|object=%s|active=%s|records=%d",
+            memory.hex(object),
+            active_object and memory.hex(active_object) or "none",
+            #league_records
+        ))
+    end
+    if not active_object or object ~= active_object or #league_records ~= league_total then
+        return
+    end
+    local page = read_u32(object + 0x90)
+    local limit = league_total - visible_rows
+    if page > limit then
+        page = limit
+    end
+    if page == window_start then
+        return
+    end
+    local previous = window_start
+    window_start = page
+    if not write_visible_window() then
+        window_start = previous
+        ranking_log("refresh_sync_error|page=" .. value(page))
+        return
+    end
+    ranking_log(string.format(
+        "refresh_sync|page=%d|window=%d-%d",
+        page, window_start + 1, window_start + visible_rows
+    ))
+end
+
+-- Move the window to an absolute page and refill the shared buffer. Callers
+-- run on the game's thread, before the native code reads the vector.
+set_league_page = function(object, page)
+    if not active_object or object ~= active_object or #league_records ~= league_total then
+        return false
+    end
+    local limit = league_total - visible_rows
+    if page < 0 then page = 0 end
+    if page > limit then page = limit end
+    if page == window_start then
+        return false
+    end
+    local previous = window_start
+    window_start = page
+    if not write_visible_window() then
+        window_start = previous
+        ranking_log("page_sync_error|page=" .. value(page))
+        return false
+    end
+    return true
+end
+
+-- Three independent paths reach the same place, so scrolling does not hinge on
+-- one assumption about which native routine runs when:
+--   next_group entry  -> predicts page + 1   (R1)
+--   prev_group entry  -> predicts page - 1   (L1)
+--   repopulate entry  -> reads the page the game actually settled on
+-- They all compute the same target, so agreeing costs nothing and any one of
+-- them alone is enough.
+function m.ranking_group_previous(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    if not active_object or object ~= active_object then
+        return
+    end
+    local page = read_u32(object + 0x90)
+    local target = page == 0 and (league_page_count - 1) or (page - 1)
+    if set_league_page(object, target) then
+        ranking_log(string.format(
+            "page_sync|via=L1|window=%d-%d",
+            window_start + 1, window_start + visible_rows
+        ))
+    end
+end
+
+function m.ranking_merge(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.r13))
+    captured_object = object
+    ranking_log(string.format("capture|object=%s", memory.hex(object)))
+    log(string.format("[ucl_probe] ranking controller captured at %s", memory.hex(object)))
+    if merge_enabled then
+        apply_league_table(object)
+    end
+end
+
+function m.ranking_restore(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    restore_league_table(object)
+    if object == captured_object then
+        ranking_log(string.format("capture_released|object=%s", memory.hex(object)))
+        captured_object = nil
+    end
+end
+
+-- step defaults to a single row so the native up/down handlers keep their
+-- fine-grained behaviour. The shoulder buttons pass a full page instead.
+scroll_league_window = function(direction, registers, step)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    if scroll_handled_addr then
+        memory.write(scroll_handled_addr, "\x00")
+    end
+    if not active_object or object ~= active_object or #league_records ~= league_total then
+        if object ~= 0 and not seen_input_objects[object] then
+            seen_input_objects[object] = true
+            ranking_log(string.format(
+                "input_controller|direction=%s|object=%s|vtable=%s|active=%s",
+                direction, memory.hex(object), memory.hex(read_u64(object)),
+                active_object and memory.hex(active_object) or "none"
+            ))
+            local dump = io.open(".\\ucl_ranking_input_controller.bin", "wb")
+            if dump then
+                dump:write(memory.read(object, 0x300))
+                dump:close()
+                log(string.format(
+                    "[ucl_probe] captured ranking input controller at %s",
+                    memory.hex(object)
+                ))
+            end
+        end
+        return
+    end
+
+    step = step or 1
+    local previous_start = window_start
+    if direction == "down" then
+        window_start = math.min(window_start + step, league_total - visible_rows)
+    else
+        window_start = math.max(window_start - step, 0)
+    end
+    if window_start ~= previous_start and not write_visible_window() then
+        window_start = previous_start
+        ranking_log("scroll_error|cannot update visible window")
+        return
+    end
+    memory.write(scroll_handled_addr, "\x01")
+    ranking_log(string.format(
+        "scroll|direction=%s|object=%s|window=%d-%d",
+        direction, memory.hex(object), window_start + 1,
+        window_start + visible_rows
+    ))
+    log(string.format(
+        "[ucl_probe] league window: %d-%d of %d",
+        window_start + 1, window_start + visible_rows, league_total
+    ))
+end
+
+function m.ranking_input_up(ctx, event_id, registers)
+    scroll_league_window("up", registers)
+end
+
+function m.ranking_input_down(ctx, event_id, registers)
+    scroll_league_window("down", registers)
+end
+
+
+
+-- DO NOT CALL THIS FROM A SIDER CALLBACK.
+--
+-- Sider dispatches display_frame from the Present/render path, which is not
+-- the thread that owns the menu. Calling the native repopulate from there
+-- deadlocks the process: ucl_ranking_probe.log line 2719 records
+-- "scroll|window=2-17" with no matching "display_frame_refresh" line after it,
+-- and that line is written only once the native call returns. It never
+-- returned; the game went to "No responde".
+--
+-- The repopulate is now driven exclusively from install_vtable_scroll's
+-- codecave, which runs it in native code on the game's own thread. This
+-- function is kept only so the lesson stays next to the address.
+local function refresh_active_ranking()
+    if ffi == nil or not ranking_refresh_addr or not active_object then
+        return false
+    end
+    if not native_refresh_fn then
+        native_refresh_fn = ffi.cast(
+            "void (__fastcall *)(void *)",
+            ranking_refresh_addr
+        )
+    end
+    -- Sider's sandbox does not expose Lua's pcall. It would not guard a native
+    -- access violation in any case, so invoke only after all address/object
+    -- guards above have passed.
+    native_refresh_fn(ffi.cast("void *", active_object))
+    return true
+end
+
+-- Sider exposes the controller D-pad while its overlay is active. Controller
+-- polling runs on Sider's dedicated input thread, so that callback must not
+-- call the game's UI population routine directly. Defer the native refresh
+-- until display_frame, which Sider dispatches from its Present/render path.
+function m.overlay_on(ctx)
+    if active_object and #league_records == league_total then
+        return string.format(
+            "%s Fase Liga: R1 baja, L1 sube | equipos %d-%d de %d",
+            league_comp == 5 and "UEL" or "UCL",
+            window_start + 1, window_start + visible_rows, league_total
+        )
+    end
+    return "UCL Fase Liga: abre Clasificación para activar la tabla de 32 equipos"
+end
+
+function m.gamepad_input(ctx, inputs)
+    local direction
+    local rb = inputs["RB"]
+    local lb = inputs["LB"]
+    local dpad = inputs["DPAD"]
+
+    if rb ~= nil then
+        if rb == 0 then
+            overlay_rb_state = 0
+            return
+        end
+        if overlay_rb_state ~= 0 then return end
+        overlay_rb_state = rb
+        direction = "down"
+    elseif lb ~= nil then
+        if lb == 0 then
+            overlay_lb_state = 0
+            return
+        end
+        if overlay_lb_state ~= 0 then return end
+        overlay_lb_state = lb
+        direction = "up"
+    elseif dpad ~= nil then
+        if dpad == 0 then
+            overlay_dpad_state = 0
+            return
+        end
+        if overlay_dpad_state ~= 0 then return end
+        overlay_dpad_state = dpad
+        if dpad == 2 or dpad == 6 or dpad == 10 then
+            direction = "down"
+        elseif dpad == 1 or dpad == 5 or dpad == 9 then
+            direction = "up"
+        else
+            return
+        end
+    else
+        return
+    end
+
+    -- Scrolling from here is deliberately not wired up. This callback runs on
+    -- Sider's input thread and has no way to repopulate the list safely, so
+    -- moving the window would leave the data ahead of what is drawn. L1/R1 go
+    -- through the native vtable hooks instead.
+    return
+end
+
+function m.global_input_probe(ctx, event_id, registers)
+    local action = tonumber(memory.unpack("u64", registers.rdx)) % 0x100000000
+    if action ~= 4 and action ~= 5 then
+        return
+    end
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    local stack = tonumber(memory.unpack("u64", registers.rsp))
+    local state = read_u64(object + 0x88)
+    local return_address = read_u64(stack)
+    ranking_log(string.format(
+        "global_input|action=%d|object=%s|state=%s|return=%s|vtable=%s",
+        action, memory.hex(object), memory.hex(state),
+        memory.hex(return_address), memory.hex(read_u64(object))
+    ))
+    if not seen_input_objects[object] then
+        seen_input_objects[object] = true
+        local dump = io.open(".\\ucl_global_input_controller.bin", "wb")
+        if dump then
+            dump:write(memory.read(object, 0x200))
+            dump:write(memory.read(state, 0x600))
+            dump:write(memory.read(stack, 0x100))
+            dump:close()
+        end
+        log(string.format(
+            "[ucl_probe] captured global input action %d from %s",
+            action, memory.hex(return_address)
+        ))
+    end
+end
+
+function m.ranking_team_render_probe(ctx, event_id, registers)
+    local object = tonumber(memory.unpack("u64", registers.rcx))
+    local page = tonumber(memory.unpack("u64", registers.rdx))
+    local row = tonumber(memory.unpack("u64", registers.r8)) % 0x100000000
+    local key = string.format("%s:%d", memory.hex(object), row)
+    if seen_ranking_team_rows[key] or render_probe_budget <= 0 then
+        return
+    end
+    seen_ranking_team_rows[key] = true
+    render_probe_budget = render_probe_budget - 1
+
+    local begin = read_u64(object + 0x90)
+    local finish = read_u64(object + 0x98)
+    local count = 0
+    if begin ~= 0 and finish >= begin and finish - begin <= 512
+        and (finish - begin) % 4 == 0 then
+        count = (finish - begin) / 4
+    end
+    ranking_log(string.format(
+        "rankingTeam_row|object=%s|page=%s|row=%d|competition=%d|vector_begin=%s|vector_end=%s|count=%d|vtable=%s",
+        memory.hex(object), memory.hex(page), row, read_u32(object + 0xa8) % 0x10000,
+        memory.hex(begin), memory.hex(finish), count, memory.hex(read_u64(object))
+    ))
+
+    if count > 0 then
+        local values = {}
+        for index = 0, count - 1 do
+            values[#values + 1] = tostring(read_u32(begin + index * 4))
+        end
+        ranking_log(string.format(
+            "rankingTeam_vector|object=%s|values=%s",
+            memory.hex(object), table.concat(values, ",")
+        ))
+    end
+end
+
+local function install_custom_hook(ctx, address, original, event_name)
+    local event_id = ctx.get_event_id(event_name)
+    local codecave = memory.allocate_codecave(128)
+    local return_addr = address + #original
+    local trigger =
+        "\x53" ..
+        "\x51" ..
+        "\x48\xbb" .. memory.pack("u64", ctx.custom_evt_rbx) ..
+        "\x66\xb9" .. memory.pack("u16", event_id) ..
+        "\xff\xd3" ..
+        "\x48\x83\xc4\x10"
+    local jump_back = "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", return_addr)
+    local patch = "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", codecave)
+        .. string.rep("\x90", #original - 14)
+    memory.write(codecave, trigger .. original .. jump_back)
+    memory.write(address, patch)
+    return codecave
+end
+
+-- The ranking controller owns the vectors at +0xa0 and destroys them before
+-- releasing the object. Our single-table view temporarily points that field at
+-- Sider codecaves, which are not allocations from the game's heap. Restore the
+-- original vector in native code before dispatching the Lua event so even a
+-- delayed or skipped callback can never make the game free a codecave.
+local function install_destructor_hook(ctx, address, original, event_name)
+    local event_id = ctx.get_event_id(event_name)
+    local codecave = memory.allocate_codecave(256)
+    local return_addr = address + #original
+    local trigger =
+        "\x53" ..
+        "\x51" ..
+        "\x48\xbb" .. memory.pack("u64", ctx.custom_evt_rbx) ..
+        "\x66\xb9" .. memory.pack("u16", event_id) ..
+        "\xff\xd3" ..
+        "\x48\x83\xc4\x10"
+    local native_restore =
+        -- rax = ledger.object; only touch the active synthetic controller.
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 8) ..
+        "\x48\x39\xc1" ..
+        "\x75\x57" ..
+        -- Require object.outer.begin == ledger.synthetic_outer.
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 48) ..
+        "\x48\x39\x81\xa0\x00\x00\x00" ..
+        "\x75\x44" ..
+        -- Restore page/declared and the complete original vector triple.
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 16) ..
+        "\x48\x89\x81\x90\x00\x00\x00" ..
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 24) ..
+        "\x48\x89\x81\xa0\x00\x00\x00" ..
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 32) ..
+        "\x48\x89\x81\xa8\x00\x00\x00" ..
+        "\x48\xa1" .. memory.pack("u64", window_ledger_addr + 40) ..
+        "\x48\x89\x81\xb0\x00\x00\x00"
+    local jump_back = "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", return_addr)
+    local patch = "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", codecave)
+        .. string.rep("\x90", #original - 14)
+    memory.write(codecave, native_restore .. trigger .. original .. jump_back)
+    memory.write(address, patch)
+    return codecave
+end
+
+local function restore_stale_global_input_probe()
+    if memory.read(global_input_hook_addr, #global_input_original)
+        == global_input_original then
+        return
+    end
+    if memory.read(global_input_hook_addr, 6) ~= "\xff\x25\x00\x00\x00\x00" then
+        return
+    end
+    local cave = read_u64(global_input_hook_addr + 6)
+    if memory.read(cave, #global_input_marker) ~= global_input_marker then
+        return
+    end
+    memory.write(global_input_hook_addr, global_input_original)
+    log("[ucl_probe] restored stale global input probe")
+end
+
+local function install_global_input_probe(ctx)
+    if memory.read(global_input_hook_addr, #global_input_original)
+        ~= global_input_original then
+        return nil
+    end
+    local event_id = ctx.get_event_id("custom:ucl_global_input")
+    local codecave = memory.allocate_codecave(128)
+    local trigger =
+        "\x53" ..
+        "\x51" ..
+        "\x48\xbb" .. memory.pack("u64", ctx.custom_evt_rbx) ..
+        "\x66\xb9" .. memory.pack("u16", event_id) ..
+        "\xff\xd3" ..
+        "\x48\x83\xc4\x10"
+    memory.write(codecave, global_input_marker .. trigger .. global_input_original)
+    memory.write(
+        global_input_hook_addr,
+        "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", codecave)
+    )
+    return codecave
+end
+
+local function restore_stale_ranking_team_render_probe()
+    if memory.read(ranking_team_render_addr, #ranking_team_render_original)
+        == ranking_team_render_original then
+        return
+    end
+    if memory.read(ranking_team_render_addr, 6) ~= "\xff\x25\x00\x00\x00\x00" then
+        return
+    end
+    local cave = read_u64(ranking_team_render_addr + 6)
+    if memory.read(cave, #ranking_team_render_marker)
+        ~= ranking_team_render_marker then
+        return
+    end
+    memory.write(ranking_team_render_addr, ranking_team_render_original)
+    log("[ucl_probe] restored stale rankingTeam render probe")
+end
+
+local function install_ranking_team_render_probe(ctx)
+    if memory.read(ranking_team_render_addr, #ranking_team_render_original)
+        ~= ranking_team_render_original then
+        return nil
+    end
+    local event_id = ctx.get_event_id("custom:ucl_ranking_team_render")
+    local codecave = memory.allocate_codecave(128)
+    local trigger =
+        "\x53" ..
+        "\x51" ..
+        "\x48\xbb" .. memory.pack("u64", ctx.custom_evt_rbx) ..
+        "\x66\xb9" .. memory.pack("u16", event_id) ..
+        "\xff\xd3" ..
+        "\x48\x83\xc4\x10"
+    local jump_back =
+        "\xff\x25\x00\x00\x00\x00" ..
+        memory.pack("u64", ranking_team_render_addr + #ranking_team_render_original)
+    memory.write(
+        codecave,
+        ranking_team_render_marker .. trigger ..
+        ranking_team_render_original .. jump_back
+    )
+    memory.write(
+        ranking_team_render_addr,
+        "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", codecave) .. "\x90"
+    )
+    return codecave
+end
+
+-- v0.14.0 redirected slots +32/+40, which are the two pointers
+-- input_vtable_tail searches for. That made the table unfindable, so every
+-- hook bailed with "signatures not found" and the screen fell back to the
+-- native groups. Anchor on the confirm/cancel pair at slots 0 and 1 instead:
+-- nothing in this module redirects those. The tail stays as a fallback.
+local function locate_input_vtable()
+    local head = memory.search_process(
+        memory.pack("u64", input_confirm_original)
+            .. memory.pack("u64", input_cancel_original)
+    )
+    if head then
+        return head
+    end
+    -- The tail pattern is two pointers that the D-pad redirect below also
+    -- writes into slots +16/+24, so a match no longer proves where the table
+    -- starts. Only accept a candidate whose first two entries are confirm and
+    -- cancel, which nothing in this module ever rewrites.
+    local tail = memory.search_process(input_vtable_tail)
+    if tail
+        and read_u64(tail - 32) == input_confirm_original
+        and read_u64(tail - 24) == input_cancel_original then
+        return tail - 32
+    end
+    return nil
+end
+
+-- Undo v0.14.0 unconditionally. These two slots have exactly one writer in
+-- this project, so a value that is not the original is damage we caused, and
+-- the codecave it points at belongs to a Lua state that no longer exists.
+-- Put every slot this module has ever redirected back to its stock handler.
+-- install_hooks verifies all four byte-for-byte, so a leftover redirect from a
+-- previous Lua state would abort the whole install.
+local function repair_group_slots(vtable)
+    local slots = {
+        { vtable + 16, input_up_original, "dpad-up" },
+        { vtable + 24, input_down_original, "dpad-down" },
+        { vtable + 32, input_group_previous_original, "L1/prev-group" },
+        { vtable + 40, input_group_next_original, "R1/next-group" },
+    }
+    for _, slot in ipairs(slots) do
+        if read_u64(slot[1]) ~= slot[2] then
+            memory.write(slot[1], memory.pack("u64", slot[2]))
+            log(string.format(
+                "[ucl_probe] repaired %s vtable slot at %s -> %s",
+                slot[3], memory.hex(slot[1]), memory.hex(slot[2])
+            ))
+        end
+    end
+end
+
+local function restore_stale_vtable_probe(slot, original, marker, label)
+    local current = read_u64(slot)
+    if current == original then
+        return
+    end
+    if memory.read(current, #marker) == marker then
+        memory.write(slot, memory.pack("u64", original))
+        log(string.format(
+            "[ucl_probe] restored stale %s input probe at %s",
+            label, memory.hex(slot)
+        ))
+    end
+end
+
+local function install_vtable_scroll(ctx, slot, original, event_name, marker)
+    if read_u64(slot) ~= original then
+        return nil
+    end
+    local event_id = ctx.get_event_id(event_name)
+    local codecave = memory.allocate_codecave(128)
+    local trigger =
+        "\x53" ..
+        "\x51" ..
+        "\x48\xbb" .. memory.pack("u64", ctx.custom_evt_rbx) ..
+        "\x66\xb9" .. memory.pack("u16", event_id) ..
+        "\xff\xd3" ..
+        "\x48\x83\xc4\x10"
+    local jump_original =
+        "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", original)
+    local read_handled =
+        "\x48\xa1" .. memory.pack("u64", scroll_handled_addr) ..
+        "\x84\xc0" ..
+        "\x74\x1d"
+    local refresh =
+        "\x53" ..
+        "\x48\x83\xec\x20" ..
+        "\x48\x8b\xd9" ..
+        "\x48\x8b\xcb" ..
+        "\x48\xb8" .. memory.pack("u64", ranking_refresh_addr) ..
+        "\xff\xd0" ..
+        "\x48\x83\xc4\x20" ..
+        "\x5b" ..
+        "\xc3"
+    memory.write(
+        codecave,
+        marker .. trigger .. read_handled .. refresh .. jump_original
+    )
+    memory.write(slot, memory.pack("u64", codecave))
+    return codecave
+end
+
+local function relative_target(call_address)
+    local displacement = read_u32(call_address + 1)
+    if displacement >= 0x80000000 then
+        displacement = displacement - 0x100000000
+    end
+    return call_address + 5 + displacement
+end
+
+local function pack_relative_call(call_address, target)
+    local displacement = (target - call_address - 5) % 0x100000000
+    return "\xe8" .. memory.pack("u32", displacement)
+end
+
+-- The repopulate hook overwrites the first 15 bytes of the function that
+-- both restore_stale_title_hook and install_hooks verify byte-for-byte. Undo
+-- it before either of them looks, or a reload finds a modified prologue and
+-- bails out with every hook uninstalled.
+local function restore_stale_refresh_hook()
+    local snapshot = memory.search_process(snapshot_anchor)
+    if not snapshot then
+        return
+    end
+    local detour = string.char(0xff, 0x25, 0, 0, 0, 0)
+    local refresh = snapshot + 0x76f
+    if memory.read(refresh, 6) == detour then
+        memory.write(refresh, string.sub(ranking_refresh_original, 1, 15))
+        log(string.format(
+            "[ucl_probe] restored stale ranking refresh hook at %s",
+            memory.hex(refresh)
+        ))
+    end
+    if memory.read(input_group_previous_original, 6) == detour then
+        memory.write(input_group_previous_original, group_previous_original)
+        log(string.format(
+            "[ucl_probe] restored stale prev-group hook at %s",
+            memory.hex(input_group_previous_original)
+        ))
+    end
+end
+
+local function restore_stale_title_hook()
+    local snapshot = memory.search_process(snapshot_anchor)
+    if not snapshot then
+        log("[ucl_probe] title restore diagnostic: ranking snapshot anchor not found")
+        return
+    end
+    local refresh = snapshot + 0x76f
+    if memory.read(refresh, #ranking_refresh_original) ~= ranking_refresh_original then
+        log("[ucl_probe] title restore diagnostic: ranking refresh signature mismatch")
+        return
+    end
+
+    local call_address = refresh + 0x134
+    local current = memory.read(call_address, 5)
+    if current == title_call_original then
+        log("[ucl_probe] title restore diagnostic: call already native")
+        return
+    end
+    if string.byte(current, 1) ~= 0xe8 then
+        log("[ucl_probe] title restore diagnostic: unexpected call bytes=" .. bytes_hex(current))
+        return
+    end
+
+    local stub = relative_target(call_address)
+    local stub_head = memory.read(stub, 6)
+    if stub_head ~= "\xff\x25\x00\x00\x00\x00" then
+        log(string.format(
+            "[ucl_probe] title restore diagnostic: stub=%s bytes=%s",
+            memory.hex(stub), bytes_hex(stub_head)
+        ))
+        return
+    end
+    local far_cave = read_u64(stub + 6)
+    local marker = memory.read(far_cave, #title_marker)
+    if marker ~= title_marker
+        and marker ~= legacy_title_marker_094
+        and marker ~= legacy_title_marker_093
+        and marker ~= legacy_title_marker_092 then
+        log(string.format(
+            "[ucl_probe] title restore diagnostic: cave=%s marker=%s",
+            memory.hex(far_cave), bytes_hex(marker)
+        ))
+        return
+    end
+
+    memory.write(call_address, title_call_original)
+    memory.write(stub, title_stub_original)
+    log(string.format(
+        "[ucl_probe] restored stale league-title hook at %s",
+        memory.hex(call_address)
+    ))
+end
+
+local function install_title_override()
+    title_call_addr = ranking_refresh_addr + 0x134
+    local anchor = memory.search_process(title_stub_anchor)
+    if not anchor then
+        log("[ucl_probe] title install diagnostic: clean stub anchor not found")
+        return false
+    end
+    local current = memory.read(title_call_addr, 5)
+    if current ~= title_call_original then
+        log("[ucl_probe] title install diagnostic: call bytes=" .. bytes_hex(current))
+        return false
+    end
+
+    title_stub_addr = anchor + 6
+    title_buffer_addr = memory.allocate_codecave(#league_title + 1)
+    local far_cave = memory.allocate_codecave(128)
+    local set_text_addr = ranking_refresh_addr + 0x35d6e0
+
+    memory.write(title_buffer_addr, league_title .. "\x00")
+    memory.write(
+        far_cave,
+        title_marker ..
+        "\x48\x83\xec\x28" ..
+        "\x48\xb8" .. memory.pack("u64", set_text_addr) ..
+        "\xff\xd0" ..
+        "\x48\x8b\xcb" ..
+        "\x48\xba" .. memory.pack("u64", title_buffer_addr) ..
+        "\x48\xb8" .. memory.pack("u64", set_text_addr) ..
+        "\xff\xd0" ..
+        "\x48\x83\xc4\x28" ..
+        "\xc3"
+    )
+    memory.write(
+        title_stub_addr,
+        "\xff\x25\x00\x00\x00\x00" .. memory.pack("u64", far_cave) .. "\xcc\xcc"
+    )
+    memory.write(title_call_addr, pack_relative_call(title_call_addr, title_stub_addr))
+    return true
+end
+
+local function restore_stale_hooks()
+    if memory.read(
+        ranking_group_wrapper_tail_addr,
+        #ranking_team_wrapper_tail_patch
+    ) == ranking_team_wrapper_tail_patch then
+        memory.write(
+            ranking_group_wrapper_tail_addr,
+            ranking_group_wrapper_tail_original
+        )
+        log("[ucl_probe] restored stale group-wrapper ranking route")
+    end
+    if memory.read(
+        ranking_group_wrapper_pes_tail_addr,
+        #ranking_team_wrapper_pes_tail_patch
+    ) == ranking_team_wrapper_pes_tail_patch then
+        memory.write(
+            ranking_group_wrapper_pes_tail_addr,
+            ranking_group_wrapper_pes_tail_original
+        )
+        log("[ucl_probe] restored stale PES group-wrapper ranking route")
+    end
+    if memory.read(
+        ranking_controller_factory_call_addr,
+        #ranking_team_factory_call_patch
+    ) == ranking_team_factory_call_patch then
+        memory.write(
+            ranking_controller_factory_call_addr,
+            ranking_group_factory_call_original
+        )
+        log("[ucl_probe] restored stale Champions ranking controller route")
+    end
+    if memory.read(
+        ranking_controller_factory_call_pes_addr,
+        #ranking_team_factory_pes_call_patch
+    ) == ranking_team_factory_pes_call_patch then
+        memory.write(
+            ranking_controller_factory_call_pes_addr,
+            ranking_group_factory_pes_call_original
+        )
+        log("[ucl_probe] restored stale Champions PES ranking controller route")
+    end
+    restore_stale_ranking_team_render_probe()
+    restore_stale_global_input_probe()
+
+    local prefix = memory.search_process(merge_prefix)
+    if not prefix then
+        log("[ucl_probe] merge prefix not found")
+    else
+        local address = prefix + #merge_prefix
+        if memory.read(address, 6) == "\xff\x25\x00\x00\x00\x00" then
+            memory.write(address, merge_original)
+            log(string.format("[ucl_probe] restored stale merge hook at %s", memory.hex(address)))
+        end
+    end
+
+    local page_prefix = memory.search_process(snapshot_stale_prefix)
+    if page_prefix then
+        local address = page_prefix + #snapshot_stale_prefix
+        if memory.read(address, 6) == "\xff\x25\x00\x00\x00\x00" then
+            memory.write(address, snapshot_original)
+            log(string.format("[ucl_probe] restored stale snapshot hook at %s", memory.hex(address)))
+        end
+    end
+
+    -- The ranking snapshot anchor is only unique and complete after restoring
+    -- its hot-reload hook. Derive the title refresh from that validated anchor;
+    -- searching by the common function prologue can select a false positive.
+    restore_stale_refresh_hook()
+    restore_stale_title_hook()
+
+    local destructor_prefix = memory.search_process(destructor_stale_prefix)
+    if destructor_prefix then
+        local address = destructor_prefix + #destructor_stale_prefix
+        if memory.read(address, 6) == "\xff\x25\x00\x00\x00\x00" then
+            memory.write(address, destructor_original)
+            log(string.format("[ucl_probe] restored stale destructor hook at %s", memory.hex(address)))
+        end
+    end
+
+    local input_vtable = locate_input_vtable()
+    if input_vtable then
+        -- Repair the v0.9.0 mistake first: slots 0/1 are Confirm/Cancel.
+        restore_stale_vtable_probe(
+            input_vtable, input_confirm_original,
+            legacy_input_up_marker, "legacy confirm"
+        )
+        restore_stale_vtable_probe(
+            input_vtable + 8, input_cancel_original,
+            legacy_input_down_marker, "legacy cancel"
+        )
+        restore_stale_vtable_probe(
+            input_vtable + 16, input_up_original, input_up_marker, "up"
+        )
+        restore_stale_vtable_probe(
+            input_vtable + 24, input_down_original, input_down_marker, "down"
+        )
+        repair_group_slots(input_vtable)
+    end
+end
+
+local function install_hooks(ctx)
+    if not ctx.custom_evt_rbx then
+        log("[ucl_probe] hooks unavailable: custom events unsupported")
+        return
+    end
+
+    local global_input_cave = install_global_input_probe(ctx)
+    log(string.format(
+        "[ucl_probe] global input probe: %s->%s",
+        memory.hex(global_input_hook_addr),
+        global_input_cave and memory.hex(global_input_cave) or "NOT INSTALLED"
+    ))
+
+    local ranking_team_render_cave = install_ranking_team_render_probe(ctx)
+    log(string.format(
+        "[ucl_probe] rankingTeam render probe: %s->%s",
+        memory.hex(ranking_team_render_addr),
+        ranking_team_render_cave and memory.hex(ranking_team_render_cave)
+            or "NOT INSTALLED"
+    ))
+
+    local route_installed = false
+    local route_pes_installed = false
+    local wrapper_route_installed = false
+    local wrapper_route_pes_installed = false
+    if native_controller_route_enabled and memory.read(
+        ranking_controller_factory_call_addr,
+        #ranking_group_factory_call_original
+    ) == ranking_group_factory_call_original then
+        memory.write(
+            ranking_controller_factory_call_addr,
+            ranking_team_factory_call_patch
+        )
+        route_installed = true
+    end
+    if native_controller_route_enabled and memory.read(
+        ranking_controller_factory_call_pes_addr,
+        #ranking_group_factory_pes_call_original
+    ) == ranking_group_factory_pes_call_original then
+        memory.write(
+            ranking_controller_factory_call_pes_addr,
+            ranking_team_factory_pes_call_patch
+        )
+        route_pes_installed = true
+    end
+    if native_controller_route_enabled and memory.read(
+        ranking_group_wrapper_tail_addr,
+        #ranking_group_wrapper_tail_original
+    ) == ranking_group_wrapper_tail_original then
+        memory.write(
+            ranking_group_wrapper_tail_addr,
+            ranking_team_wrapper_tail_patch
+        )
+        wrapper_route_installed = true
+    end
+    if native_controller_route_enabled and memory.read(
+        ranking_group_wrapper_pes_tail_addr,
+        #ranking_group_wrapper_pes_tail_original
+    ) == ranking_group_wrapper_pes_tail_original then
+        memory.write(
+            ranking_group_wrapper_pes_tail_addr,
+            ranking_team_wrapper_pes_tail_patch
+        )
+        wrapper_route_pes_installed = true
+    end
+    log(string.format(
+        "[ucl_probe] Champions ranking controller routes: %s,%s -> %s (%s)",
+        memory.hex(ranking_controller_factory_call_addr),
+        memory.hex(ranking_controller_factory_call_pes_addr),
+        memory.hex(ranking_team_factory_addr),
+        route_installed and route_pes_installed and "rankingTeam"
+            or "NOT INSTALLED"
+    ))
+    log(string.format(
+        "[ucl_probe] group-wrapper ranking routes: %s,%s -> %s (%s)",
+        memory.hex(ranking_group_wrapper_tail_addr),
+        memory.hex(ranking_group_wrapper_pes_tail_addr),
+        memory.hex(ranking_team_factory_addr),
+        wrapper_route_installed and wrapper_route_pes_installed
+            and "rankingTeam" or "NOT INSTALLED"
+    ))
+
+    -- Fixed-address diagnostic for the native domestic-league standings
+    -- controller.  Log its live prologue before installing any hook so the
+    -- eventual capture is guarded by exact bytes from this executable build.
+    log(string.format(
+        "[ucl_probe] rankingTeam render bytes at %s: %s",
+        memory.hex(ranking_team_render_addr),
+        bytes_hex(memory.read(ranking_team_render_addr, 32))
+    ))
+
+    local snapshot = memory.search_process(snapshot_anchor)
+    local merge_prefix_address = memory.search_process(merge_prefix)
+    local destructor = memory.search_process(destructor_anchor)
+    local input_vtable = locate_input_vtable()
+    if input_vtable then
+        repair_group_slots(input_vtable)
+        -- L1 needs a body hook on prev_group, the same way R1 already works
+        -- through the next_group hook in m.ranking_snapshot. Log its live
+        -- prologue so the hook can be guarded by exact bytes from this build
+        -- instead of a guess.
+        log(string.format(
+            "[ucl_probe] input vtable at %s | prev-group %s prologue: %s",
+            memory.hex(input_vtable),
+            memory.hex(input_group_previous_original),
+            bytes_hex(memory.read(input_group_previous_original, 24))
+        ))
+    end
+    if not snapshot or not merge_prefix_address or not destructor or not input_vtable then
+        log("[ucl_probe] hooks not installed: exact FL_2026 signatures not found")
+        return
+    end
+
+    snapshot_hook_addr = snapshot
+    merge_hook_addr = merge_prefix_address + #merge_prefix
+    destructor_hook_addr = destructor
+    ranking_refresh_addr = snapshot_hook_addr + 0x76f
+    if memory.read(snapshot_hook_addr, #snapshot_original) ~= snapshot_original
+        or memory.read(merge_hook_addr, #merge_original) ~= merge_original
+        or memory.read(destructor_hook_addr, #destructor_original) ~= destructor_original
+        or memory.read(ranking_refresh_addr, #ranking_refresh_original) ~= ranking_refresh_original
+        or read_u64(input_vtable) ~= input_confirm_original
+        or read_u64(input_vtable + 8) ~= input_cancel_original
+        or read_u64(input_vtable + 16) ~= input_up_original
+        or read_u64(input_vtable + 24) ~= input_down_original
+        or read_u64(input_vtable + 32) ~= input_group_previous_original
+        or read_u64(input_vtable + 40) ~= input_group_next_original then
+        log("[ucl_probe] hooks not installed: target bytes differ")
+        return
+    end
+
+    merged_records_addr = memory.allocate_codecave(max_visible_rows * 40)
+    merged_outer_addr = memory.allocate_codecave(max_league_pages * 24)
+    scroll_handled_addr = memory.allocate_codecave(8)
+    window_ledger_addr = memory.allocate_codecave(window_ledger_size)
+    memory.write(scroll_handled_addr, string.rep("\x00", 8))
+    clear_window_ledger()
+
+    local snapshot_cave = install_custom_hook(
+        ctx, snapshot_hook_addr, snapshot_original, "custom:ucl_ranking_snapshot"
+    )
+    snapshot_hook_armed = true
+    local capture_cave = install_custom_hook(
+        ctx, merge_hook_addr, merge_original, "custom:ucl_ranking_merge"
+    )
+    local destructor_cave = install_destructor_hook(
+        ctx, destructor_hook_addr, destructor_original, "custom:ucl_ranking_restore"
+    )
+    -- D-pad up/down now point straight at the previous/next-page handlers.
+    -- No codecave, no Lua in the input path: the cross simply calls the same
+    -- native routines L1/R1 already call, which page the window and repopulate
+    -- the list on the game's own thread. Two pointer writes, fully reversible.
+    memory.write(
+        input_vtable + 16, memory.pack("u64", input_group_previous_original)
+    )
+    memory.write(
+        input_vtable + 24, memory.pack("u64", input_group_next_original)
+    )
+    local dpad_redirected =
+        read_u64(input_vtable + 16) == input_group_previous_original
+        and read_u64(input_vtable + 24) == input_group_next_original
+    -- L1/R1 are deliberately left alone: they reach prev_group/next_group
+    -- directly, not through this table. v0.17.0 hooked slots +32/+40 for them
+    -- and the log shows those hooks never fired even once. The D-pad is the
+    -- opposite case: ucl_ranking_probe.log line 2169 records slot +24 firing
+    -- with the ranking controller in RCX, which is why redirecting it works.
+    refresh_hook_addr = install_custom_hook(
+        ctx, ranking_refresh_addr,
+        string.sub(ranking_refresh_original, 1, 15),
+        "custom:ucl_ranking_refresh"
+    )
+    group_previous_hook_addr = install_custom_hook(
+        ctx, input_group_previous_original, group_previous_original,
+        "custom:ucl_ranking_group_previous"
+    )
+    local title_installed = install_title_override()
+    if merge_enabled then
+        log(string.format(
+            "[ucl_probe] %d-row league window (32 or 36 teams, UCL/UEL) armed: capture=%s->%s pages=%d refresh=%s->%s",
+            max_visible_rows,
+            memory.hex(merge_hook_addr), memory.hex(capture_cave),
+            league_page_count, memory.hex(ranking_refresh_addr),
+            refresh_hook_addr and memory.hex(refresh_hook_addr) or "NOT INSTALLED"
+        ))
+        log(string.format(
+            "[ucl_probe] dpad up/down -> page prev/next: %s",
+            dpad_redirected and "redirected" or "NOT REDIRECTED"
+        ))
+        log(string.format(
+            "[ucl_probe] L1 prev-group hook: %s->%s",
+            memory.hex(input_group_previous_original),
+            group_previous_hook_addr and memory.hex(group_previous_hook_addr)
+                or "NOT INSTALLED"
+        ))
+        log(string.format(
+            "[ucl_probe] league title override: %s",
+            title_installed and league_title or "NOT INSTALLED"
+        ))
+        log(string.format(
+            "[ucl_probe] restore guards: snapshot=%s->%s destructor=%s->%s",
+            memory.hex(snapshot_hook_addr), memory.hex(snapshot_cave),
+            memory.hex(destructor_hook_addr), memory.hex(destructor_cave)
+        ))
+    else
+        log(string.format(
+            "[ucl_probe] input probe: capture=%s->%s up=%s down=%s; 32-row merge disabled",
+            memory.hex(merge_hook_addr), memory.hex(capture_cave),
+            memory.hex(input_up_cave), memory.hex(input_down_cave)
+        ))
+    end
+end
+
+function m.init(ctx)
+    ensure_header()
+    -- Restore a controller left on the synthetic vector by a previous module
+    -- instance before touching its hooks or allocating replacement buffers.
+    restore_stale_window()
+    restore_stale_hooks()
+    ctx.register("set_teams", m.set_teams)
+    ctx.register("get_stadium_name", m.get_stadium_name)
+    ctx.register("context_reset", m.context_reset)
+    ctx.register("livecpk_data_ready", m.data_ready)
+    ctx.register("overlay_on", m.overlay_on)
+    ctx.register("gamepad_input", m.gamepad_input)
+    ctx.register("custom:ucl_ranking_snapshot", m.ranking_snapshot)
+    ctx.register("custom:ucl_ranking_merge", m.ranking_merge)
+    ctx.register("custom:ucl_ranking_restore", m.ranking_restore)
+    ctx.register("custom:ucl_ranking_input_up", m.ranking_input_up)
+    ctx.register("custom:ucl_ranking_input_down", m.ranking_input_down)
+    ctx.register("custom:ucl_ranking_refresh", m.ranking_refresh_enter)
+    ctx.register("custom:ucl_ranking_group_previous", m.ranking_group_previous)
+    ctx.register("custom:ucl_global_input", m.global_input_probe)
+    ctx.register("custom:ucl_ranking_team_render", m.ranking_team_render_probe)
+    install_hooks(ctx)
+    log("[ucl_probe] loaded v" .. m.version .. " -> " .. output_path)
+end
+
+return m

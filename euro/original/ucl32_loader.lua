@@ -1,0 +1,141 @@
+-- ucl32_loader.lua — cargador mínimo de la Fase C.
+--
+-- Carga el controlador de transicion C.4.1 y el regenerador permanente 32x6.
+-- CommonLib entrega una vez el país de los clubes de ligas jugables. Toda la
+-- lógica del sorteo sigue viviendo en la DLL nativa; ninguna línea de Lua se
+-- ejecuta dentro del planificador del juego.
+--
+-- NO es el controlador. No sustituye ni modifica ucl_playoff_controller.lua.
+--
+-- Por qué la instalación se pide desde aquí y no desde DllMain:
+--   DllMain corre bajo el loader lock de Windows, donde VirtualAlloc,
+--   VirtualProtect y la E/S de ficheros no son seguras. LoadLibraryA toma y
+--   SUELTA ese lock; cuando retorna, el lock ya no está tomado. Llamar a
+--   ucl32_install() después de que retorne es, por definición, fuera del lock.
+--
+-- Requiere luajit.ext.enabled = 1 en sider.ini (ya activo en esta instalación).
+-- El patrón ffi.cdef + ffi.C.<api de Win32> + ffi.cast es el que ya usan en
+-- producción common\SleeveBadge.lua (que además reserva un cave ejecutable y
+-- parchea código del juego desde m.init) y lm_ai_director.lua.
+
+local m = {}
+local format_set_country
+local last_synced_count = -1
+local last_countries = nil
+
+if ffi ~= nil then
+    ffi.cdef [[
+        void* LoadLibraryA(const char *lpLibFileName);
+        void* GetProcAddress(void *hModule, const char *lpProcName);
+        unsigned long GetLastError(void);
+    ]]
+end
+
+-- Códigos que devuelve ucl32_install(), para que queden en el log de Sider.
+local RESULT = {
+    [0] = "instalado",
+    [1] = "inerte: falta ucl32_probe.enable",
+    [2] = "base del ejecutable inesperada",
+    [3] = "los bytes del sitio de hook no son los esperados",
+    [4] = "no hay cave dentro del alcance de rel32",
+    [5] = "rel32 fuera de rango",
+    [6] = "VirtualProtect falló",
+    [7] = "la relectura del hook no coincide",
+    [8] = "ya estaba instalado",
+}
+
+local FORMAT_RESULT = {
+    [0] = "instalado",
+    [1] = "base del ejecutable inesperada",
+    [2] = "firma del planificador distinta",
+    [3] = "no se pudo reservar el trampolin",
+    [4] = "VirtualProtect fallo",
+    [5] = "la relectura del hook no coincide",
+    [6] = "ya estaba instalado",
+}
+
+local function load_entry(path, symbol)
+    local handle = ffi.C.LoadLibraryA(path)
+    if handle == nil then
+        error(path .. " no se pudo cargar (Win32 " ..
+              tostring(ffi.C.GetLastError()) .. ")")
+    end
+    local entry = ffi.C.GetProcAddress(handle, symbol)
+    if entry == nil then
+        error(path .. " cargada pero sin export " .. symbol)
+    end
+    return tonumber(ffi.cast("int(*)(void)", entry)()), handle
+end
+
+local COUNTRY_BY_COMP = {
+    [9]=17, [66]=17, [10]=19, [69]=19, [11]=20, [67]=20,
+    [12]=18, [68]=18, [13]=21, [14]=22,
+    [21]=301, [90]=301, [22]=302, [23]=303,
+    [39]=50, [40]=304, [41]=305, [111]=115, [114]=116,
+    [117]=118, [119]=133, [122]=306, [125]=307,
+    [128]=205, [137]=141, [139]=308,
+}
+
+local function sync_common_countries(ctx)
+    if format_set_country == nil or ctx.common_lib == nil then return end
+    local map = ctx.common_lib.teams_in_playable_leagues_map or {}
+    local count = 0
+    local country_rows = {}
+    for comp_id, teams in pairs(map) do
+        local country = COUNTRY_BY_COMP[comp_id]
+        if country ~= nil then
+            for _, team_id in pairs(teams) do
+                local result = tonumber(format_set_country(team_id, country))
+                if result == 0 then count = count + 1 end
+                country_rows[#country_rows + 1] = tostring(team_id) .. "\t" .. tostring(country)
+            end
+        end
+    end
+    table.sort(country_rows)
+    local exported = table.concat(country_rows, "\n")
+    if count > 0 and exported ~= last_countries then
+        local path = ctx.sider_dir .. "\\content\\ucl_calendar_guard\\countries-runtime.tsv"
+        local file = io.open(path, "w")
+        if file then
+            file:write(exported .. "\n")
+            file:close()
+            last_countries = exported
+        else
+            log("ucl32_format: no se pudo exportar el mapa de paises")
+        end
+    end
+    if count ~= last_synced_count then
+        log("ucl32_format: pais sincronizado para " .. tostring(count) .. " clubes")
+        last_synced_count = count
+    end
+end
+
+function m.data_ready(ctx, filename, data, len, total_size, offset)
+    local name = string.lower(filename or "")
+    if string.match(name, "common\\etc\\pesdb\\competitionentry%d?%.bin") and
+       offset + len >= total_size then
+        sync_common_countries(ctx)
+    end
+end
+
+function m.init(ctx)
+    if ffi == nil then
+        error("ucl32_loader necesita luajit.ext.enabled = 1 en sider.ini")
+    end
+
+    local path = ctx.sider_dir .. "\\modules\\ucl32_c41.dll"
+    local code = load_entry(path, "ucl32_install")
+    log("ucl32_c41.dll cargada: " .. (RESULT[code] or ("codigo " .. tostring(code))))
+
+    local format_path = ctx.sider_dir .. "\\modules\\ucl32_format_v111.dll"
+    local format_code, format_handle = load_entry(format_path, "ucl32_format_install")
+    local setter = ffi.C.GetProcAddress(format_handle, "ucl32_format_set_country")
+    if setter == nil then error("ucl32_format_v111.dll sin export de pais") end
+    format_set_country = ffi.cast("int(*)(unsigned int,unsigned short)", setter)
+    log("ucl32_format_v111.dll cargada: " ..
+        (FORMAT_RESULT[format_code] or ("codigo " .. tostring(format_code))))
+    sync_common_countries(ctx)
+    ctx.register("livecpk_data_ready", m.data_ready)
+end
+
+return m
