@@ -1,0 +1,307 @@
+Match Number,Round Number,Date,Location,Home Team,Away Team,Result
+6,1,08/08/2025 18:30,Gaziantep Stadium,Gaziantep,Galatasaray,0 - 3
+4,1,09/08/2025 16:00,Samsun 19 Mayis Stadium,Samsunspor,Gençlerbirligi,2 - 1
+2,1,09/08/2025 18:30,Antalya Stadium,Antalyaspor,Kasimpasa,2 - 1
+8,1,10/08/2025 16:00,Rize City Stadium,Çaykur Rizespor,Göztepe,0 - 3
+1,1,10/08/2025 18:30,Pendik Stadium,Eyüpspor,Konyaspor,1 - 4
+3,1,11/08/2025 18:30,Papara Park,Trabzonspor,Kocaelispor,1 - 0
+5,1,17/09/2025 17:00,Atatürk Olympic Stadium,Fatih Karagümrük,Istanbul Basaksehir,0 - 2
+7,1,17/09/2025 17:00,Ülker Stadium,Fenerbahçe,Alanyaspor,2 - 2
+9,1,24/09/2025 17:00,RHG Enertürk Enerji Stadium,Kayserispor,Besiktas,0 - 4
+16,2,15/08/2025 18:30,Ali Sami Yen Spor Kompleksi,Galatasaray,Fatih Karagümrük,3 - 0
+18,2,16/08/2025 16:00,Kocaeli Stadium,Kocaelispor,Samsunspor,0 - 1
+13,2,16/08/2025 18:30,Alanya Oba Stadium,Alanyaspor,Çaykur Rizespor,0 - 0
+15,2,16/08/2025 18:30,Gürsel Aksel Stadium,Göztepe,Fenerbahçe,0 - 0
+11,2,17/08/2025 16:00,Konya Metropolitan Municipality Stadium,Konyaspor,Gaziantep,3 - 0
+17,2,17/08/2025 16:00,Eryaman Stadium,Gençlerbirligi,Antalyaspor,0 - 1
+12,2,17/08/2025 18:30,Besiktas Stadyumu,Besiktas,Eyüpspor,2 - 1
+14,2,17/08/2025 18:30,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Kayserispor,1 - 1
+10,2,18/08/2025 18:30,Recep Tayyip Erdogan Stadium,Kasimpasa,Trabzonspor,0 - 1
+20,3,22/08/2025 17:00,Konya Metropolitan Municipality Stadium,Konyaspor,Besiktas,
+26,3,22/08/2025 17:00,Rize City Stadium,Çaykur Rizespor,Istanbul Basaksehir,
+23,3,22/08/2025 18:30,Atatürk Olympic Stadium,Fatih Karagümrük,Göztepe,0 - 2
+24,3,23/08/2025 18:30,Gaziantep Stadium,Gaziantep,Gençlerbirligi,2 - 1
+25,3,23/08/2025 18:30,Ülker Stadium,Fenerbahçe,Kocaelispor,3 - 1
+21,3,24/08/2025 16:00,Papara Park,Trabzonspor,Antalyaspor,1 - 0
+27,3,24/08/2025 18:30,RHG Enertürk Enerji Stadium,Kayserispor,Galatasaray,0 - 4
+19,3,25/08/2025 16:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Alanyaspor,2 - 1
+22,3,17/09/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Kasimpasa,0 - 0
+33,4,29/08/2025 18:30,Gürsel Aksel Stadium,Göztepe,Konyaspor,1 - 1
+28,4,30/08/2025 16:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Gaziantep,2 - 3
+36,4,30/08/2025 16:00,Kocaeli Stadium,Kocaelispor,Kayserispor,1 - 1
+29,4,30/08/2025 18:30,Antalya Stadium,Antalyaspor,Fatih Karagümrük,1 - 2
+34,4,30/08/2025 18:30,Ali Sami Yen Spor Kompleksi,Galatasaray,Çaykur Rizespor,3 - 1
+32,4,31/08/2025 16:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Eyüpspor,0 - 0
+35,4,31/08/2025 16:00,Eryaman Stadium,Gençlerbirligi,Fenerbahçe,1 - 3
+30,4,31/08/2025 18:30,Papara Park,Trabzonspor,Samsunspor,1 - 1
+31,4,31/08/2025 18:30,Alanya Oba Stadium,Alanyaspor,Besiktas,2 - 0
+37,5,13/09/2025 14:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Galatasaray,0 - 2
+40,5,13/09/2025 14:00,Samsun 19 Mayis Stadium,Samsunspor,Antalyaspor,1 - 2
+41,5,13/09/2025 14:00,Atatürk Olympic Stadium,Fatih Karagümrük,Kasimpasa,0 - 1
+38,5,13/09/2025 17:00,Konya Metropolitan Municipality Stadium,Konyaspor,Alanyaspor,1 - 2
+39,5,13/09/2025 17:00,Besiktas Stadyumu,Besiktas,Istanbul Basaksehir,2 - 1
+45,5,14/09/2025 14:00,RHG Enertürk Enerji Stadium,Kayserispor,Göztepe,1 - 1
+42,5,14/09/2025 17:00,Gaziantep Stadium,Gaziantep,Kocaelispor,2 - 0
+43,5,14/09/2025 17:00,Ülker Stadium,Fenerbahçe,Trabzonspor,1 - 0
+44,5,15/09/2025 17:00,Rize City Stadium,Çaykur Rizespor,Gençlerbirligi,1 - 0
+51,6,19/09/2025 17:00,Gürsel Aksel Stadium,Göztepe,Besiktas,3 - 0
+53,6,20/09/2025 14:00,Eryaman Stadium,Gençlerbirligi,Eyüpspor,1 - 0
+47,6,20/09/2025 17:00,Antalya Stadium,Antalyaspor,Kayserispor,1 - 1
+48,6,20/09/2025 17:00,Papara Park,Trabzonspor,Gaziantep,1 - 1
+50,6,21/09/2025 14:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Alanyaspor,1 - 1
+54,6,21/09/2025 14:00,Kocaeli Stadium,Kocaelispor,Çaykur Rizespor,1 - 1
+46,6,21/09/2025 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Fenerbahçe,1 - 1
+49,6,21/09/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Fatih Karagümrük,3 - 2
+52,6,22/09/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Konyaspor,3 - 1
+58,7,26/09/2025 17:00,Alanya Oba Stadium,Alanyaspor,Galatasaray,0 - 1
+55,7,27/09/2025 14:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Göztepe,0 - 0
+60,7,27/09/2025 14:00,Gaziantep Stadium,Gaziantep,Samsunspor,2 - 2
+59,7,27/09/2025 17:00,Atatürk Olympic Stadium,Fatih Karagümrük,Trabzonspor,3 - 4
+56,7,28/09/2025 14:00,Konya Metropolitan Municipality Stadium,Konyaspor,Istanbul Basaksehir,2 - 1
+62,7,28/09/2025 14:00,Rize City Stadium,Çaykur Rizespor,Kasimpasa,1 - 2
+61,7,28/09/2025 17:00,Ülker Stadium,Fenerbahçe,Antalyaspor,2 - 0
+63,7,28/09/2025 17:00,RHG Enertürk Enerji Stadium,Kayserispor,Gençlerbirligi,1 - 1
+57,7,29/09/2025 17:00,Besiktas Stadyumu,Besiktas,Kocaelispor,3 - 1
+65,8,03/10/2025 17:00,Antalya Stadium,Antalyaspor,Çaykur Rizespor,2 - 5
+66,8,03/10/2025 17:00,Papara Park,Trabzonspor,Kayserispor,4 - 0
+71,8,04/10/2025 11:30,Eryaman Stadium,Gençlerbirligi,Alanyaspor,2 - 2
+72,8,04/10/2025 14:00,Kocaeli Stadium,Kocaelispor,Eyüpspor,1 - 0
+70,8,04/10/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Besiktas,1 - 1
+64,8,05/10/2025 11:30,Recep Tayyip Erdogan Stadium,Kasimpasa,Konyaspor,1 - 1
+68,8,05/10/2025 14:00,Atatürk Olympic Stadium,Fatih Karagümrük,Gaziantep,0 - 2
+67,8,05/10/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Fenerbahçe,0 - 0
+69,8,05/10/2025 17:00,Gürsel Aksel Stadium,Göztepe,Istanbul Basaksehir,1 - 0
+74,9,18/10/2025 11:30,Konya Metropolitan Municipality Stadium,Konyaspor,Kocaelispor,2 - 3
+75,9,18/10/2025 14:00,Besiktas Stadyumu,Besiktas,Gençlerbirligi,1 - 2
+80,9,18/10/2025 14:00,Rize City Stadium,Çaykur Rizespor,Trabzonspor,1 - 2
+77,9,18/10/2025 17:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Galatasaray,1 - 2
+81,9,19/10/2025 11:30,RHG Enertürk Enerji Stadium,Kayserispor,Samsunspor,1 - 3
+76,9,19/10/2025 14:00,Alanya Oba Stadium,Alanyaspor,Göztepe,1 - 0
+78,9,19/10/2025 14:00,Gaziantep Stadium,Gaziantep,Antalyaspor,3 - 2
+79,9,19/10/2025 17:00,Ülker Stadium,Fenerbahçe,Fatih Karagümrük,2 - 1
+73,9,20/10/2025 17:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Kasimpasa,2 - 0
+86,10,24/10/2025 17:00,Atatürk Olympic Stadium,Fatih Karagümrük,Kayserispor,2 - 2
+90,10,25/10/2025 14:00,Kocaeli Stadium,Kocaelispor,Alanyaspor,2 - 0
+84,10,25/10/2025 17:00,Papara Park,Trabzonspor,Eyüpspor,2 - 0
+83,10,26/10/2025 11:30,Antalya Stadium,Antalyaspor,Istanbul Basaksehir,0 - 4
+88,10,26/10/2025 14:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Göztepe,3 - 1
+89,10,26/10/2025 14:00,Eryaman Stadium,Gençlerbirligi,Konyaspor,1 - 2
+82,10,26/10/2025 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Besiktas,1 - 1
+85,10,27/10/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Çaykur Rizespor,1 - 1
+87,10,27/10/2025 17:00,Gaziantep Stadium,Gaziantep,Fenerbahçe,0 - 4
+95,11,31/10/2025 17:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Kocaelispor,1 - 0
+96,11,01/11/2025 14:00,Gürsel Aksel Stadium,Göztepe,Gençlerbirligi,1 - 0
+97,11,01/11/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Trabzonspor,0 - 0
+92,11,02/11/2025 11:30,Konya Metropolitan Municipality Stadium,Konyaspor,Samsunspor,1 - 3
+99,11,02/11/2025 14:00,RHG Enertürk Enerji Stadium,Kayserispor,Kasimpasa,3 - 2
+93,11,02/11/2025 17:00,Besiktas Stadyumu,Besiktas,Fenerbahçe,2 - 3
+91,11,03/11/2025 17:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Antalyaspor,0 - 1
+94,11,03/11/2025 17:00,Alanya Oba Stadium,Alanyaspor,Gaziantep,0 - 0
+98,11,03/11/2025 17:00,Rize City Stadium,Çaykur Rizespor,Fatih Karagümrük,1 - 0
+107,12,07/11/2025 17:00,Eryaman Stadium,Gençlerbirligi,Istanbul Basaksehir,2 - 1
+105,12,08/11/2025 11:30,Gaziantep Stadium,Gaziantep,Çaykur Rizespor,2 - 2
+102,12,08/11/2025 14:00,Papara Park,Trabzonspor,Alanyaspor,1 - 1
+100,12,08/11/2025 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Göztepe,0 - 2
+101,12,08/11/2025 17:00,Antalya Stadium,Antalyaspor,Besiktas,1 - 3
+104,12,09/11/2025 11:30,Atatürk Olympic Stadium,Fatih Karagümrük,Konyaspor,2 - 0
+108,12,09/11/2025 14:00,Kocaeli Stadium,Kocaelispor,Galatasaray,1 - 0
+103,12,09/11/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Eyüpspor,1 - 0
+106,12,09/11/2025 17:00,Ülker Stadium,Fenerbahçe,Kayserispor,4 - 2
+117,13,22/11/2025 11:30,RHG Enertürk Enerji Stadium,Kayserispor,Gaziantep,0 - 3
+109,13,22/11/2025 14:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Fatih Karagümrük,1 - 1
+115,13,22/11/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Gençlerbirligi,3 - 2
+114,13,23/11/2025 11:30,Gürsel Aksel Stadium,Göztepe,Kocaelispor,0 - 0
+111,13,23/11/2025 14:00,Besiktas Stadyumu,Besiktas,Samsunspor,1 - 1
+112,13,23/11/2025 14:00,Alanya Oba Stadium,Alanyaspor,Kasimpasa,1 - 2
+116,13,23/11/2025 17:00,Rize City Stadium,Çaykur Rizespor,Fenerbahçe,2 - 5
+110,13,24/11/2025 17:00,Konya Metropolitan Municipality Stadium,Konyaspor,Antalyaspor,0 - 0
+113,13,24/11/2025 17:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Trabzonspor,3 - 4
+126,14,28/11/2025 17:00,Kocaeli Stadium,Kocaelispor,Gençlerbirligi,1 - 0
+125,14,29/11/2025 11:30,Rize City Stadium,Çaykur Rizespor,Kayserispor,0 - 1
+123,14,29/11/2025 14:00,Gaziantep Stadium,Gaziantep,Eyüpspor,1 - 2
+118,14,29/11/2025 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Istanbul Basaksehir,1 - 3
+120,14,29/11/2025 17:00,Papara Park,Trabzonspor,Konyaspor,3 - 1
+119,14,30/11/2025 14:00,Antalya Stadium,Antalyaspor,Göztepe,1 - 2
+122,14,30/11/2025 17:00,Atatürk Olympic Stadium,Fatih Karagümrük,Besiktas,0 - 2
+121,14,01/12/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Alanyaspor,1 - 1
+124,14,01/12/2025 17:00,Ülker Stadium,Fenerbahçe,Galatasaray,1 - 1
+133,15,05/12/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Samsunspor,3 - 2
+127,15,06/12/2025 11:30,Recep Tayyip Erdogan Stadium,Eyüpspor,Kayserispor,1 - 1
+128,15,06/12/2025 14:00,Konya Metropolitan Municipality Stadium,Konyaspor,Çaykur Rizespor,1 - 1
+131,15,06/12/2025 17:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Fenerbahçe,1 - 1
+134,15,07/12/2025 11:30,Eryaman Stadium,Gençlerbirligi,Fatih Karagümrük,3 - 0
+135,15,07/12/2025 14:00,Kocaeli Stadium,Kocaelispor,Kasimpasa,0 - 0
+132,15,07/12/2025 17:00,Gürsel Aksel Stadium,Göztepe,Trabzonspor,1 - 2
+129,15,08/12/2025 17:00,Besiktas Stadyumu,Besiktas,Gaziantep,2 - 2
+130,15,08/12/2025 17:00,Alanya Oba Stadium,Alanyaspor,Antalyaspor,0 - 0
+136,16,12/12/2025 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Gençlerbirligi,0 - 0
+143,16,13/12/2025 11:30,Rize City Stadium,Çaykur Rizespor,Eyüpspor,3 - 0
+144,16,13/12/2025 14:00,RHG Enertürk Enerji Stadium,Kayserispor,Alanyaspor,0 - 0
+137,16,13/12/2025 17:00,Antalya Stadium,Antalyaspor,Galatasaray,1 - 4
+141,16,14/12/2025 11:30,Gaziantep Stadium,Gaziantep,Göztepe,0 - 1
+140,16,14/12/2025 14:00,Atatürk Olympic Stadium,Fatih Karagümrük,Kocaelispor,1 - 1
+138,16,14/12/2025 17:00,Papara Park,Trabzonspor,Besiktas,3 - 3
+139,16,14/12/2025 17:00,Samsun 19 Mayis Stadium,Samsunspor,Istanbul Basaksehir,0 - 2
+142,16,15/12/2025 17:00,Ülker Stadium,Fenerbahçe,Konyaspor,4 - 0
+153,17,19/12/2025 17:00,Kocaeli Stadium,Kocaelispor,Antalyaspor,2 - 1
+146,17,20/12/2025 11:30,Konya Metropolitan Municipality Stadium,Konyaspor,Kayserispor,1 - 1
+145,17,20/12/2025 14:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Fenerbahçe,0 - 3
+147,17,20/12/2025 17:00,Besiktas Stadyumu,Besiktas,Çaykur Rizespor,1 - 0
+148,17,21/12/2025 11:30,Alanya Oba Stadium,Alanyaspor,Fatih Karagümrük,2 - 0
+150,17,21/12/2025 17:00,Gürsel Aksel Stadium,Göztepe,Samsunspor,2 - 0
+151,17,21/12/2025 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Kasimpasa,3 - 0
+149,17,22/12/2025 14:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Gaziantep,5 - 1
+152,17,22/12/2025 17:00,Eryaman Stadium,Gençlerbirligi,Trabzonspor,4 - 3
+158,18,17/01/2026 14:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Fatih Karagümrük,2 - 1
+159,18,17/01/2026 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Gaziantep,1 - 1
+155,18,18/01/2026 11:30,Recep Tayyip Erdogan Stadium,Kasimpasa,Antalyaspor,0 - 0
+156,18,18/01/2026 14:00,Kocaeli Stadium,Kocaelispor,Trabzonspor,1 - 2
+157,18,18/01/2026 14:00,Eryaman Stadium,Gençlerbirligi,Samsunspor,1 - 1
+160,18,18/01/2026 17:00,Alanya Oba Stadium,Alanyaspor,Fenerbahçe,2 - 3
+154,18,19/01/2026 14:00,Konya Metropolitan Municipality Stadium,Konyaspor,Eyüpspor,1 - 1
+161,18,19/01/2026 17:00,Gürsel Aksel Stadium,Göztepe,Çaykur Rizespor,3 - 1
+162,18,19/01/2026 17:00,Besiktas Stadyumu,Besiktas,Kayserispor,1 - 0
+164,19,23/01/2026 17:00,Papara Park,Trabzonspor,Kasimpasa,2 - 1
+167,19,24/01/2026 11:30,RHG Enertürk Enerji Stadium,Kayserispor,Istanbul Basaksehir,0 - 3
+171,19,24/01/2026 14:00,Samsun 19 Mayis Stadium,Samsunspor,Kocaelispor,0 - 0
+169,19,24/01/2026 17:00,Atatürk Olympic Stadium,Fatih Karagümrük,Galatasaray,1 - 3
+165,19,25/01/2026 11:30,Gaziantep Stadium,Gaziantep,Konyaspor,1 - 1
+166,19,25/01/2026 14:00,Rize City Stadium,Çaykur Rizespor,Alanyaspor,1 - 1
+170,19,25/01/2026 14:00,Antalya Stadium,Antalyaspor,Gençlerbirligi,2 - 1
+168,19,25/01/2026 17:00,Ülker Stadium,Fenerbahçe,Göztepe,1 - 1
+163,19,26/01/2026 17:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Besiktas,2 - 2
+175,20,30/01/2026 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Samsunspor,0 - 1
+174,20,30/01/2026 17:02,Antalya Stadium,Antalyaspor,Trabzonspor,1 - 1
+172,20,31/01/2026 11:33,Alanya Oba Stadium,Alanyaspor,Eyüpspor,1 - 3
+179,20,31/01/2026 14:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Çaykur Rizespor,2 - 2
+173,20,31/01/2026 17:00,Besiktas Stadyumu,Besiktas,Konyaspor,2 - 1
+176,20,31/01/2026 17:00,Gürsel Aksel Stadium,Göztepe,Fatih Karagümrük,2 - 1
+177,20,01/02/2026 14:00,Eryaman Stadium,Gençlerbirligi,Gaziantep,2 - 1
+180,20,01/02/2026 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Kayserispor,4 - 0
+178,20,02/02/2026 17:00,Kocaeli Stadium,Kocaelispor,Fenerbahçe,0 - 2
+183,21,07/02/2026 11:30,Atatürk Olympic Stadium,Fatih Karagümrük,Antalyaspor,1 - 0
+184,21,07/02/2026 17:00,Samsun 19 Mayis Stadium,Samsunspor,Trabzonspor,0 - 3
+181,21,08/02/2026 11:30,Recep Tayyip Erdogan Stadium,Eyüpspor,Istanbul Basaksehir,1 - 2
+186,21,08/02/2026 14:00,Konya Metropolitan Municipality Stadium,Konyaspor,Göztepe,0 - 0
+187,21,08/02/2026 14:00,Rize City Stadium,Çaykur Rizespor,Galatasaray,0 - 3
+185,21,08/02/2026 17:00,Besiktas Stadyumu,Besiktas,Alanyaspor,2 - 2
+189,21,09/02/2026 14:00,RHG Enertürk Enerji Stadium,Kayserispor,Kocaelispor,1 - 2
+182,21,09/02/2026 17:00,Gaziantep Stadium,Gaziantep,Kasimpasa,2 - 1
+188,21,09/02/2026 17:00,Ülker Stadium,Fenerbahçe,Gençlerbirligi,3 - 1
+190,22,13/02/2026 17:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Eyüpspor,
+193,22,13/02/2026 17:00,Antalya Stadium,Antalyaspor,Samsunspor,
+197,22,14/02/2026 11:30,Eryaman Stadium,Gençlerbirligi,Çaykur Rizespor,
+191,22,14/02/2026 14:00,Alanya Oba Stadium,Alanyaspor,Konyaspor,
+196,22,14/02/2026 17:00,Papara Park,Trabzonspor,Fenerbahçe,
+195,22,15/02/2026 11:30,Kocaeli Stadium,Kocaelispor,Gaziantep,
+198,22,15/02/2026 14:00,Gürsel Aksel Stadium,Göztepe,Kayserispor,
+192,22,15/02/2026 17:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Besiktas,
+194,22,16/02/2026 17:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Fatih Karagümrük,
+199,23,22/02/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Gençlerbirligi,
+200,23,22/02/2026 13:00,Ülker Stadium,Fenerbahçe,Kasimpasa,
+201,23,22/02/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Antalyaspor,
+202,23,22/02/2026 13:00,Gaziantep Stadium,Gaziantep,Trabzonspor,
+203,23,22/02/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Samsunspor,
+204,23,22/02/2026 13:00,Alanya Oba Stadium,Alanyaspor,Istanbul Basaksehir,
+205,23,22/02/2026 13:00,Besiktas Stadyumu,Besiktas,Göztepe,
+206,23,22/02/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Galatasaray,
+207,23,22/02/2026 13:00,Rize City Stadium,Çaykur Rizespor,Kocaelispor,
+208,24,01/03/2026 13:00,Gürsel Aksel Stadium,Göztepe,Eyüpspor,
+209,24,01/03/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Konyaspor,
+210,24,01/03/2026 13:00,Kocaeli Stadium,Kocaelispor,Besiktas,
+211,24,01/03/2026 13:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Alanyaspor,
+212,24,01/03/2026 13:00,Papara Park,Trabzonspor,Fatih Karagümrük,
+213,24,01/03/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Gaziantep,
+214,24,01/03/2026 13:00,Antalya Stadium,Antalyaspor,Fenerbahçe,
+215,24,01/03/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Çaykur Rizespor,
+216,24,01/03/2026 13:00,Eryaman Stadium,Gençlerbirligi,Kayserispor,
+217,25,08/03/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Kocaelispor,
+218,25,08/03/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Kasimpasa,
+219,25,08/03/2026 13:00,Rize City Stadium,Çaykur Rizespor,Antalyaspor,
+220,25,08/03/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Trabzonspor,
+221,25,08/03/2026 13:00,Ülker Stadium,Fenerbahçe,Samsunspor,
+222,25,08/03/2026 13:00,Gaziantep Stadium,Gaziantep,Fatih Karagümrük,
+223,25,08/03/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Göztepe,
+224,25,08/03/2026 13:00,Besiktas Stadyumu,Besiktas,Galatasaray,
+225,25,08/03/2026 13:00,Alanya Oba Stadium,Alanyaspor,Gençlerbirligi,
+226,26,15/03/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Eyüpspor,
+227,26,15/03/2026 13:00,Kocaeli Stadium,Kocaelispor,Konyaspor,
+228,26,15/03/2026 13:00,Eryaman Stadium,Gençlerbirligi,Besiktas,
+229,26,15/03/2026 13:00,Gürsel Aksel Stadium,Göztepe,Alanyaspor,
+230,26,15/03/2026 13:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Istanbul Basaksehir,
+231,26,15/03/2026 13:00,Antalya Stadium,Antalyaspor,Gaziantep,
+232,26,15/03/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Fenerbahçe,
+233,26,15/03/2026 13:00,Papara Park,Trabzonspor,Çaykur Rizespor,
+234,26,15/03/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Kayserispor,
+235,27,18/03/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Trabzonspor,
+236,27,18/03/2026 13:00,Besiktas Stadyumu,Besiktas,Kasimpasa,
+237,27,18/03/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Antalyaspor,
+238,27,18/03/2026 13:00,Rize City Stadium,Çaykur Rizespor,Samsunspor,
+239,27,18/03/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Fatih Karagümrük,
+240,27,18/03/2026 13:00,Ülker Stadium,Fenerbahçe,Gaziantep,
+241,27,18/03/2026 13:00,Gürsel Aksel Stadium,Göztepe,Galatasaray,
+242,27,18/03/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Gençlerbirligi,
+243,27,18/03/2026 13:00,Alanya Oba Stadium,Alanyaspor,Kocaelispor,
+244,28,05/04/2026 13:00,Antalya Stadium,Antalyaspor,Eyüpspor,
+245,28,05/04/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Konyaspor,
+246,28,05/04/2026 13:00,Ülker Stadium,Fenerbahçe,Besiktas,
+247,28,05/04/2026 13:00,Gaziantep Stadium,Gaziantep,Alanyaspor,
+248,28,05/04/2026 13:00,Kocaeli Stadium,Kocaelispor,Istanbul Basaksehir,
+249,28,05/04/2026 13:00,Eryaman Stadium,Gençlerbirligi,Göztepe,
+250,28,05/04/2026 13:00,Papara Park,Trabzonspor,Galatasaray,
+251,28,05/04/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Çaykur Rizespor,
+252,28,05/04/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Kayserispor,
+253,29,12/04/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Samsunspor,
+254,29,12/04/2026 13:00,Gürsel Aksel Stadium,Göztepe,Kasimpasa,
+255,29,12/04/2026 13:00,Besiktas Stadyumu,Besiktas,Antalyaspor,
+256,29,12/04/2026 13:00,Alanya Oba Stadium,Alanyaspor,Trabzonspor,
+257,29,12/04/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Fatih Karagümrük,
+258,29,12/04/2026 13:00,Rize City Stadium,Çaykur Rizespor,Gaziantep,
+259,29,12/04/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Fenerbahçe,
+260,29,12/04/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Gençlerbirligi,
+261,29,12/04/2026 13:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Kocaelispor,
+262,30,19/04/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Eyüpspor,
+263,30,19/04/2026 13:00,Antalya Stadium,Antalyaspor,Konyaspor,
+264,30,19/04/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Besiktas,
+265,30,19/04/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Alanyaspor,
+266,30,19/04/2026 13:00,Papara Park,Trabzonspor,Istanbul Basaksehir,
+267,30,19/04/2026 13:00,Kocaeli Stadium,Kocaelispor,Göztepe,
+268,30,19/04/2026 13:00,Eryaman Stadium,Gençlerbirligi,Galatasaray,
+269,30,19/04/2026 13:00,Ülker Stadium,Fenerbahçe,Çaykur Rizespor,
+270,30,19/04/2026 13:00,Gaziantep Stadium,Gaziantep,Kayserispor,
+271,31,26/04/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Gaziantep,
+272,31,26/04/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Kasimpasa,
+273,31,26/04/2026 13:00,Gürsel Aksel Stadium,Göztepe,Antalyaspor,
+274,31,26/04/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Trabzonspor,
+275,31,26/04/2026 13:00,Alanya Oba Stadium,Alanyaspor,Samsunspor,
+276,31,26/04/2026 13:00,Besiktas Stadyumu,Besiktas,Fatih Karagümrük,
+277,31,26/04/2026 13:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Fenerbahçe,
+278,31,26/04/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Çaykur Rizespor,
+279,31,26/04/2026 13:00,Eryaman Stadium,Gençlerbirligi,Kocaelispor,
+280,32,03/05/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Eyüpspor,
+281,32,03/05/2026 13:00,Rize City Stadium,Çaykur Rizespor,Konyaspor,
+282,32,03/05/2026 13:00,Gaziantep Stadium,Gaziantep,Besiktas,
+283,32,03/05/2026 13:00,Antalya Stadium,Antalyaspor,Alanyaspor,
+284,32,03/05/2026 13:00,Ülker Stadium,Fenerbahçe,Istanbul Basaksehir,
+285,32,03/05/2026 13:00,Papara Park,Trabzonspor,Göztepe,
+286,32,03/05/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Galatasaray,
+287,32,03/05/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Gençlerbirligi,
+288,32,03/05/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Kocaelispor,
+289,33,10/05/2026 13:00,Recep Tayyip Erdogan Stadium,Eyüpspor,Çaykur Rizespor,
+290,33,10/05/2026 13:00,Eryaman Stadium,Gençlerbirligi,Kasimpasa,
+291,33,10/05/2026 13:00,Ali Sami Yen Spor Kompleksi,Galatasaray,Antalyaspor,
+292,33,10/05/2026 13:00,Besiktas Stadyumu,Besiktas,Trabzonspor,
+293,33,10/05/2026 13:00,Basaksehir Fatih Terim Stadium,Istanbul Basaksehir,Samsunspor,
+294,33,10/05/2026 13:00,Kocaeli Stadium,Kocaelispor,Fatih Karagümrük,
+295,33,10/05/2026 13:00,Gürsel Aksel Stadium,Göztepe,Gaziantep,
+296,33,10/05/2026 13:00,Konya Metropolitan Municipality Stadium,Konyaspor,Fenerbahçe,
+297,33,10/05/2026 13:00,Alanya Oba Stadium,Alanyaspor,Kayserispor,
+298,34,17/05/2026 13:00,Ülker Stadium,Fenerbahçe,Eyüpspor,
+299,34,17/05/2026 13:00,RHG Enertürk Enerji Stadium,Kayserispor,Konyaspor,
+300,34,17/05/2026 13:00,Rize City Stadium,Çaykur Rizespor,Besiktas,
+301,34,17/05/2026 13:00,Atatürk Olympic Stadium,Fatih Karagümrük,Alanyaspor,
+302,34,17/05/2026 13:00,Gaziantep Stadium,Gaziantep,Istanbul Basaksehir,
+303,34,17/05/2026 13:00,Samsun 19 Mayis Stadium,Samsunspor,Göztepe,
+304,34,17/05/2026 13:00,Recep Tayyip Erdogan Stadium,Kasimpasa,Galatasaray,
+305,34,17/05/2026 13:00,Papara Park,Trabzonspor,Gençlerbirligi,
+306,34,17/05/2026 13:00,Antalya Stadium,Antalyaspor,Kocaelispor,

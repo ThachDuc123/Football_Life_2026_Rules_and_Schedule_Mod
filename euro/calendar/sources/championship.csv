@@ -1,0 +1,553 @@
+Match Number,Round Number,Date,Location,Home Team,Away Team,Result
+1,1,08/08/2025 19:00,St. Andrew's @ Knighthead Park,Birmingham City,Ipswich Town,1 - 1
+2,1,09/08/2025 11:30,The Valley,Charlton Athletic,Watford,1 - 0
+3,1,09/08/2025 11:30,The Coventry Building Society Arena,Coventry City,Hull City,0 - 0
+4,1,09/08/2025 11:30,St. Mary's Stadium,Southampton,Wrexham,2 - 1
+5,1,09/08/2025 14:00,Riverside Stadium,Middlesbrough,Swansea City,1 - 0
+6,1,09/08/2025 14:00,Carrow Road,Norwich City,Millwall,1 - 2
+7,1,09/08/2025 14:00,The Kassam Stadium,Oxford United,Portsmouth,0 - 1
+8,1,09/08/2025 14:00,MATRADE Loftus Road,Queens Park Rangers,Preston North End,1 - 1
+9,1,09/08/2025 14:00,bet365 Stadium,Stoke City,Derby County,3 - 1
+10,1,09/08/2025 14:00,The Hawthorns,West Bromwich Albion,Blackburn Rovers,1 - 0
+11,1,09/08/2025 16:30,Bramall Lane,Sheffield United,Bristol City,1 - 4
+12,1,10/08/2025 15:30,King Power Stadium,Leicester City,Sheffield Wednesday,2 - 1
+15,2,16/08/2025 11:30,Pride Park Stadium,Derby County,Coventry City,3 - 5
+19,2,16/08/2025 11:30,Fratton Park,Portsmouth,Norwich City,1 - 2
+24,2,16/08/2025 11:30,SToK Cae Ras,Wrexham,West Bromwich Albion,2 - 3
+13,2,16/08/2025 14:00,Ewood Park,Blackburn Rovers,Birmingham City,1 - 2
+14,2,16/08/2025 14:00,Ashton Gate Stadium,Bristol City,Charlton Athletic,0 - 0
+18,2,16/08/2025 14:00,The Den,Millwall,Middlesbrough,0 - 3
+20,2,16/08/2025 14:00,Deepdale,Preston North End,Leicester City,2 - 1
+21,2,16/08/2025 14:00,Hillsborough,Sheffield Wednesday,Stoke City,0 - 3
+22,2,16/08/2025 14:00,Swansea.com Stadium,Swansea City,Sheffield United,1 - 0
+23,2,16/08/2025 14:00,Vicarage Road,Watford,Queens Park Rangers,2 - 1
+17,2,17/08/2025 11:00,Portman Road,Ipswich Town,Southampton,1 - 1
+16,2,17/08/2025 14:00,The MKM Stadium,Hull City,Oxford United,3 - 2
+28,3,22/08/2025 19:00,Pride Park Stadium,Derby County,Bristol City,1 - 1
+26,3,23/08/2025 11:30,The Valley,Charlton Athletic,Leicester City,0 - 1
+29,3,23/08/2025 11:30,The MKM Stadium,Hull City,Blackburn Rovers,0 - 3
+34,3,23/08/2025 11:30,Swansea.com Stadium,Swansea City,Watford,1 - 1
+25,3,23/08/2025 14:00,St. Andrew's @ Knighthead Park,Birmingham City,Oxford United,1 - 0
+27,3,23/08/2025 14:00,The Coventry Building Society Arena,Coventry City,Queens Park Rangers,7 - 1
+30,3,23/08/2025 14:00,Carrow Road,Norwich City,Middlesbrough,1 - 2
+31,3,23/08/2025 14:00,Deepdale,Preston North End,Ipswich Town,1 - 0
+32,3,23/08/2025 14:00,Bramall Lane,Sheffield United,Millwall,0 - 1
+33,3,23/08/2025 14:00,St. Mary's Stadium,Southampton,Stoke City,1 - 2
+35,3,23/08/2025 14:00,The Hawthorns,West Bromwich Albion,Portsmouth,1 - 1
+36,3,23/08/2025 14:00,SToK Cae Ras,Wrexham,Sheffield Wednesday,2 - 2
+40,4,29/08/2025 19:00,King Power Stadium,Leicester City,Birmingham City,2 - 0
+41,4,30/08/2025 11:30,Riverside Stadium,Middlesbrough,Sheffield United,1 - 0
+45,4,30/08/2025 11:30,MATRADE Loftus Road,Queens Park Rangers,Charlton Athletic,3 - 1
+47,4,30/08/2025 11:30,bet365 Stadium,Stoke City,West Bromwich Albion,0 - 1
+37,4,30/08/2025 14:00,Ewood Park,Blackburn Rovers,Norwich City,0 - 2
+38,4,30/08/2025 14:00,Ashton Gate Stadium,Bristol City,Hull City,4 - 2
+39,4,30/08/2025 14:00,Portman Road,Ipswich Town,Derby County,2 - 2
+42,4,30/08/2025 14:00,The Den,Millwall,Wrexham,0 - 2
+43,4,30/08/2025 14:00,The Kassam Stadium,Oxford United,Coventry City,2 - 2
+44,4,30/08/2025 14:00,Fratton Park,Portsmouth,Preston North End,1 - 0
+46,4,30/08/2025 14:00,Hillsborough,Sheffield Wednesday,Swansea City,0 - 2
+48,4,30/08/2025 14:00,Vicarage Road,Watford,Southampton,2 - 2
+51,5,12/09/2025 19:00,Portman Road,Ipswich Town,Sheffield United,5 - 0
+49,5,13/09/2025 11:30,The Valley,Charlton Athletic,Millwall,1 - 1
+52,5,13/09/2025 11:30,The Kassam Stadium,Oxford United,Leicester City,2 - 2
+53,5,13/09/2025 11:30,Deepdale,Preston North End,Middlesbrough,2 - 2
+50,5,13/09/2025 14:00,The Coventry Building Society Arena,Coventry City,Norwich City,1 - 1
+54,5,13/09/2025 14:00,Hillsborough,Sheffield Wednesday,Bristol City,0 - 3
+56,5,13/09/2025 14:00,bet365 Stadium,Stoke City,Birmingham City,1 - 0
+57,5,13/09/2025 14:00,Swansea.com Stadium,Swansea City,Hull City,2 - 2
+58,5,13/09/2025 14:00,Vicarage Road,Watford,Blackburn Rovers,0 - 1
+59,5,13/09/2025 14:00,The Hawthorns,West Bromwich Albion,Derby County,0 - 1
+60,5,13/09/2025 14:00,SToK Cae Ras,Wrexham,Queens Park Rangers,1 - 3
+55,5,14/09/2025 11:00,St. Mary's Stadium,Southampton,Portsmouth,0 - 0
+67,6,19/09/2025 19:00,Riverside Stadium,Middlesbrough,West Bromwich Albion,2 - 1
+61,6,20/09/2025 11:30,St. Andrew's @ Knighthead Park,Birmingham City,Swansea City,1 - 0
+66,6,20/09/2025 11:30,King Power Stadium,Leicester City,Coventry City,0 - 0
+71,6,20/09/2025 11:30,MATRADE Loftus Road,Queens Park Rangers,Stoke City,1 - 0
+64,6,20/09/2025 14:00,Pride Park Stadium,Derby County,Preston North End,0 - 1
+65,6,20/09/2025 14:00,The MKM Stadium,Hull City,Southampton,3 - 1
+69,6,20/09/2025 14:00,Carrow Road,Norwich City,Wrexham,2 - 3
+70,6,20/09/2025 14:00,Fratton Park,Portsmouth,Sheffield Wednesday,0 - 2
+72,6,20/09/2025 14:00,Bramall Lane,Sheffield United,Charlton Athletic,0 - 1
+63,6,21/09/2025 14:00,Ashton Gate Stadium,Bristol City,Oxford United,1 - 3
+68,6,22/09/2025 19:00,The Den,Millwall,Watford,1 - 0
+62,6,02/12/2025 19:45,Ewood Park,Blackburn Rovers,Ipswich Town,1 - 1
+83,7,26/09/2025 19:00,The Hawthorns,West Bromwich Albion,Leicester City,1 - 1
+74,7,27/09/2025 11:30,The Coventry Building Society Arena,Coventry City,Birmingham City,3 - 0
+81,7,27/09/2025 11:30,Swansea.com Stadium,Swansea City,Millwall,1 - 1
+84,7,27/09/2025 11:30,SToK Cae Ras,Wrexham,Derby County,1 - 1
+73,7,27/09/2025 14:00,The Valley,Charlton Athletic,Blackburn Rovers,3 - 0
+75,7,27/09/2025 14:00,Portman Road,Ipswich Town,Portsmouth,2 - 1
+76,7,27/09/2025 14:00,The Kassam Stadium,Oxford United,Sheffield United,0 - 1
+77,7,27/09/2025 14:00,Deepdale,Preston North End,Bristol City,0 - 0
+78,7,27/09/2025 14:00,Hillsborough,Sheffield Wednesday,Queens Park Rangers,1 - 1
+79,7,27/09/2025 14:00,St. Mary's Stadium,Southampton,Middlesbrough,1 - 1
+80,7,27/09/2025 14:00,bet365 Stadium,Stoke City,Norwich City,1 - 1
+82,7,27/09/2025 14:00,Vicarage Road,Watford,Hull City,2 - 1
+85,8,30/09/2025 18:45,St. Andrew's @ Knighthead Park,Birmingham City,Sheffield Wednesday,2 - 2
+86,8,30/09/2025 18:45,Ewood Park,Blackburn Rovers,Swansea City,1 - 2
+87,8,30/09/2025 18:45,Ashton Gate Stadium,Bristol City,Ipswich Town,1 - 1
+89,8,30/09/2025 18:45,The MKM Stadium,Hull City,Preston North End,2 - 2
+90,8,30/09/2025 18:45,King Power Stadium,Leicester City,Wrexham,1 - 1
+91,8,30/09/2025 18:45,Riverside Stadium,Middlesbrough,Stoke City,0 - 0
+92,8,30/09/2025 18:45,Bramall Lane,Sheffield United,Southampton,1 - 2
+88,8,30/09/2025 19:00,Pride Park Stadium,Derby County,Charlton Athletic,1 - 1
+93,8,01/10/2025 18:45,The Den,Millwall,Coventry City,0 - 4
+94,8,01/10/2025 18:45,Carrow Road,Norwich City,West Bromwich Albion,0 - 1
+95,8,01/10/2025 18:45,Fratton Park,Portsmouth,Watford,2 - 2
+96,8,01/10/2025 19:00,MATRADE Loftus Road,Queens Park Rangers,Oxford United,0 - 0
+108,9,03/10/2025 19:00,SToK Cae Ras,Wrexham,Birmingham City,1 - 1
+97,9,04/10/2025 11:30,Ewood Park,Blackburn Rovers,Stoke City,1 - 1
+100,9,04/10/2025 11:30,The MKM Stadium,Hull City,Sheffield United,1 - 0
+105,9,04/10/2025 11:30,Hillsborough,Sheffield Wednesday,Coventry City,0 - 5
+98,9,04/10/2025 14:00,Ashton Gate Stadium,Bristol City,Queens Park Rangers,1 - 2
+99,9,04/10/2025 14:00,Pride Park Stadium,Derby County,Southampton,1 - 1
+102,9,04/10/2025 14:00,The Den,Millwall,West Bromwich Albion,3 - 0
+103,9,04/10/2025 14:00,Fratton Park,Portsmouth,Middlesbrough,1 - 0
+104,9,04/10/2025 14:00,Deepdale,Preston North End,Charlton Athletic,2 - 0
+106,9,04/10/2025 14:00,Swansea.com Stadium,Swansea City,Leicester City,1 - 3
+107,9,04/10/2025 14:00,Vicarage Road,Watford,Oxford United,2 - 1
+101,9,05/10/2025 11:00,Portman Road,Ipswich Town,Norwich City,3 - 1
+113,10,17/10/2025 19:00,Riverside Stadium,Middlesbrough,Ipswich Town,2 - 1
+115,10,18/10/2025 11:30,The Kassam Stadium,Oxford United,Derby County,1 - 0
+116,10,18/10/2025 11:30,MATRADE Loftus Road,Queens Park Rangers,Millwall,1 - 2
+118,10,18/10/2025 11:30,St. Mary's Stadium,Southampton,Swansea City,0 - 0
+109,10,18/10/2025 14:00,St. Andrew's @ Knighthead Park,Birmingham City,Hull City,2 - 3
+110,10,18/10/2025 14:00,The Valley,Charlton Athletic,Sheffield Wednesday,2 - 1
+111,10,18/10/2025 14:00,The Coventry Building Society Arena,Coventry City,Blackburn Rovers,2 - 0
+114,10,18/10/2025 14:00,Carrow Road,Norwich City,Bristol City,0 - 1
+117,10,18/10/2025 14:00,Bramall Lane,Sheffield United,Watford,1 - 0
+119,10,18/10/2025 14:00,bet365 Stadium,Stoke City,Wrexham,1 - 0
+120,10,18/10/2025 14:00,The Hawthorns,West Bromwich Albion,Preston North End,2 - 1
+112,10,18/10/2025 18:45,King Power Stadium,Leicester City,Portsmouth,1 - 1
+121,11,21/10/2025 18:45,Ewood Park,Blackburn Rovers,Sheffield United,1 - 3
+123,11,21/10/2025 18:45,Pride Park Stadium,Derby County,Norwich City,1 - 0
+124,11,21/10/2025 18:45,The MKM Stadium,Hull City,Leicester City,2 - 1
+125,11,21/10/2025 18:45,Portman Road,Ipswich Town,Charlton Athletic,0 - 3
+126,11,21/10/2025 18:45,The Den,Millwall,Stoke City,2 - 0
+127,11,21/10/2025 18:45,Fratton Park,Portsmouth,Coventry City,1 - 2
+128,11,21/10/2025 18:45,Deepdale,Preston North End,Birmingham City,0 - 1
+122,11,21/10/2025 19:00,Ashton Gate Stadium,Bristol City,Southampton,3 - 1
+130,11,22/10/2025 18:45,Swansea.com Stadium,Swansea City,Queens Park Rangers,0 - 1
+131,11,22/10/2025 18:45,Vicarage Road,Watford,West Bromwich Albion,2 - 1
+132,11,22/10/2025 18:45,SToK Cae Ras,Wrexham,Oxford United,1 - 0
+129,11,22/10/2025 19:00,Hillsborough,Sheffield Wednesday,Middlesbrough,0 - 1
+142,12,24/10/2025 19:00,Deepdale,Preston North End,Sheffield United,3 - 2
+135,12,25/10/2025 11:30,The Coventry Building Society Arena,Coventry City,Watford,3 - 1
+138,12,25/10/2025 11:30,Portman Road,Ipswich Town,West Bromwich Albion,1 - 0
+141,12,25/10/2025 11:30,Fratton Park,Portsmouth,Stoke City,0 - 1
+133,12,25/10/2025 14:00,Ewood Park,Blackburn Rovers,Southampton,2 - 1
+134,12,25/10/2025 14:00,Ashton Gate Stadium,Bristol City,Birmingham City,1 - 0
+136,12,25/10/2025 14:00,Pride Park Stadium,Derby County,Queens Park Rangers,1 - 0
+137,12,25/10/2025 14:00,The MKM Stadium,Hull City,Charlton Athletic,1 - 1
+139,12,25/10/2025 14:00,Riverside Stadium,Middlesbrough,Wrexham,1 - 1
+140,12,25/10/2025 14:00,The Den,Millwall,Leicester City,1 - 0
+143,12,25/10/2025 14:00,Hillsborough,Sheffield Wednesday,Oxford United,1 - 2
+144,12,25/10/2025 14:00,Swansea.com Stadium,Swansea City,Norwich City,2 - 1
+156,13,31/10/2025 20:00,SToK Cae Ras,Wrexham,Coventry City,3 - 2
+147,13,01/11/2025 12:30,King Power Stadium,Leicester City,Blackburn Rovers,0 - 2
+148,13,01/11/2025 12:30,Carrow Road,Norwich City,Hull City,0 - 2
+155,13,01/11/2025 12:30,The Hawthorns,West Bromwich Albion,Sheffield Wednesday,0 - 0
+145,13,01/11/2025 15:00,St. Andrew's @ Knighthead Park,Birmingham City,Portsmouth,4 - 0
+146,13,01/11/2025 15:00,The Valley,Charlton Athletic,Swansea City,1 - 1
+149,13,01/11/2025 15:00,The Kassam Stadium,Oxford United,Millwall,2 - 2
+150,13,01/11/2025 15:00,MATRADE Loftus Road,Queens Park Rangers,Ipswich Town,1 - 4
+151,13,01/11/2025 15:00,Bramall Lane,Sheffield United,Derby County,1 - 3
+152,13,01/11/2025 15:00,St. Mary's Stadium,Southampton,Preston North End,0 - 2
+153,13,01/11/2025 15:00,bet365 Stadium,Stoke City,Bristol City,5 - 1
+154,13,01/11/2025 15:00,Vicarage Road,Watford,Middlesbrough,3 - 0
+157,14,04/11/2025 19:45,St. Andrew's @ Knighthead Park,Birmingham City,Millwall,4 - 0
+158,14,04/11/2025 19:45,Ashton Gate Stadium,Bristol City,Blackburn Rovers,0 - 1
+159,14,04/11/2025 19:45,The Valley,Charlton Athletic,West Bromwich Albion,1 - 0
+161,14,04/11/2025 19:45,Pride Park Stadium,Derby County,Hull City,2 - 1
+162,14,04/11/2025 19:45,Portman Road,Ipswich Town,Watford,1 - 1
+163,14,04/11/2025 19:45,King Power Stadium,Leicester City,Middlesbrough,1 - 1
+164,14,04/11/2025 19:45,The Kassam Stadium,Oxford United,Stoke City,0 - 3
+160,14,04/11/2025 20:00,The Coventry Building Society Arena,Coventry City,Sheffield United,3 - 1
+166,14,05/11/2025 19:45,Deepdale,Preston North End,Swansea City,2 - 1
+167,14,05/11/2025 19:45,MATRADE Loftus Road,Queens Park Rangers,Southampton,1 - 2
+168,14,05/11/2025 19:45,Hillsborough,Sheffield Wednesday,Norwich City,1 - 1
+165,14,05/11/2025 20:00,Fratton Park,Portsmouth,Wrexham,0 - 0
+178,15,07/11/2025 20:00,Vicarage Road,Watford,Bristol City,1 - 1
+169,15,08/11/2025 12:30,Ewood Park,Blackburn Rovers,Derby County,1 - 2
+170,15,08/11/2025 12:30,The MKM Stadium,Hull City,Portsmouth,3 - 2
+172,15,08/11/2025 12:30,The Den,Millwall,Preston North End,1 - 1
+171,15,08/11/2025 15:00,Riverside Stadium,Middlesbrough,Birmingham City,2 - 1
+173,15,08/11/2025 15:00,Carrow Road,Norwich City,Leicester City,1 - 2
+174,15,08/11/2025 15:00,Bramall Lane,Sheffield United,Queens Park Rangers,0 - 0
+175,15,08/11/2025 15:00,St. Mary's Stadium,Southampton,Sheffield Wednesday,3 - 1
+176,15,08/11/2025 15:00,bet365 Stadium,Stoke City,Coventry City,0 - 1
+177,15,08/11/2025 15:00,Swansea.com Stadium,Swansea City,Ipswich Town,1 - 4
+179,15,08/11/2025 15:00,The Hawthorns,West Bromwich Albion,Oxford United,2 - 1
+180,15,08/11/2025 15:00,SToK Cae Ras,Wrexham,Charlton Athletic,1 - 0
+190,16,21/11/2025 20:00,Deepdale,Preston North End,Blackburn Rovers,1 - 2
+182,16,22/11/2025 12:30,Ashton Gate Stadium,Bristol City,Swansea City,3 - 0
+183,16,22/11/2025 12:30,The Valley,Charlton Athletic,Southampton,1 - 5
+184,16,22/11/2025 12:30,The Coventry Building Society Arena,Coventry City,West Bromwich Albion,3 - 2
+181,16,22/11/2025 15:00,St. Andrew's @ Knighthead Park,Birmingham City,Norwich City,4 - 1
+185,16,22/11/2025 15:00,Pride Park Stadium,Derby County,Watford,2 - 3
+186,16,22/11/2025 15:00,Portman Road,Ipswich Town,Wrexham,0 - 0
+187,16,22/11/2025 15:00,King Power Stadium,Leicester City,Stoke City,2 - 1
+188,16,22/11/2025 15:00,The Kassam Stadium,Oxford United,Middlesbrough,1 - 1
+189,16,22/11/2025 15:00,Fratton Park,Portsmouth,Millwall,3 - 1
+191,16,22/11/2025 15:00,MATRADE Loftus Road,Queens Park Rangers,Hull City,3 - 2
+192,16,23/11/2025 12:00,Hillsborough,Sheffield Wednesday,Sheffield United,0 - 3
+193,17,25/11/2025 19:45,The MKM Stadium,Hull City,Ipswich Town,0 - 2
+194,17,25/11/2025 19:45,Riverside Stadium,Middlesbrough,Coventry City,2 - 4
+198,17,25/11/2025 19:45,bet365 Stadium,Stoke City,Charlton Athletic,3 - 0
+199,17,25/11/2025 19:45,Swansea.com Stadium,Swansea City,Derby County,1 - 2
+200,17,25/11/2025 19:45,Vicarage Road,Watford,Preston North End,1 - 1
+202,17,25/11/2025 19:45,Carrow Road,Norwich City,Oxford United,1 - 1
+197,17,25/11/2025 20:00,St. Mary's Stadium,Southampton,Leicester City,3 - 0
+195,17,26/11/2025 19:45,The Den,Millwall,Sheffield Wednesday,1 - 0
+196,17,26/11/2025 19:45,Bramall Lane,Sheffield United,Portsmouth,3 - 0
+201,17,26/11/2025 19:45,Ewood Park,Blackburn Rovers,Queens Park Rangers,0 - 1
+204,17,26/11/2025 19:45,SToK Cae Ras,Wrexham,Bristol City,2 - 0
+203,17,26/11/2025 20:00,The Hawthorns,West Bromwich Albion,Birmingham City,1 - 1
+211,18,28/11/2025 20:00,The Kassam Stadium,Oxford United,Ipswich Town,2 - 1
+207,18,29/11/2025 12:30,King Power Stadium,Leicester City,Sheffield United,2 - 3
+212,18,29/11/2025 12:30,Fratton Park,Portsmouth,Bristol City,0 - 1
+214,18,29/11/2025 12:30,bet365 Stadium,Stoke City,Hull City,1 - 2
+206,18,29/11/2025 15:00,The Coventry Building Society Arena,Coventry City,Charlton Athletic,3 - 1
+208,18,29/11/2025 15:00,Riverside Stadium,Middlesbrough,Derby County,2 - 1
+209,18,29/11/2025 15:00,The Den,Millwall,Southampton,3 - 2
+210,18,29/11/2025 15:00,Carrow Road,Norwich City,Queens Park Rangers,3 - 1
+213,18,29/11/2025 15:00,Hillsborough,Sheffield Wednesday,Preston North End,2 - 3
+215,18,29/11/2025 15:00,The Hawthorns,West Bromwich Albion,Swansea City,3 - 2
+216,18,29/11/2025 15:00,SToK Cae Ras,Wrexham,Blackburn Rovers,1 - 1
+205,18,01/12/2025 20:00,St. Andrew's @ Knighthead Park,Birmingham City,Watford,2 - 1
+221,19,05/12/2025 20:15,The MKM Stadium,Hull City,Middlesbrough,1 - 4
+220,19,06/12/2025 12:30,Pride Park Stadium,Derby County,Leicester City,1 - 3
+228,19,06/12/2025 12:30,Vicarage Road,Watford,Norwich City,3 - 2
+218,19,06/12/2025 15:00,Ashton Gate Stadium,Bristol City,Millwall,0 - 1
+222,19,06/12/2025 15:00,Portman Road,Ipswich Town,Coventry City,3 - 0
+223,19,06/12/2025 15:00,Deepdale,Preston North End,Wrexham,1 - 1
+224,19,06/12/2025 15:00,MATRADE Loftus Road,Queens Park Rangers,West Bromwich Albion,3 - 1
+225,19,06/12/2025 15:00,Bramall Lane,Sheffield United,Stoke City,4 - 0
+226,19,06/12/2025 15:00,St. Mary's Stadium,Southampton,Birmingham City,3 - 1
+227,19,06/12/2025 15:00,Swansea.com Stadium,Swansea City,Oxford United,2 - 0
+217,19,03/02/2026 19:45,Ewood Park,Blackburn Rovers,Sheffield Wednesday,1 - 0
+219,19,17/02/2026 19:45,The Valley,Charlton Athletic,Portsmouth,1 - 3
+229,20,09/12/2025 19:45,Ewood Park,Blackburn Rovers,Oxford United,1 - 1
+230,20,09/12/2025 19:45,The Valley,Charlton Athletic,Middlesbrough,1 - 2
+231,20,09/12/2025 19:45,Deepdale,Preston North End,Coventry City,1 - 1
+233,20,09/12/2025 19:45,Bramall Lane,Sheffield United,Norwich City,1 - 1
+234,20,09/12/2025 19:45,St. Mary's Stadium,Southampton,West Bromwich Albion,3 - 2
+235,20,09/12/2025 19:45,Swansea.com Stadium,Swansea City,Portsmouth,1 - 0
+236,20,09/12/2025 19:45,Vicarage Road,Watford,Sheffield Wednesday,1 - 1
+232,20,09/12/2025 20:00,MATRADE Loftus Road,Queens Park Rangers,Birmingham City,2 - 1
+237,20,10/12/2025 19:45,Ashton Gate Stadium,Bristol City,Leicester City,2 - 2
+238,20,10/12/2025 19:45,Pride Park Stadium,Derby County,Millwall,1 - 1
+240,20,10/12/2025 19:45,Portman Road,Ipswich Town,Stoke City,1 - 0
+239,20,10/12/2025 20:00,The MKM Stadium,Hull City,Wrexham,2 - 0
+251,21,12/12/2025 20:00,The Hawthorns,West Bromwich Albion,Sheffield United,2 - 0
+246,21,13/12/2025 12:30,Carrow Road,Norwich City,Southampton,2 - 1
+247,21,13/12/2025 12:30,The Kassam Stadium,Oxford United,Preston North End,1 - 2
+250,21,13/12/2025 12:30,bet365 Stadium,Stoke City,Swansea City,2 - 1
+241,21,13/12/2025 15:00,St. Andrew's @ Knighthead Park,Birmingham City,Charlton Athletic,1 - 1
+242,21,13/12/2025 15:00,The Coventry Building Society Arena,Coventry City,Bristol City,1 - 0
+243,21,13/12/2025 15:00,King Power Stadium,Leicester City,Ipswich Town,3 - 1
+244,21,13/12/2025 15:00,Riverside Stadium,Middlesbrough,Queens Park Rangers,3 - 1
+245,21,13/12/2025 15:00,The Den,Millwall,Hull City,1 - 3
+248,21,13/12/2025 15:00,Fratton Park,Portsmouth,Blackburn Rovers,2 - 1
+252,21,13/12/2025 15:00,SToK Cae Ras,Wrexham,Watford,2 - 2
+249,21,15/12/2025 20:00,Hillsborough,Sheffield Wednesday,Derby County,0 - 3
+263,22,19/12/2025 20:00,Swansea.com Stadium,Swansea City,Wrexham,2 - 1
+253,22,20/12/2025 12:30,Ewood Park,Blackburn Rovers,Millwall,2 - 0
+259,22,20/12/2025 12:30,Deepdale,Preston North End,Norwich City,1 - 1
+262,22,20/12/2025 12:30,St. Mary's Stadium,Southampton,Coventry City,1 - 1
+254,22,20/12/2025 15:00,Ashton Gate Stadium,Bristol City,Middlesbrough,2 - 0
+255,22,20/12/2025 15:00,The Valley,Charlton Athletic,Oxford United,1 - 0
+256,22,20/12/2025 15:00,Pride Park Stadium,Derby County,Portsmouth,1 - 1
+257,22,20/12/2025 15:00,The MKM Stadium,Hull City,West Bromwich Albion,1 - 0
+258,22,20/12/2025 15:00,Portman Road,Ipswich Town,Sheffield Wednesday,3 - 1
+260,22,20/12/2025 15:00,MATRADE Loftus Road,Queens Park Rangers,Leicester City,4 - 1
+261,22,20/12/2025 15:00,Bramall Lane,Sheffield United,Birmingham City,3 - 0
+264,22,20/12/2025 15:00,Vicarage Road,Watford,Stoke City,1 - 0
+265,23,26/12/2025 12:30,St. Andrew's @ Knighthead Park,Birmingham City,Derby County,1 - 1
+269,23,26/12/2025 13:00,The Den,Millwall,Ipswich Town,0 - 0
+266,23,26/12/2025 15:00,The Coventry Building Society Arena,Coventry City,Swansea City,1 - 0
+267,23,26/12/2025 15:00,King Power Stadium,Leicester City,Watford,1 - 2
+268,23,26/12/2025 15:00,Riverside Stadium,Middlesbrough,Blackburn Rovers,0 - 0
+270,23,26/12/2025 15:00,Carrow Road,Norwich City,Charlton Athletic,1 - 0
+271,23,26/12/2025 15:00,The Kassam Stadium,Oxford United,Southampton,2 - 1
+272,23,26/12/2025 15:00,Fratton Park,Portsmouth,Queens Park Rangers,1 - 1
+273,23,26/12/2025 15:00,Hillsborough,Sheffield Wednesday,Hull City,2 - 2
+274,23,26/12/2025 15:00,bet365 Stadium,Stoke City,Preston North End,0 - 0
+275,23,26/12/2025 15:00,The Hawthorns,West Bromwich Albion,Bristol City,1 - 2
+276,23,26/12/2025 17:30,SToK Cae Ras,Wrexham,Sheffield United,5 - 3
+278,24,29/12/2025 18:00,The Coventry Building Society Arena,Coventry City,Ipswich Town,0 - 2
+279,24,29/12/2025 19:45,King Power Stadium,Leicester City,Derby County,2 - 1
+280,24,29/12/2025 19:45,Riverside Stadium,Middlesbrough,Hull City,0 - 1
+281,24,29/12/2025 19:45,The Den,Millwall,Bristol City,2 - 1
+282,24,29/12/2025 19:45,Carrow Road,Norwich City,Watford,0 - 1
+283,24,29/12/2025 19:45,The Kassam Stadium,Oxford United,Swansea City,0 - 1
+284,24,29/12/2025 19:45,Fratton Park,Portsmouth,Charlton Athletic,2 - 1
+285,24,29/12/2025 19:45,Hillsborough,Sheffield Wednesday,Blackburn Rovers,0 - 0
+286,24,29/12/2025 19:45,bet365 Stadium,Stoke City,Sheffield United,1 - 2
+287,24,29/12/2025 19:45,The Hawthorns,West Bromwich Albion,Queens Park Rangers,2 - 1
+288,24,29/12/2025 19:45,SToK Cae Ras,Wrexham,Preston North End,2 - 1
+277,24,29/12/2025 20:15,St. Andrew's @ Knighthead Park,Birmingham City,Southampton,1 - 1
+289,25,01/01/2026 12:30,Ewood Park,Blackburn Rovers,Wrexham,0 - 2
+290,25,01/01/2026 15:00,Ashton Gate Stadium,Bristol City,Portsmouth,5 - 0
+291,25,01/01/2026 15:00,The Valley,Charlton Athletic,Coventry City,1 - 1
+292,25,01/01/2026 15:00,Pride Park Stadium,Derby County,Middlesbrough,1 - 0
+293,25,01/01/2026 15:00,The MKM Stadium,Hull City,Stoke City,0 - 1
+294,25,01/01/2026 15:00,Portman Road,Ipswich Town,Oxford United,2 - 1
+295,25,01/01/2026 15:00,Deepdale,Preston North End,Sheffield Wednesday,3 - 0
+296,25,01/01/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Norwich City,1 - 2
+298,25,01/01/2026 15:00,St. Mary's Stadium,Southampton,Millwall,0 - 0
+299,25,01/01/2026 15:00,Swansea.com Stadium,Swansea City,West Bromwich Albion,1 - 0
+300,25,01/01/2026 15:00,Vicarage Road,Watford,Birmingham City,3 - 0
+297,25,01/01/2026 17:30,Bramall Lane,Sheffield United,Leicester City,3 - 1
+301,26,04/01/2026 12:00,St. Andrew's @ Knighthead Park,Birmingham City,Coventry City,3 - 2
+311,26,04/01/2026 12:00,MATRADE Loftus Road,Queens Park Rangers,Sheffield Wednesday,3 - 0
+302,26,04/01/2026 15:00,Ewood Park,Blackburn Rovers,Charlton Athletic,2 - 2
+303,26,04/01/2026 15:00,Ashton Gate Stadium,Bristol City,Preston North End,0 - 2
+304,26,04/01/2026 15:00,Pride Park Stadium,Derby County,Wrexham,1 - 2
+307,26,04/01/2026 15:00,Riverside Stadium,Middlesbrough,Southampton,4 - 0
+308,26,04/01/2026 15:00,The Den,Millwall,Swansea City,2 - 1
+309,26,04/01/2026 15:00,Carrow Road,Norwich City,Stoke City,0 - 2
+306,26,05/01/2026 20:00,King Power Stadium,Leicester City,West Bromwich Albion,2 - 1
+305,26,03/02/2026 19:45,The MKM Stadium,Hull City,Watford,0 - 0
+312,26,03/02/2026 19:45,Bramall Lane,Sheffield United,Oxford United,3 - 1
+310,26,14/04/2026 19:00,Fratton Park,Portsmouth,Ipswich Town,2 - 0
+323,27,16/01/2026 20:00,The Hawthorns,West Bromwich Albion,Middlesbrough,2 - 3
+314,27,17/01/2026 12:30,The Coventry Building Society Arena,Coventry City,Leicester City,2 - 1
+315,27,17/01/2026 12:30,Portman Road,Ipswich Town,Blackburn Rovers,3 - 0
+322,27,17/01/2026 12:30,Vicarage Road,Watford,Millwall,0 - 2
+313,27,17/01/2026 15:00,The Valley,Charlton Athletic,Sheffield United,1 - 0
+316,27,17/01/2026 15:00,The Kassam Stadium,Oxford United,Bristol City,0 - 0
+317,27,17/01/2026 15:00,Deepdale,Preston North End,Derby County,0 - 1
+318,27,17/01/2026 15:00,Hillsborough,Sheffield Wednesday,Portsmouth,0 - 1
+319,27,17/01/2026 15:00,St. Mary's Stadium,Southampton,Hull City,1 - 2
+320,27,17/01/2026 15:00,bet365 Stadium,Stoke City,Queens Park Rangers,0 - 0
+324,27,17/01/2026 15:00,SToK Cae Ras,Wrexham,Norwich City,1 - 2
+321,27,17/01/2026 17:30,Swansea.com Stadium,Swansea City,Birmingham City,1 - 1
+325,28,20/01/2026 19:45,The Coventry Building Society Arena,Coventry City,Millwall,2 - 1
+326,28,20/01/2026 19:45,Portman Road,Ipswich Town,Bristol City,2 - 0
+327,28,20/01/2026 19:45,The Kassam Stadium,Oxford United,Queens Park Rangers,0 - 0
+328,28,20/01/2026 19:45,Deepdale,Preston North End,Hull City,0 - 3
+329,28,20/01/2026 19:45,Hillsborough,Sheffield Wednesday,Birmingham City,0 - 2
+330,28,20/01/2026 19:45,Swansea.com Stadium,Swansea City,Blackburn Rovers,3 - 1
+331,28,20/01/2026 19:45,The Hawthorns,West Bromwich Albion,Norwich City,0 - 5
+333,28,20/01/2026 19:45,The Valley,Charlton Athletic,Derby County,1 - 2
+332,28,20/01/2026 20:00,SToK Cae Ras,Wrexham,Leicester City,1 - 1
+334,28,21/01/2026 19:45,St. Mary's Stadium,Southampton,Sheffield United,1 - 0
+336,28,21/01/2026 19:45,Vicarage Road,Watford,Portsmouth,1 - 1
+335,28,21/01/2026 20:00,bet365 Stadium,Stoke City,Middlesbrough,1 - 2
+340,29,23/01/2026 20:00,Pride Park Stadium,Derby County,West Bromwich Albion,1 - 1
+343,29,24/01/2026 12:30,Riverside Stadium,Middlesbrough,Preston North End,4 - 0
+344,29,24/01/2026 12:30,The Den,Millwall,Charlton Athletic,4 - 0
+337,29,24/01/2026 15:00,St. Andrew's @ Knighthead Park,Birmingham City,Stoke City,1 - 1
+338,29,24/01/2026 15:00,Ewood Park,Blackburn Rovers,Watford,1 - 1
+339,29,24/01/2026 15:00,Ashton Gate Stadium,Bristol City,Sheffield Wednesday,2 - 0
+341,29,24/01/2026 15:00,The MKM Stadium,Hull City,Swansea City,2 - 1
+342,29,24/01/2026 15:00,King Power Stadium,Leicester City,Oxford United,1 - 2
+347,29,24/01/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Wrexham,2 - 3
+348,29,24/01/2026 15:00,Bramall Lane,Sheffield United,Ipswich Town,3 - 1
+346,29,25/01/2026 12:00,Fratton Park,Portsmouth,Southampton,1 - 1
+345,29,26/01/2026 20:00,Carrow Road,Norwich City,Coventry City,2 - 1
+350,30,30/01/2026 20:00,Ashton Gate Stadium,Bristol City,Derby County,0 - 5
+352,30,31/01/2026 12:30,King Power Stadium,Leicester City,Charlton Athletic,0 - 2
+358,30,31/01/2026 12:30,Hillsborough,Sheffield Wednesday,Wrexham,0 - 1
+359,30,31/01/2026 12:30,bet365 Stadium,Stoke City,Southampton,0 - 2
+349,30,31/01/2026 15:00,Ewood Park,Blackburn Rovers,Hull City,0 - 1
+351,30,31/01/2026 15:00,Portman Road,Ipswich Town,Preston North End,1 - 1
+353,30,31/01/2026 15:00,Riverside Stadium,Middlesbrough,Norwich City,1 - 0
+354,30,31/01/2026 15:00,The Den,Millwall,Sheffield United,1 - 1
+355,30,31/01/2026 15:00,The Kassam Stadium,Oxford United,Birmingham City,0 - 2
+356,30,31/01/2026 15:00,Fratton Park,Portsmouth,West Bromwich Albion,3 - 0
+357,30,31/01/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Coventry City,2 - 1
+360,30,31/01/2026 15:00,Vicarage Road,Watford,Swansea City,0 - 2
+362,31,06/02/2026 20:01,The Valley,Charlton Athletic,Queens Park Rangers,0 - 0
+364,31,07/02/2026 12:31,Pride Park Stadium,Derby County,Ipswich Town,1 - 2
+366,31,07/02/2026 12:31,Carrow Road,Norwich City,Blackburn Rovers,2 - 0
+369,31,07/02/2026 12:31,St. Mary's Stadium,Southampton,Watford,1 - 0
+361,31,07/02/2026 15:01,St. Andrew's @ Knighthead Park,Birmingham City,Leicester City,2 - 1
+363,31,07/02/2026 15:01,The Coventry Building Society Arena,Coventry City,Oxford United,0 - 0
+365,31,07/02/2026 15:01,The MKM Stadium,Hull City,Bristol City,2 - 3
+367,31,07/02/2026 15:01,Deepdale,Preston North End,Portsmouth,1 - 0
+371,31,07/02/2026 15:01,The Hawthorns,West Bromwich Albion,Stoke City,0 - 0
+372,31,07/02/2026 15:01,SToK Cae Ras,Wrexham,Millwall,0 - 2
+370,31,08/02/2026 12:01,Swansea.com Stadium,Swansea City,Sheffield Wednesday,4 - 0
+368,31,09/02/2026 20:01,Bramall Lane,Sheffield United,Middlesbrough,1 - 2
+379,32,10/02/2026 19:45,King Power Stadium,Leicester City,Southampton,3 - 4
+380,32,10/02/2026 19:45,The Kassam Stadium,Oxford United,Norwich City,0 - 3
+373,32,10/02/2026 20:00,St. Andrew's @ Knighthead Park,Birmingham City,West Bromwich Albion,0 - 0
+375,32,11/02/2026 19:45,The Valley,Charlton Athletic,Stoke City,1 - 0
+377,32,14/02/2026 15:00,Pride Park Stadium,Derby County,Swansea City,2 - 0
+381,32,14/02/2026 15:00,Fratton Park,Portsmouth,Sheffield United,0 - 1
+382,32,14/02/2026 15:00,Deepdale,Preston North End,Watford,2 - 2
+383,32,14/02/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Blackburn Rovers,1 - 3
+384,32,14/02/2026 15:00,Hillsborough,Sheffield Wednesday,Millwall,1 - 2
+376,32,16/02/2026 20:00,The Coventry Building Society Arena,Coventry City,Middlesbrough,3 - 1
+374,32,17/02/2026 19:45,Ashton Gate Stadium,Bristol City,Wrexham,2 - 2
+378,32,03/03/2026 19:45,Portman Road,Ipswich Town,Hull City,1 - 0
+385,33,20/02/2026 20:00,Ewood Park,Blackburn Rovers,Preston North End,1 - 0
+386,33,21/02/2026 12:30,The MKM Stadium,Hull City,Queens Park Rangers,1 - 3
+392,33,21/02/2026 12:30,bet365 Stadium,Stoke City,Leicester City,2 - 2
+393,33,21/02/2026 12:30,Swansea.com Stadium,Swansea City,Bristol City,1 - 0
+395,33,21/02/2026 12:30,The Hawthorns,West Bromwich Albion,Coventry City,0 - 2
+387,33,21/02/2026 15:00,Riverside Stadium,Middlesbrough,Oxford United,0 - 0
+388,33,21/02/2026 15:00,The Den,Millwall,Portsmouth,1 - 3
+389,33,21/02/2026 15:00,Carrow Road,Norwich City,Birmingham City,1 - 2
+391,33,21/02/2026 15:00,St. Mary's Stadium,Southampton,Charlton Athletic,1 - 1
+394,33,21/02/2026 15:00,Vicarage Road,Watford,Derby County,2 - 0
+396,33,21/02/2026 15:00,SToK Cae Ras,Wrexham,Ipswich Town,5 - 3
+390,33,22/02/2026 12:00,Bramall Lane,Sheffield United,Sheffield Wednesday,2 - 1
+397,34,24/02/2026 19:45,The MKM Stadium,Hull City,Derby County,4 - 2
+398,34,24/02/2026 19:45,Riverside Stadium,Middlesbrough,Leicester City,1 - 1
+401,34,24/02/2026 19:45,Swansea.com Stadium,Swansea City,Preston North End,1 - 1
+402,34,24/02/2026 19:45,Vicarage Road,Watford,Ipswich Town,0 - 2
+403,34,24/02/2026 19:45,The Hawthorns,West Bromwich Albion,Charlton Athletic,1 - 1
+404,34,24/02/2026 19:45,SToK Cae Ras,Wrexham,Portsmouth,2 - 1
+405,34,24/02/2026 19:45,Ewood Park,Blackburn Rovers,Bristol City,1 - 2
+399,34,24/02/2026 20:00,St. Mary's Stadium,Southampton,Queens Park Rangers,5 - 0
+406,34,25/02/2026 19:45,The Den,Millwall,Birmingham City,3 - 0
+407,34,25/02/2026 19:45,Carrow Road,Norwich City,Sheffield Wednesday,2 - 0
+408,34,25/02/2026 19:45,Bramall Lane,Sheffield United,Coventry City,1 - 2
+400,34,25/02/2026 20:00,bet365 Stadium,Stoke City,Oxford United,2 - 1
+410,35,27/02/2026 20:00,Ashton Gate Stadium,Bristol City,Watford,1 - 2
+413,35,28/02/2026 12:30,Pride Park Stadium,Derby County,Blackburn Rovers,3 - 1
+415,35,28/02/2026 12:30,King Power Stadium,Leicester City,Norwich City,0 - 2
+417,35,28/02/2026 12:30,Fratton Park,Portsmouth,Hull City,0 - 1
+411,35,28/02/2026 15:00,The Valley,Charlton Athletic,Wrexham,0 - 1
+412,35,28/02/2026 15:00,The Coventry Building Society Arena,Coventry City,Stoke City,2 - 1
+414,35,28/02/2026 15:00,Portman Road,Ipswich Town,Swansea City,3 - 0
+416,35,28/02/2026 15:00,The Kassam Stadium,Oxford United,West Bromwich Albion,2 - 1
+418,35,28/02/2026 15:00,Deepdale,Preston North End,Millwall,0 - 2
+419,35,28/02/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Sheffield United,0 - 2
+420,35,28/02/2026 15:00,Hillsborough,Sheffield Wednesday,Southampton,1 - 3
+409,35,02/03/2026 20:00,St. Andrew's @ Knighthead Park,Birmingham City,Middlesbrough,1 - 3
+427,36,06/03/2026 20:00,Deepdale,Preston North End,Oxford United,1 - 3
+421,36,07/03/2026 12:30,Ewood Park,Blackburn Rovers,Portsmouth,1 - 1
+425,36,07/03/2026 12:30,The MKM Stadium,Hull City,Millwall,1 - 3
+422,36,07/03/2026 15:00,Ashton Gate Stadium,Bristol City,Coventry City,0 - 2
+423,36,07/03/2026 15:00,The Valley,Charlton Athletic,Birmingham City,1 - 0
+424,36,07/03/2026 15:00,Pride Park Stadium,Derby County,Sheffield Wednesday,2 - 1
+426,36,07/03/2026 15:00,Portman Road,Ipswich Town,Leicester City,1 - 1
+429,36,07/03/2026 15:00,Bramall Lane,Sheffield United,West Bromwich Albion,1 - 1
+431,36,07/03/2026 15:00,Swansea.com Stadium,Swansea City,Stoke City,2 - 0
+428,36,08/03/2026 16:30,MATRADE Loftus Road,Queens Park Rangers,Middlesbrough,0 - 4
+432,36,17/03/2026 19:45,Vicarage Road,Watford,Wrexham,3 - 1
+430,36,18/03/2026 19:45,St. Mary's Stadium,Southampton,Norwich City,1 - 0
+434,37,10/03/2026 19:45,King Power Stadium,Leicester City,Bristol City,2 - 0
+435,37,10/03/2026 19:45,The Den,Millwall,Derby County,1 - 0
+437,37,10/03/2026 19:45,Fratton Park,Portsmouth,Swansea City,1 - 2
+438,37,10/03/2026 19:45,Hillsborough,Sheffield Wednesday,Watford,1 - 1
+440,37,10/03/2026 19:45,SToK Cae Ras,Wrexham,Hull City,1 - 2
+439,37,10/03/2026 20:00,bet365 Stadium,Stoke City,Ipswich Town,3 - 3
+433,37,11/03/2026 19:45,St. Andrew's @ Knighthead Park,Birmingham City,Queens Park Rangers,1 - 0
+436,37,11/03/2026 19:45,Carrow Road,Norwich City,Sheffield United,2 - 1
+442,37,11/03/2026 19:45,Riverside Stadium,Middlesbrough,Charlton Athletic,0 - 1
+443,37,11/03/2026 19:45,The Kassam Stadium,Oxford United,Blackburn Rovers,1 - 0
+444,37,11/03/2026 19:45,The Hawthorns,West Bromwich Albion,Southampton,1 - 1
+441,37,11/03/2026 20:00,The Coventry Building Society Arena,Coventry City,Preston North End,3 - 0
+456,38,13/03/2026 20:00,SToK Cae Ras,Wrexham,Swansea City,2 - 0
+446,38,14/03/2026 12:30,The Coventry Building Society Arena,Coventry City,Southampton,1 - 2
+448,38,14/03/2026 12:30,Riverside Stadium,Middlesbrough,Bristol City,1 - 1
+451,38,14/03/2026 12:30,The Kassam Stadium,Oxford United,Charlton Athletic,1 - 1
+445,38,14/03/2026 15:00,St. Andrew's @ Knighthead Park,Birmingham City,Sheffield United,1 - 1
+447,38,14/03/2026 15:00,King Power Stadium,Leicester City,Queens Park Rangers,1 - 3
+449,38,14/03/2026 15:00,The Den,Millwall,Blackburn Rovers,1 - 2
+450,38,14/03/2026 15:00,Carrow Road,Norwich City,Preston North End,2 - 0
+453,38,14/03/2026 15:00,Hillsborough,Sheffield Wednesday,Ipswich Town,0 - 2
+454,38,14/03/2026 15:00,bet365 Stadium,Stoke City,Watford,3 - 1
+455,38,14/03/2026 15:00,The Hawthorns,West Bromwich Albion,Hull City,3 - 0
+452,38,16/03/2026 20:00,Fratton Park,Portsmouth,Derby County,0 - 1
+463,39,20/03/2026 20:00,Deepdale,Preston North End,Stoke City,3 - 1
+457,39,21/03/2026 12:30,Ewood Park,Blackburn Rovers,Middlesbrough,0 - 0
+460,39,21/03/2026 12:30,Pride Park Stadium,Derby County,Birmingham City,1 - 0
+462,39,21/03/2026 12:30,Portman Road,Ipswich Town,Millwall,1 - 1
+458,39,21/03/2026 15:00,Ashton Gate Stadium,Bristol City,West Bromwich Albion,0 - 1
+459,39,21/03/2026 15:00,The Valley,Charlton Athletic,Norwich City,0 - 1
+461,39,21/03/2026 15:00,The MKM Stadium,Hull City,Sheffield Wednesday,3 - 1
+464,39,21/03/2026 15:00,MATRADE Loftus Road,Queens Park Rangers,Portsmouth,6 - 1
+465,39,21/03/2026 15:00,Bramall Lane,Sheffield United,Wrexham,1 - 2
+466,39,21/03/2026 15:00,St. Mary's Stadium,Southampton,Oxford United,2 - 0
+468,39,21/03/2026 15:00,Vicarage Road,Watford,Leicester City,0 - 0
+467,39,21/03/2026 17:15,Swansea.com Stadium,Swansea City,Coventry City,0 - 3
+473,40,03/04/2026 11:30,Riverside Stadium,Middlesbrough,Millwall,1 - 2
+469,40,03/04/2026 14:00,St. Andrew's @ Knighthead Park,Birmingham City,Blackburn Rovers,0 - 1
+470,40,03/04/2026 14:00,The Valley,Charlton Athletic,Bristol City,1 - 2
+472,40,03/04/2026 14:00,King Power Stadium,Leicester City,Preston North End,2 - 2
+474,40,03/04/2026 14:00,Carrow Road,Norwich City,Portsmouth,1 - 1
+475,40,03/04/2026 14:00,The Kassam Stadium,Oxford United,Hull City,1 - 1
+476,40,03/04/2026 14:00,MATRADE Loftus Road,Queens Park Rangers,Watford,2 - 1
+477,40,03/04/2026 14:00,Bramall Lane,Sheffield United,Swansea City,3 - 3
+479,40,03/04/2026 14:00,bet365 Stadium,Stoke City,Sheffield Wednesday,2 - 0
+480,40,03/04/2026 14:00,The Hawthorns,West Bromwich Albion,Wrexham,2 - 2
+471,40,03/04/2026 19:00,The Coventry Building Society Arena,Coventry City,Derby County,3 - 2
+478,40,28/04/2026 18:45,St. Mary's Stadium,Southampton,Ipswich Town,2 - 2
+487,41,06/04/2026 11:30,Fratton Park,Portsmouth,Oxford United,2 - 2
+486,41,06/04/2026 12:00,The Den,Millwall,Norwich City,1 - 2
+481,41,06/04/2026 14:00,Ewood Park,Blackburn Rovers,West Bromwich Albion,0 - 0
+482,41,06/04/2026 14:00,Ashton Gate Stadium,Bristol City,Sheffield United,1 - 0
+483,41,06/04/2026 14:00,Pride Park Stadium,Derby County,Stoke City,2 - 0
+485,41,06/04/2026 14:00,Portman Road,Ipswich Town,Birmingham City,2 - 1
+488,41,06/04/2026 14:00,Deepdale,Preston North End,Queens Park Rangers,1 - 1
+489,41,06/04/2026 14:00,Hillsborough,Sheffield Wednesday,Leicester City,1 - 1
+491,41,06/04/2026 14:00,Vicarage Road,Watford,Charlton Athletic,1 - 1
+490,41,06/04/2026 16:30,Swansea.com Stadium,Swansea City,Middlesbrough,2 - 2
+484,41,06/04/2026 19:00,The MKM Stadium,Hull City,Coventry City,0 - 0
+492,41,07/04/2026 19:00,SToK Cae Ras,Wrexham,Southampton,1 - 5
+504,42,10/04/2026 19:00,The Hawthorns,West Bromwich Albion,Millwall,0 - 0
+495,42,11/04/2026 11:30,The Coventry Building Society Arena,Coventry City,Sheffield Wednesday,0 - 0
+500,42,11/04/2026 11:30,MATRADE Loftus Road,Queens Park Rangers,Bristol City,0 - 0
+494,42,11/04/2026 14:00,The Valley,Charlton Athletic,Preston North End,1 - 2
+496,42,11/04/2026 14:00,King Power Stadium,Leicester City,Swansea City,0 - 1
+497,42,11/04/2026 14:00,Riverside Stadium,Middlesbrough,Portsmouth,0 - 1
+498,42,11/04/2026 14:00,Carrow Road,Norwich City,Ipswich Town,0 - 2
+499,42,11/04/2026 14:00,The Kassam Stadium,Oxford United,Watford,2 - 0
+501,42,11/04/2026 14:00,Bramall Lane,Sheffield United,Hull City,2 - 1
+502,42,11/04/2026 14:00,St. Mary's Stadium,Southampton,Derby County,2 - 1
+503,42,11/04/2026 14:00,bet365 Stadium,Stoke City,Blackburn Rovers,1 - 1
+493,42,12/04/2026 11:00,St. Andrew's @ Knighthead Park,Birmingham City,Wrexham,2 - 0
+505,43,17/04/2026 19:00,Ewood Park,Blackburn Rovers,Coventry City,1 - 1
+507,43,18/04/2026 11:30,Pride Park Stadium,Derby County,Oxford United,1 - 0
+510,43,18/04/2026 11:30,The Den,Millwall,Queens Park Rangers,2 - 0
+511,43,18/04/2026 11:30,Fratton Park,Portsmouth,Leicester City,1 - 0
+506,43,18/04/2026 14:00,Ashton Gate Stadium,Bristol City,Norwich City,2 - 4
+508,43,18/04/2026 14:00,The MKM Stadium,Hull City,Birmingham City,1 - 1
+512,43,18/04/2026 14:00,Deepdale,Preston North End,West Bromwich Albion,0 - 2
+513,43,18/04/2026 14:00,Hillsborough,Sheffield Wednesday,Charlton Athletic,1 - 1
+514,43,18/04/2026 14:00,Swansea.com Stadium,Swansea City,Southampton,1 - 2
+515,43,18/04/2026 14:00,Vicarage Road,Watford,Sheffield United,0 - 2
+516,43,18/04/2026 14:00,SToK Cae Ras,Wrexham,Stoke City,2 - 0
+509,43,19/04/2026 11:00,Portman Road,Ipswich Town,Middlesbrough,2 - 2
+517,44,21/04/2026 18:45,The Coventry Building Society Arena,Coventry City,Portsmouth,5 - 1
+519,44,21/04/2026 18:45,Carrow Road,Norwich City,Derby County,2 - 1
+520,44,21/04/2026 18:45,The Kassam Stadium,Oxford United,Wrexham,0 - 1
+521,44,21/04/2026 18:45,MATRADE Loftus Road,Queens Park Rangers,Swansea City,1 - 2
+522,44,21/04/2026 18:45,St. Mary's Stadium,Southampton,Bristol City,2 - 2
+523,44,21/04/2026 18:45,bet365 Stadium,Stoke City,Millwall,1 - 3
+524,44,21/04/2026 18:45,The Hawthorns,West Bromwich Albion,Watford,3 - 0
+527,44,21/04/2026 18:45,King Power Stadium,Leicester City,Hull City,2 - 2
+518,44,22/04/2026 18:45,Riverside Stadium,Middlesbrough,Sheffield Wednesday,1 - 0
+525,44,22/04/2026 18:45,St. Andrew's @ Knighthead Park,Birmingham City,Preston North End,2 - 1
+526,44,22/04/2026 18:45,The Valley,Charlton Athletic,Ipswich Town,1 - 2
+528,44,22/04/2026 18:45,Bramall Lane,Sheffield United,Blackburn Rovers,1 - 3
+538,45,14/04/2026 19:00,St. Mary's Stadium,Southampton,Blackburn Rovers,3 - 0
+532,45,24/04/2026 19:00,King Power Stadium,Leicester City,Millwall,1 - 1
+530,45,25/04/2026 11:30,The Valley,Charlton Athletic,Hull City,2 - 1
+533,45,25/04/2026 11:30,Riverside Stadium,Middlesbrough,Watford,5 - 1
+540,45,25/04/2026 11:30,The Hawthorns,West Bromwich Albion,Ipswich Town,0 - 0
+529,45,25/04/2026 14:00,St. Andrew's @ Knighthead Park,Birmingham City,Bristol City,2 - 1
+534,45,25/04/2026 14:00,Carrow Road,Norwich City,Swansea City,1 - 1
+535,45,25/04/2026 14:00,The Kassam Stadium,Oxford United,Sheffield Wednesday,4 - 1
+536,45,25/04/2026 14:00,MATRADE Loftus Road,Queens Park Rangers,Derby County,2 - 3
+537,45,25/04/2026 14:00,Bramall Lane,Sheffield United,Preston North End,2 - 3
+539,45,25/04/2026 14:00,bet365 Stadium,Stoke City,Portsmouth,1 - 3
+531,45,26/04/2026 11:00,The Coventry Building Society Arena,Coventry City,Wrexham,3 - 1
+541,46,02/05/2026 11:30,Ewood Park,Blackburn Rovers,Leicester City,0 - 1
+542,46,02/05/2026 11:30,Ashton Gate Stadium,Bristol City,Stoke City,2 - 0
+543,46,02/05/2026 11:30,Pride Park Stadium,Derby County,Sheffield United,1 - 2
+544,46,02/05/2026 11:30,The MKM Stadium,Hull City,Norwich City,2 - 1
+545,46,02/05/2026 11:30,Portman Road,Ipswich Town,Queens Park Rangers,3 - 0
+546,46,02/05/2026 11:30,The Den,Millwall,Oxford United,2 - 0
+547,46,02/05/2026 11:30,Fratton Park,Portsmouth,Birmingham City,1 - 1
+548,46,02/05/2026 11:30,Deepdale,Preston North End,Southampton,1 - 3
+549,46,02/05/2026 11:30,Hillsborough,Sheffield Wednesday,West Bromwich Albion,2 - 1
+550,46,02/05/2026 11:30,Swansea.com Stadium,Swansea City,Charlton Athletic,3 - 1
+551,46,02/05/2026 11:30,Vicarage Road,Watford,Coventry City,0 - 4
+552,46,02/05/2026 11:30,SToK Cae Ras,Wrexham,Middlesbrough,2 - 2

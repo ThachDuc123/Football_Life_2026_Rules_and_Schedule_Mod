@@ -1,0 +1,190 @@
+Match Number,Round Number,Date,Location,Home Team,Away Team,Result
+1,1,24/09/2025 16:45,Toumba Stadium,PAOK,M. Tel-Aviv,0 - 0
+2,1,24/09/2025 16:45,Arena Herning,Midtjylland,Sturm Graz,2 - 0
+3,1,24/09/2025 19:00,Stadion Maksimir,GNK Dinamo,Fenerbahçe,3 - 1
+4,1,24/09/2025 19:00,La Cartuja de Sevilla,Real Betis,Nott'm Forest,2 - 2
+5,1,24/09/2025 19:00,Estádio Municipal de Braga,Braga,Feyenoord,1 - 0
+6,1,24/09/2025 19:00,Stadion Rajko Mitic,Crvena Zvezda,Celtic,1 - 1
+7,1,24/09/2025 19:00,Stadion am Wolfswinkel,Freiburg,Basel,2 - 1
+8,1,24/09/2025 19:00,Grand Stade de Nice,Nice,Roma,1 - 2
+9,1,24/09/2025 19:00,Malmö New Stadium,Malmö,Ludogorets,1 - 2
+10,1,25/09/2025 16:45,Stade Pierre Mauroy,Lille,Brann,2 - 1
+11,1,25/09/2025 16:45,Stadion De Adelaarshorst,Go Ahead Eagles,FCSB,0 - 1
+12,1,25/09/2025 19:00,Ibrox Stadium,Rangers,Genk,0 - 1
+13,1,25/09/2025 19:00,Stadion Salzburg,Salzburg,Porto,0 - 1
+14,1,25/09/2025 19:00,Villa Park,Aston Villa,Bologna,1 - 0
+15,1,25/09/2025 19:00,Ferencváros Stadion,Ferencváros,Viktoria Plzen,1 - 1
+16,1,25/09/2025 19:00,Stadion Wankdorf,Young Boys,Panathinaikos,1 - 4
+17,1,25/09/2025 19:00,Arena Stuttgart,Stuttgart,Celta,2 - 1
+18,1,25/09/2025 19:00,Stadion Galgenwaard,Utrecht,Lyon,0 - 1
+19,2,02/10/2025 16:45,Stadio Olimpico,Roma,Lille,0 - 1
+20,2,02/10/2025 16:45,Fenerbahçe Sükrü Saracoglu Spor Kompleksi,Fenerbahçe,Nice,2 - 1
+21,2,02/10/2025 16:45,Stadion mesta Plzne,Viktoria Plzen,Malmö,3 - 0
+22,2,02/10/2025 16:45,Celtic Park,Celtic,Braga,0 - 2
+23,2,02/10/2025 16:45,Ludogorets Arena,Ludogorets,Real Betis,0 - 2
+24,2,02/10/2025 16:45,National Arena,FCSB,Young Boys,0 - 2
+25,2,02/10/2025 16:45,Stadio Renato Dall'Ara,Bologna,Freiburg,1 - 1
+26,2,02/10/2025 16:45,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Go Ahead Eagles,1 - 2
+27,2,02/10/2025 16:45,Brann Stadion,Brann,Utrecht,1 - 0
+28,2,02/10/2025 19:00,Estádio do Dragão,Porto,Crvena Zvezda,2 - 1
+29,2,02/10/2025 19:00,Stadion Feijenoord 'De Kuip',Feyenoord,Aston Villa,0 - 2
+30,2,02/10/2025 19:00,OL Stadium,Lyon,Salzburg,2 - 0
+31,2,02/10/2025 19:00,TSC Arena,M. Tel-Aviv,GNK Dinamo,1 - 3
+32,2,02/10/2025 19:00,St. Jakob-Park,Basel,Stuttgart,2 - 0
+33,2,02/10/2025 19:00,City Ground,Nott'm Forest,Midtjylland,2 - 3
+34,2,02/10/2025 19:00,Stadion Graz Liebenau,Sturm Graz,Rangers,2 - 1
+35,2,02/10/2025 19:00,Estadio Balaidos,Celta,PAOK,3 - 1
+36,2,02/10/2025 19:00,KRC Genk Arena,Genk,Ferencváros,0 - 1
+38,3,23/10/2025 16:45,Stadion Salzburg,Salzburg,Ferencváros,2 - 3
+39,3,23/10/2025 16:45,Fenerbahçe Sükrü Saracoglu Spor Kompleksi,Fenerbahçe,Stuttgart,1 - 0
+40,3,23/10/2025 16:45,Estádio Municipal de Braga,Braga,Crvena Zvezda,2 - 0
+41,3,23/10/2025 16:45,OL Stadium,Lyon,Basel,2 - 0
+42,3,23/10/2025 16:45,National Arena,FCSB,Bologna,1 - 2
+43,3,23/10/2025 16:45,Stadion De Adelaarshorst,Go Ahead Eagles,Aston Villa,2 - 1
+44,3,23/10/2025 16:45,KRC Genk Arena,Genk,Real Betis,0 - 0
+45,3,23/10/2025 16:45,Brann Stadion,Brann,Rangers,3 - 0
+37,3,23/10/2025 19:00,Stadion Feijenoord 'De Kuip',Feyenoord,Panathinaikos,3 - 1
+46,3,23/10/2025 19:00,Stadio Olimpico,Roma,Viktoria Plzen,1 - 2
+47,3,23/10/2025 19:00,Stade Pierre Mauroy,Lille,PAOK,3 - 4
+48,3,23/10/2025 19:00,Celtic Park,Celtic,Sturm Graz,2 - 1
+49,3,23/10/2025 19:00,TSC Arena,M. Tel-Aviv,Midtjylland,0 - 3
+50,3,23/10/2025 19:00,Stadion Wankdorf,Young Boys,Ludogorets,3 - 2
+51,3,23/10/2025 19:00,Stadion am Wolfswinkel,Freiburg,Utrecht,2 - 0
+52,3,23/10/2025 19:00,City Ground,Nott'm Forest,Porto,2 - 0
+53,3,23/10/2025 19:00,Estadio Balaidos,Celta,Nice,2 - 1
+54,3,23/10/2025 19:00,Malmö New Stadium,Malmö,GNK Dinamo,1 - 1
+55,4,06/11/2025 17:45,Stadion Maksimir,GNK Dinamo,Celta,0 - 3
+56,4,06/11/2025 17:45,Stadion Salzburg,Salzburg,Go Ahead Eagles,2 - 0
+57,4,06/11/2025 17:45,Stadion Rajko Mitic,Crvena Zvezda,Lille,1 - 0
+58,4,06/11/2025 17:45,St. Jakob-Park,Basel,FCSB,3 - 1
+59,4,06/11/2025 17:45,Arena Herning,Midtjylland,Celtic,3 - 1
+60,4,06/11/2025 17:45,Stadion Graz Liebenau,Sturm Graz,Nott'm Forest,0 - 0
+61,4,06/11/2025 17:45,Grand Stade de Nice,Nice,Freiburg,1 - 3
+62,4,06/11/2025 17:45,Malmö New Stadium,Malmö,Panathinaikos,0 - 1
+63,4,06/11/2025 17:45,Stadion Galgenwaard,Utrecht,Porto,1 - 1
+64,4,06/11/2025 20:00,Ibrox Stadium,Rangers,Roma,0 - 2
+65,4,06/11/2025 20:00,La Cartuja de Sevilla,Real Betis,Lyon,2 - 0
+66,4,06/11/2025 20:00,Villa Park,Aston Villa,M. Tel-Aviv,2 - 0
+67,4,06/11/2025 20:00,Estádio Municipal de Braga,Braga,Genk,3 - 4
+68,4,06/11/2025 20:00,Toumba Stadium,PAOK,Young Boys,4 - 0
+69,4,06/11/2025 20:00,Stadion mesta Plzne,Viktoria Plzen,Fenerbahçe,0 - 0
+70,4,06/11/2025 20:00,Ferencváros Stadion,Ferencváros,Ludogorets,3 - 1
+71,4,06/11/2025 20:00,Stadio Renato Dall'Ara,Bologna,Brann,0 - 0
+72,4,06/11/2025 20:00,Arena Stuttgart,Stuttgart,Feyenoord,2 - 0
+73,5,27/11/2025 17:45,Stadio Olimpico,Roma,Midtjylland,2 - 1
+74,5,27/11/2025 17:45,Estádio do Dragão,Porto,Nice,3 - 0
+75,5,27/11/2025 17:45,Stadion Feijenoord 'De Kuip',Feyenoord,Celtic,1 - 3
+76,5,27/11/2025 17:45,Stade Pierre Mauroy,Lille,GNK Dinamo,4 - 0
+77,5,27/11/2025 17:45,Villa Park,Aston Villa,Young Boys,2 - 1
+78,5,27/11/2025 17:45,Fenerbahçe Sükrü Saracoglu Spor Kompleksi,Fenerbahçe,Ferencváros,1 - 1
+79,5,27/11/2025 17:45,Toumba Stadium,PAOK,Brann,1 - 1
+80,5,27/11/2025 17:45,Stadion mesta Plzne,Viktoria Plzen,Freiburg,0 - 0
+81,5,27/11/2025 17:45,Ludogorets Arena,Ludogorets,Celta,3 - 2
+82,5,27/11/2025 20:00,Ibrox Stadium,Rangers,Braga,1 - 1
+83,5,27/11/2025 20:00,La Cartuja de Sevilla,Real Betis,Utrecht,2 - 1
+84,5,27/11/2025 20:00,Stadion Rajko Mitic,Crvena Zvezda,FCSB,1 - 0
+85,5,27/11/2025 20:00,TSC Arena,M. Tel-Aviv,Lyon,0 - 6
+86,5,27/11/2025 20:00,City Ground,Nott'm Forest,Malmö,3 - 0
+87,5,27/11/2025 20:00,Stadio Renato Dall'Ara,Bologna,Salzburg,4 - 1
+88,5,27/11/2025 20:00,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Sturm Graz,2 - 1
+89,5,27/11/2025 20:00,Stadion De Adelaarshorst,Go Ahead Eagles,Stuttgart,0 - 4
+90,5,27/11/2025 20:00,KRC Genk Arena,Genk,Basel,2 - 1
+91,6,11/12/2025 17:45,Stadion Maksimir,GNK Dinamo,Real Betis,1 - 3
+92,6,11/12/2025 17:45,Ferencváros Stadion,Ferencváros,Rangers,2 - 1
+93,6,11/12/2025 17:45,Stadion Wankdorf,Young Boys,Lille,1 - 0
+94,6,11/12/2025 17:45,Arena Herning,Midtjylland,Genk,1 - 0
+95,6,11/12/2025 17:45,Ludogorets Arena,Ludogorets,PAOK,3 - 3
+96,6,11/12/2025 17:45,Stadion Graz Liebenau,Sturm Graz,Crvena Zvezda,0 - 1
+97,6,11/12/2025 17:45,Grand Stade de Nice,Nice,Braga,0 - 1
+98,6,11/12/2025 17:45,Arena Stuttgart,Stuttgart,M. Tel-Aviv,4 - 1
+99,6,11/12/2025 17:45,Stadion Galgenwaard,Utrecht,Nott'm Forest,1 - 2
+100,6,11/12/2025 20:00,Estádio do Dragão,Porto,Malmö,2 - 1
+101,6,11/12/2025 20:00,OL Stadium,Lyon,Go Ahead Eagles,2 - 1
+102,6,11/12/2025 20:00,Celtic Park,Celtic,Roma,0 - 3
+103,6,11/12/2025 20:00,St. Jakob-Park,Basel,Aston Villa,1 - 2
+104,6,11/12/2025 20:00,Stadion am Wolfswinkel,Freiburg,Salzburg,1 - 0
+105,6,11/12/2025 20:00,National Arena,FCSB,Feyenoord,4 - 3
+106,6,11/12/2025 20:00,Estadio Balaidos,Celta,Bologna,1 - 2
+107,6,11/12/2025 20:00,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Viktoria Plzen,0 - 0
+108,6,11/12/2025 20:00,Brann Stadion,Brann,Fenerbahçe,0 - 4
+109,7,22/01/2026 17:45,Stadion Feijenoord 'De Kuip',Feyenoord,Sturm Graz,3 - 0
+110,7,22/01/2026 17:45,Fenerbahçe Sükrü Saracoglu Spor Kompleksi,Fenerbahçe,Aston Villa,0 - 1
+111,7,22/01/2026 17:45,Toumba Stadium,PAOK,Real Betis,2 - 0
+112,7,22/01/2026 17:45,Stadion mesta Plzne,Viktoria Plzen,Porto,1 - 1
+113,7,22/01/2026 17:45,Stadion Wankdorf,Young Boys,Lyon,0 - 1
+114,7,22/01/2026 17:45,Stadion am Wolfswinkel,Freiburg,M. Tel-Aviv,1 - 0
+115,7,22/01/2026 17:45,Stadio Renato Dall'Ara,Bologna,Celtic,2 - 2
+116,7,22/01/2026 17:45,Malmö New Stadium,Malmö,Crvena Zvezda,0 - 1
+117,7,22/01/2026 17:45,Brann Stadion,Brann,Midtjylland,3 - 3
+118,7,22/01/2026 20:00,Stadio Olimpico,Roma,Stuttgart,2 - 0
+119,7,22/01/2026 20:00,Ibrox Stadium,Rangers,Ludogorets,1 - 0
+120,7,22/01/2026 20:00,Stadion Maksimir,GNK Dinamo,FCSB,4 - 1
+121,7,22/01/2026 20:00,Stadion Salzburg,Salzburg,Basel,3 - 1
+122,7,22/01/2026 20:00,Estádio Municipal de Braga,Braga,Nott'm Forest,1 - 0
+123,7,22/01/2026 20:00,Ferencváros Stadion,Ferencváros,Panathinaikos,1 - 1
+124,7,22/01/2026 20:00,Grand Stade de Nice,Nice,Go Ahead Eagles,3 - 1
+125,7,22/01/2026 20:00,Estadio Balaidos,Celta,Lille,2 - 1
+126,7,22/01/2026 20:00,Stadion Galgenwaard,Utrecht,Genk,0 - 2
+127,8,29/01/2026 20:00,Estádio do Dragão,Porto,Rangers,3 - 1
+128,8,29/01/2026 20:00,Stade Pierre Mauroy,Lille,Freiburg,1 - 0
+129,8,29/01/2026 20:00,La Cartuja de Sevilla,Real Betis,Feyenoord,2 - 1
+130,8,29/01/2026 20:00,Villa Park,Aston Villa,Salzburg,3 - 2
+131,8,29/01/2026 20:00,Stadion Rajko Mitic,Crvena Zvezda,Celta,1 - 1
+132,8,29/01/2026 20:00,OL Stadium,Lyon,PAOK,4 - 2
+133,8,29/01/2026 20:00,Celtic Park,Celtic,Utrecht,4 - 2
+134,8,29/01/2026 20:00,TSC Arena,M. Tel-Aviv,Bologna,0 - 3
+135,8,29/01/2026 20:00,St. Jakob-Park,Basel,Viktoria Plzen,0 - 1
+136,8,29/01/2026 20:00,Arena Herning,Midtjylland,GNK Dinamo,2 - 0
+137,8,29/01/2026 20:00,Ludogorets Arena,Ludogorets,Nice,1 - 0
+138,8,29/01/2026 20:00,City Ground,Nott'm Forest,Ferencváros,4 - 0
+139,8,29/01/2026 20:00,Stadion Graz Liebenau,Sturm Graz,Brann,1 - 0
+140,8,29/01/2026 20:00,National Arena,FCSB,Fenerbahçe,1 - 1
+141,8,29/01/2026 20:00,Arena Stuttgart,Stuttgart,Young Boys,3 - 2
+142,8,29/01/2026 20:00,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Roma,1 - 1
+143,8,29/01/2026 20:00,Stadion De Adelaarshorst,Go Ahead Eagles,Braga,0 - 0
+144,8,29/01/2026 20:00,KRC Genk Arena,Genk,Malmö,2 - 1
+145,Play-off Game 1,19/02/2026 17:45,Stadion Maksimir,GNK Dinamo,Genk,1 - 3
+146,Play-off Game 1,19/02/2026 17:45,Toumba Stadium,PAOK,Celta,1 - 2
+147,Play-off Game 1,19/02/2026 17:45,Brann Stadion,Brann,Bologna,0 - 1
+148,Play-off Game 1,19/02/2026 17:45,Fenerbahçe Sükrü Saracoglu Spor Kompleksi,Fenerbahçe,Nott'm Forest,0 - 3
+149,Play-off Game 1,19/02/2026 20:00,Ludogorets Arena,Ludogorets,Ferencváros,2 - 1
+150,Play-off Game 1,19/02/2026 20:00,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Viktoria Plzen,2 - 2
+151,Play-off Game 1,19/02/2026 20:00,Stade Pierre Mauroy,Lille,Crvena Zvezda,0 - 1
+152,Play-off Game 1,19/02/2026 20:00,Celtic Park,Celtic,Stuttgart,1 - 4
+153,Play-off Game 2,26/02/2026 17:45,Ferencváros Stadion,Ferencváros,Ludogorets,2 - 0
+154,Play-off Game 2,26/02/2026 17:45,Stadion mesta Plzne,Viktoria Plzen,Panathinaikos,1 - 1
+155,Play-off Game 2,26/02/2026 17:45,Stadion Rajko Mitic,Crvena Zvezda,Lille,0 - 2
+156,Play-off Game 2,26/02/2026 17:45,Arena Stuttgart,Stuttgart,Celtic,0 - 1
+157,Play-off Game 2,26/02/2026 20:00,KRC Genk Arena,Genk,GNK Dinamo,3 - 3
+158,Play-off Game 2,26/02/2026 20:00,Estadio Balaidos,Celta,PAOK,1 - 0
+159,Play-off Game 2,26/02/2026 20:00,Stadio Renato Dall'Ara,Bologna,Brann,1 - 0
+160,Play-off Game 2,26/02/2026 20:00,City Ground,Nott'm Forest,Fenerbahçe,1 - 2
+161,R16 Game 1,12/03/2026 17:45,Olympic Athletic Center of Athens ""Spyros Louis"",Panathinaikos,Real Betis,1 - 0
+162,R16 Game 1,12/03/2026 17:45,Arena Stuttgart,Stuttgart,Porto,1 - 2
+163,R16 Game 1,12/03/2026 17:45,Stadio Renato Dall'Ara,Bologna,Roma,1 - 1
+164,R16 Game 1,12/03/2026 17:45,Stade Pierre Mauroy,Lille,Aston Villa,0 - 1
+165,R16 Game 1,12/03/2026 20:00,Ferencváros Stadion,Ferencváros,Braga,2 - 0
+166,R16 Game 1,12/03/2026 20:00,KRC Genk Arena,Genk,Freiburg,1 - 0
+167,R16 Game 1,12/03/2026 20:00,Estadio Balaidos,Celta,Lyon,1 - 1
+168,R16 Game 1,12/03/2026 20:00,City Ground,Nott'm Forest,Midtjylland,0 - 1
+169,R16 Game 2,18/03/2026 15:30,Estádio Municipal de Braga,Braga,Ferencváros,4 - 0
+170,R16 Game 2,19/03/2026 17:45,Stadion am Wolfswinkel,Freiburg,Genk,5 - 1
+171,R16 Game 2,19/03/2026 17:45,OL Stadium,Lyon,Celta,0 - 2
+172,R16 Game 2,19/03/2026 17:45,Arena Herning,Midtjylland,Nott'm Forest,1 - 2
+173,R16 Game 2,19/03/2026 20:00,La Cartuja de Sevilla,Real Betis,Panathinaikos,4 - 0
+174,R16 Game 2,19/03/2026 20:00,Estádio do Dragão,Porto,Stuttgart,2 - 0
+175,R16 Game 2,19/03/2026 20:00,Stadio Olimpico,Roma,Bologna,3 - 4
+176,R16 Game 2,19/03/2026 20:00,Villa Park,Aston Villa,Lille,2 - 0
+177,QF Game 1,08/04/2026 16:45,Estádio Municipal de Braga,Braga,Real Betis,1 - 1
+178,QF Game 1,09/04/2026 19:00,Stadion am Wolfswinkel,Freiburg,Celta,3 - 0
+179,QF Game 1,09/04/2026 19:00,Estádio do Dragão,Porto,Nott'm Forest,1 - 1
+180,QF Game 1,09/04/2026 19:00,Stadio Renato Dall'Ara,Bologna,Aston Villa,1 - 3
+181,QF Game 2,16/04/2026 16:45,Estadio Balaidos,Celta,Freiburg,1 - 3
+182,QF Game 2,16/04/2026 19:00,La Cartuja de Sevilla,Real Betis,Braga,2 - 4
+183,QF Game 2,16/04/2026 19:00,City Ground,Nott'm Forest,Porto,1 - 0
+184,QF Game 2,16/04/2026 19:00,Villa Park,Aston Villa,Bologna,4 - 0
+185,SF Game 1,30/04/2026 19:00,Estádio Municipal de Braga,Braga,Freiburg,2 - 1
+186,SF Game 1,30/04/2026 19:00,City Ground,Nott'm Forest,Aston Villa,1 - 0
+187,SF Game 2,07/05/2026 19:00,Stadion am Wolfswinkel,Freiburg,Braga,3 - 1
+188,SF Game 2,07/05/2026 19:00,Villa Park,Aston Villa,Nott'm Forest,4 - 0
+189,Final,20/05/2026 19:00,Besiktas Stadium,Freiburg,Aston Villa,0 - 3
