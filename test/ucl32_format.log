@@ -1,0 +1,9 @@
+15:53:30 | FORMAT-APPLIED temporada 2026: 32 equipos, 96 partidos, 6 rivales, 3H/3A, 0 mismo pais
+15:53:30 | FORMAT-INFO pais desconocido para team 61000: pais sintetico, sin restriccion de pais
+15:53:30 | FORMAT-APPLIED temporada 2027: 32 equipos, 96 partidos, 6 rivales, 3H/3A, 0 mismo pais
+15:53:30 | FORMAT-BLOCKED hay partidos UCL jugados; se preserva la temporada
+15:53:30 | FORMAT-BLOCKED mas de 96 eventos de fase liga: eventos=108 clubes=32 jornadas=16/16/16/16/16/16 evento=0 valor=0
+15:53:30 | FORMAT-APPLIED temporada 2030: 32 equipos, 96 partidos, 6 rivales, 3H/3A, 0 mismo pais
+15:53:30 | FORMAT-APPLIED temporada 2031: 32 equipos, 96 partidos, 6 rivales, 3H/3A, 18 mismo pais
+15:55:14 | LOADED ucl32 format permanente 1.2.0 (pais sintetico, grupos incrementales)
+15:55:14 | ABORT base inesperada
